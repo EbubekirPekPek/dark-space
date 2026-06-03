@@ -255,51 +255,71 @@
 
   <script type="module">
     import { initApp, formatDate } from './js/app.js';
-    import { fetchAllFeeds } from './js/feeds.js';
+    import { fetchAllFeeds, sortByDate } from './js/feeds.js';
+
+    // Türkçe kaynaklar — çeviri YOK
+    const FEEDS = [
+      { name: 'Webrazzi',    url: 'https://webrazzi.com/feed/' },
+      { name: 'Shiftdelete', url: 'https://shiftdelete.net/feed' }
+    ];
 
     let allItems = [];
 
     initApp((user) => {
       if (user) {
         const avatar = document.getElementById('userAvatar');
-        const name = document.getElementById('userName');
-        if (user.displayName) { name.textContent = user.displayName; avatar.textContent = user.displayName[0].toUpperCase(); }
-        else if (user.email) { name.textContent = user.email.split('@')[0]; avatar.textContent = user.email[0].toUpperCase(); }
+        const name   = document.getElementById('userName');
+        if (user.displayName) {
+          name.textContent   = user.displayName;
+          avatar.textContent = user.displayName[0].toUpperCase();
+        } else if (user.email) {
+          name.textContent   = user.email.split('@')[0];
+          avatar.textContent = user.email[0].toUpperCase();
+        }
       }
       loadFeeds();
     });
 
     async function loadFeeds() {
-      const feeds = [
-        { name: 'Webrazzi',    url: 'https://webrazzi.com/feed/' },
-        { name: 'Shiftdelete', url: 'https://shiftdelete.net/feed' }
-      ];
+      const grid = document.getElementById('feed-grid');
       document.getElementById('feedLoading').style.display = 'flex';
-      document.getElementById('feed-grid').style.display = 'none';
+      grid.style.display = 'none';
+      grid.innerHTML = '';
+
       try {
-        // Türkçe kaynaklar — çeviri gerekmez (false)
-        allItems = await fetchAllFeeds(feeds, false);
+        let items = await fetchAllFeeds(FEEDS);
+        items = sortByDate(items);
+        allItems = items;
         renderCards(allItems);
       } catch (err) {
         console.error('Feed yükleme hatası:', err);
         document.getElementById('feedLoading').style.display = 'none';
-        document.getElementById('feedEmpty').style.display = 'block';
+        grid.style.display = 'block';
+        grid.innerHTML = '<div class="empty-state" style="padding:var(--space-8);text-align:center;color:var(--color-text-muted);">Kaynaklar geçici olarak erişilemez.</div>';
+        document.getElementById('feedCount').textContent = '0 haber';
       }
     }
 
     function renderCards(items) {
-      const grid = document.getElementById('feed-grid');
-      document.getElementById('feedLoading').style.display = 'none';
+      const grid    = document.getElementById('feed-grid');
+      const loading = document.getElementById('feedLoading');
+      const empty   = document.getElementById('feedEmpty');
+      const count   = document.getElementById('feedCount');
+
+      loading.style.display = 'none';
+
       if (!items || items.length === 0) {
-        document.getElementById('feedEmpty').style.display = 'block';
-        grid.style.display = 'none';
-        document.getElementById('feedCount').textContent = '0 haber';
+        empty.style.display = 'block';
+        grid.style.display  = 'none';
+        count.textContent   = '0 haber';
         return;
       }
-      document.getElementById('feedCount').textContent = items.length + ' haber';
-      grid.style.display = 'grid';
-      document.getElementById('feedEmpty').style.display = 'none';
-      grid.innerHTML = '';
+
+      count.textContent   = items.length + ' haber';
+      grid.style.display  = 'grid';
+      empty.style.display = 'none';
+      grid.innerHTML      = '';
+
       items.forEach(item => {
         const card = document.createElement('div');
         card.className = 'news-card';
@@ -324,11 +344,11 @@
     }
 
     function openModal(item) {
-      document.getElementById('modal-title').textContent = item.title || '';
-      document.getElementById('modal-desc').textContent = item.description || 'Özet bulunamadı.';
-      document.getElementById('modal-link').href = item.link || '#';
+      document.getElementById('modal-title').textContent        = item.title || '';
+      document.getElementById('modal-desc').textContent         = item.description || 'Özet mevcut değil.';
+      document.getElementById('modal-link').href                = item.link || '#';
       document.getElementById('modal-source-badge').textContent = item._src || 'Kaynak';
-      document.getElementById('modal-date').textContent = formatDate(item.pubDate);
+      document.getElementById('modal-date').textContent         = formatDate(item.pubDate);
       document.getElementById('news-modal').classList.add('is-open');
       document.body.style.overflow = 'hidden';
     }
@@ -340,7 +360,9 @@
 
     document.getElementById('modal-close').addEventListener('click', closeModal);
     document.getElementById('modal-close-btn').addEventListener('click', closeModal);
-    document.getElementById('news-modal').addEventListener('click', e => { if (e.target === document.getElementById('news-modal')) closeModal(); });
+    document.getElementById('news-modal').addEventListener('click', e => {
+      if (e.target === document.getElementById('news-modal')) closeModal();
+    });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
     document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -353,14 +375,15 @@
     });
 
     document.getElementById('feedSearch').addEventListener('input', e => {
-      renderCards(allItems.filter(i => (i.title || '').toLowerCase().includes(e.target.value.toLowerCase())));
+      const q = e.target.value.toLowerCase();
+      renderCards(allItems.filter(i => (i.title || '').toLowerCase().includes(q)));
     });
 
     document.getElementById('refreshBtn').addEventListener('click', loadFeeds);
 
     const hamburgerBtn = document.getElementById('hamburgerBtn');
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebarOverlay');
+    const sidebar      = document.getElementById('sidebar');
+    const overlay      = document.getElementById('sidebarOverlay');
     hamburgerBtn.addEventListener('click', () => {
       sidebar.classList.toggle('is-open');
       overlay.classList.toggle('is-visible');
