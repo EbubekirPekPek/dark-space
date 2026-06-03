@@ -18,11 +18,14 @@ import {
 
 import { auth } from './firebase-config.js';
 
-// ─── Base URL (localhost vs GitHub Pages) ─────────────────────────────────────
-// localhost: '/'   |   GitHub Pages: '/dark-space/'
-const BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-  ? '/'
-  : '/' + window.location.pathname.split('/')[1] + '/';
+// ─── Base URL — auth.js'in kendi URL'inden güvenilir şekilde hesaplanır ──────
+// Örn: localhost:3000/js/auth.js → BASE = '/'
+// Örn: github.io/dark-space/js/auth.js → BASE = '/dark-space/'
+const _scriptParts = new URL(import.meta.url).pathname.split('/');
+const _jsIndex = _scriptParts.lastIndexOf('js');
+const BASE = _jsIndex > 0
+  ? _scriptParts.slice(0, _jsIndex).join('/') + '/'
+  : '/';
 
 // ─── Türkçe Hata Mesajları ─────────────────────────────────────────────────────
 const HATA_MESAJLARI = {

@@ -331,7 +331,10 @@ function initApp(sayfaBaslat) {
         if (sonuc.hata) {
           showToast(sonuc.hata, 'error');
         } else {
-          window.location.href = '/login.html';
+          const _p = new URL(import.meta.url).pathname.split('/');
+          const _i = _p.lastIndexOf('js');
+          const _base = _i > 0 ? _p.slice(0, _i).join('/') + '/' : '/';
+          window.location.href = _base + 'login.html';
         }
       });
     }
