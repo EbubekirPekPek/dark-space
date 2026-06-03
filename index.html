@@ -568,14 +568,16 @@
   <!-- ============================================================
        FIREBASE + JS DOSYALARI
        ============================================================ -->
-  <script type="module" src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
-  <script type="module" src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
-  <script type="module" src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
-
-  <script type="module" src="js/firebase-config.js"></script>
-  <script type="module" src="js/auth.js"></script>
-  <script type="module" src="js/firestore.js"></script>
-  <script type="module" src="js/app.js"></script>
+  <script type="module">
+    import { initApp } from './js/app.js';
+    initApp((user) => {
+      // Kullanıcı giriş yapmış — dashboard'u başlat
+      const nameEl = document.getElementById('userName');
+      const avatarEl = document.getElementById('userAvatar');
+      if (nameEl) nameEl.textContent = user.displayName || user.email;
+      if (avatarEl) avatarEl.textContent = (user.displayName || user.email || 'U')[0].toUpperCase();
+    });
+  </script>
 
 </body>
 </html>
