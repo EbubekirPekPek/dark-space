@@ -1,0 +1,440 @@
+================================================================
+AJANS PANEL — PROJE PLANI
+Oluşturulma: 2026-06-03
+Durum: Planlama aşaması — aktif geliştirme henüz başlamadı
+================================================================
+
+SİTE ADI: Dark Space
+--------------------
+Karanlık, sonsuz, kişisel. Oraya girenler sadece sen.
+Tarayıcı sekmesi, logo, giriş ekranı — her yerde "Dark Space"
+
+BU DOKÜMAN NE?
+--------------
+Bu site tek bir araçla üç şeyi yapıyor:
+  1. Sektördeki gelişmeleri takip et
+  2. Bilgini kal ve derinleştir
+  3. Müşterilerini ve gelişimini izle
+
+Hedef kullanıcı: Ajans çalışanı (şu an tek kişi)
+Amaç: Daha iyi, daha proaktif, daha bilgili bir ajans çalışanı olmak
+Vizyon: Eşi benzeri görülmemiş kişisel gelişim + bilgi havuzu
+
+================================================================
+SORU 1 — PROJENİN ÖZÜ (ONAYLANDI)
+================================================================
+
+Site 4 ana katmandan oluşuyor:
+
+------------------------------------------------------------
+KATMAN 1: AKIŞ (Şu an mevcut)
+------------------------------------------------------------
+- Dışarıdan otomatik çekilen güncel haberler
+- RSS feed, otomatik Türkçe çeviri
+- Reklam, Pazarlama, Sosyal Medya, Yapay Zeka, Türkçe, Resmi sayfaları
+- Amaç: Sektörde ne olduğunu kaçırmamak
+
+------------------------------------------------------------
+KATMAN 2: BİLGİ AĞACI (Yeni — en büyük yenilik)
+------------------------------------------------------------
+Kampanya yapısı gibi dallanıp derinleşen bilgi tabanı.
+Navigasyon metaforu: Meta Ads Manager'daki gibi
+  Kampanyaya tıkla → Reklam setleri açılır
+  Reklam setine tıkla → Reklamlar açılır
+  Her seviyede ham, güçlü, özlü bilgi
+
+Örnek yapı:
+  Meta
+  ├── Kampanya
+  │   ├── Trafik Kampanyası
+  │   │   ├── Geniş hedefleme
+  │   │   ├── Retargeting
+  │   │   └── Benzer kitle (Lookalike)
+  │   ├── Dönüşüm Kampanyası → ...
+  │   ├── Etkileşim Kampanyası → ...
+  │   └── Form (Lead) Kampanyası → ...
+  ├── Kreatif
+  │   ├── Hook türleri
+  │   ├── Psikolojik baskılayıcılar
+  │   ├── Görsel prensipler
+  │   └── Metin (copy) yazımı
+  ├── Panel & Teknik
+  │   ├── Kampanya kurgusu
+  │   ├── Bütçe optimizasyonu
+  │   └── A/B testi
+  └── Reklam Türleri
+      ├── Form reklamı
+      ├── Etkileşim reklamı
+      └── Retargeting reklamı
+
+  Google Ads → (benzer yapı)
+  TikTok Ads → (benzer yapı)
+
+Veri kaynağı — HİBRİT:
+  - Otomatik: Meta, Google, TikTok resmi kaynakları GitHub Actions ile çekilir
+  - Manuel: Alt dallara kullanıcı kendi notlarını, gözlemlerini ekler
+  - İkisi harmanlanır → ham ama güçlü bilgi
+
+------------------------------------------------------------
+KATMAN 3: MÜŞTERİ ÇALIŞMA ALANI (Yeni)
+------------------------------------------------------------
+Her müşteri için ayrı profil/sayfa.
+Proaktif asistan gibi çalışır: o müşteriyle çalışırken
+ne düşünmen gerektiğini hatırlatır.
+
+Örnek:
+  Müşteri: Diş Hekimi
+  ├── Kreatif notlar
+  ├── Reklam kurguları (aktif/pasif)
+  ├── Panel durumu
+  └── Hatırlatmalar & Notlar
+
+------------------------------------------------------------
+KATMAN 4: GELİŞİM ALANI (Kısmen planlandı)
+------------------------------------------------------------
+- Hedefler (kısa/uzun vadeli)
+- Yapılacaklar listesi
+- Bugün öğrendiklerim (günlük iz)
+- Her alanda not tutma imkânı
+- Zamanla büyüyen gelişim kaydı
+
+================================================================
+SORU 2 — KULLANIM RITMI (ONAYLANDI)
+================================================================
+Gün boyu açık kalmaz. Üç farklı modda kullanılır:
+
+  MOD 1 — Sabah Turu
+  Ne zaman: Günün başında
+  Amaç: "Ne çıkmış?" — hızlı haber tarama
+
+  MOD 2 — Kontrol Turu
+  Ne zaman: Gün içinde ara ara
+  Amaç: Yeni haber/gelişme var mı?
+
+  MOD 3 — Referans Modu (En Kritik)
+  Ne zaman: Müşteri çalışmasında takıldığında
+  Amaç: "Bu nasıl yapılırdı?" — 2-3 tıkla cevap bul, işine dön
+
+TASARIM ÇIKARIMLARI:
+  - Hız birinci (ağır yükleme yok)
+  - Arama şart (kategori gezmek değil, direkt bul)
+  - Bilgi ağacı max 3 tık derinliğinde
+  - "Son bakılanlar" özelliği gerekli
+
+================================================================
+SORU 3 — ÇIKTI VE BAŞARI ÖLÇÜTÜ (ONAYLANDI)
+================================================================
+Siteden üç şey bekleniyor — önem sırasıyla:
+
+  1. SİNYAL GÜCÜ
+     En yeni ve en güçlü gelişmeye anında ulaşmak.
+     Her haber değil — sektörü değiştirecek haber.
+     Gürültü değil, sinyal.
+
+  2. DİRİ KALMAK
+     Tüm teknikleri ve yenilikleri hem ekleyebilmek
+     hem onlarla birlikte büyümek.
+     Canlı bilgi tabanı — donmuş wiki değil, büyüyen organizma.
+
+  3. UZMANIN UZMANI (En Önemli)
+     "Site değil BEN." — Site bir araç, ürün kullanıcının kendisi.
+     Site sana servis etmez, seni GELİŞTİRİR.
+     Beni daha dinç, daha diri, daha derin yapar.
+
+BAŞARI ÖLÇÜTÜ:
+  "Bu ayın başından daha iyi bir ajans çalışanı mıyım?"
+  Kaç haber çekildi değil — kullanıcı ne kadar ilerledi.
+
+================================================================
+MİMARİ KARAR — BACKEND (ONAYLANDI)
+================================================================
+Orijinal karar "statik site, backend yok" idi.
+Bu karar REVİZE EDİLDİ çünkü gereksinimler büyüdü:
+  - Notlar cihazlar arası senkron olmalı
+  - Müşteri verileri kaybolmamalı
+  - Giriş sistemi şart — herkes erişemez
+  - Gelişim takibi biriksin, büyüsün
+
+KARAR: Firebase
+  - Kullanıcının zaten 2 aktif Firebase projesi var (maliyet hesabı + kar/zarar)
+  - Aynı ekosistem, yeni hesap yok, öğrenme eğrisi yok
+  - Authentication: e-posta/şifre veya Google ile giriş
+  - Firestore: notlar, müşteri verileri, hedefler burada saklanır
+  - Site hâlâ GitHub Pages'te durur
+  - GitHub Actions hâlâ çalışır (feed çekimi)
+  - Sadece kullanıcı verileri Firebase'de
+
+================================================================
+SORU 4 — MEVCUT EKSİKLER VE SORUNLAR (ONAYLANDI)
+================================================================
+Mevcut sitenin tam teşhisi:
+
+  SORUN 1 — KALABALILIK VE ALAKASIZLİK
+  Çok fazla haber, çoğu işe yaramaz.
+  Örnek: "FIFA Dünya Kupasına çip kondu" haberi ajans çalışanına ne verir?
+  Çözüm: Sert filtreleme — ajans/reklam/platform odağı dışında hiçbir şey girmez.
+
+  SORUN 2 — İŞLEVSİZLİK
+  Site sadece okutuyor. Hiçbir şey yaptırmıyor, hiçbir şey biriktirmiyor.
+  Not yok, kaydetme yok, hatırlatma yok, derinlik yok.
+
+  SORUN 3 — TASARIM SIRAДАНLIĞI
+  Jenerik haber sitesi görünümü. Sahiplenilmiyor, "benim" hissettirmiyor.
+  Sade, şık ve sonuç odaklı olmalı.
+
+  SORUN 4 — KİŞİSELLEŞTİRME YOKLUĞU
+  Site kullanıcıyı tanımıyor. Herkese aynı şeyi gösteriyor.
+  Kullanıcının alanına, müşterilerine, ilgi odaklarına göre şekillenmeli.
+
+  SORUN 5 — UZMANLAŞMA ALANI YOK
+  Bilgi ağacı yok. Notlar yok. Derinlik yok.
+  Sadece yüzey — altta hiçbir şey yok.
+
+HEDEF:
+  Sade + Şık + Sonuç Odaklı
+  Boş haber kalabalığı değil — net bilgi, net gelişmeler.
+
+================================================================
+SORU 5 — 6 AYLIK VİZYON (ONAYLANDI)
+================================================================
+"Çok modern, tam oturmuş. Her gün açıp okumaktan zevk aldığım.
+ Hem geliştiren hem oyun alanı. Senaryo kurduğum, kurguladığım,
+ üstüne düşülmüş kişisel alanım. Orası BEN olmalı.
+ Beni daha çok ben yapmalı. Okuyup geçmek değil — ALMAK istiyorum.
+ Bilgiyi, deneyimi, yeniliği, uzmanlığı."
+
+ANAHTAR KELİMELER:
+  - Oyun alanı (playground) — keşfetmek, denemek, eğlenmek
+  - Senaryo kurma — "şunu şöyle yaparsam böyle olur" düşünce jimnastiği
+  - "Orası ben olmalı" — derin kişiselleştirme, kimlik
+  - Almak vs okuyup geçmek — sindirmek, özümsemek, büyümek
+
+HİSSETTİRMELİ:
+  Güç + Netlik + Kontrol + Zevk
+
+================================================================
+YENİ KLASÖR YAPISI (Sıfırdan rebuild — 2026-06-03)
+================================================================
+AJANS HTML/
+├── login.html              → Giriş sayfası (Firebase Auth)
+├── index.html              → Dashboard (giriş sonrası ana sayfa)
+├── reklam.html             → Reklam haberleri
+├── pazarlama.html          → Pazarlama haberleri
+├── sosyal-medya.html       → Sosyal medya haberleri
+├── yapay-zeka.html         → Yapay zeka haberleri
+├── turkce.html             → Türkçe kaynaklar
+├── resmi.html              → Resmi kaynaklar
+├── bilgi/                  → Bilgi ağacı (hiyerarşik)
+│   ├── index.html
+│   └── meta.html
+├── musteri/                → Müşteri çalışma alanı
+│   └── index.html
+├── gelisim/                → Gelişim takip alanı
+│   └── index.html
+├── css/
+│   ├── design-system.css   → Token'lar, tipografi, renkler, grid
+│   ├── components.css      → Kartlar, sidebar, butonlar, modal
+│   └── pages.css           → Sayfa özel stiller
+├── js/
+│   ├── firebase-config.js  → Firebase init
+│   ├── auth.js             → Giriş/çıkış/oturum
+│   ├── firestore.js        → Veritabanı CRUD
+│   ├── feeds.js            → RSS + çeviri
+│   └── app.js              → Ortak yardımcılar
+├── data/                   → GitHub Actions JSON çıktıları
+└── PROJE_PLANI.txt
+
+================================================================
+TEKNİK KISITLAR (Güncel — Firebase eklendi)
+================================================================
+- Site: GitHub Pages (statik)
+- Kullanıcı verisi: Firebase Firestore
+- Auth: Firebase Authentication (e-posta/şifre VE Google ile giriş)
+- Firebase Projesi: AYRI proje — mevcut projelerden (maliyet/kar-zarar) bağımsız
+  Proje adı önerisi: ajans-paneli
+  Plan: Spark (ücretsiz) — tek kişilik kullanım için yeterli
+- Feed çekimi: GitHub Actions (her 2 saatte bir)
+- AI özeti: DeepSeek veya Gemini API (GitHub Actions içinde)
+- Navigasyon: Sidebar (web) + Alt bar (mobil)
+- Her şey Türkçe
+- Sade, premium, güçlü tasarım
+
+================================================================
+TASARIM — DETAYLI KARARLAR
+================================================================
+
+------------------------------------------------------------
+T1 — GENEL HİS (ONAYLANDI)
+------------------------------------------------------------
+Modern & Premium + Stealth/Profesyonel karışımı, güç hissettiren.
+Referans noktaları:
+  - Notion → düzen ve nefes
+  - Bloomberg Terminal → ciddiyet ve veri odağı
+  - Linear → özgüven ve modernlik
+Sonuç: Koyu, sade, premium — ama güçlü ve otoriter.
+Fazla süs yok. Her element bir amaca hizmet eder.
+
+------------------------------------------------------------
+T2 — KİMLİK VE RENK SİSTEMİ (ONAYLANDI)
+------------------------------------------------------------
+Tek güçlü site kimliği + bölüm atmosferi sistemi.
+Referans: Spotify — her zaman Spotify ama sanatçı sayfasında o sanatçıyı hissedersin.
+
+Uygulama:
+  - Sitenin kendi base tasarım dili var (tipografi, boşluk, grid)
+  - Meta sayfasında: Meta mavisi/logosu, Meta'nın ruhu hissedilir
+  - Shopify sayfasında: Shopify yeşili/logosu, Shopify atmosferi
+  - Her platform sayfasına o platformun logosu eklenecek
+
+Tipografi:
+  - Sağlam ve güçlü — jenerik değil, karakter var
+  - Düz/plain iconlar istenmiyor — özgün dokunuş olmalı
+  - Karmaşık değil ama sıradan da değil
+
+------------------------------------------------------------
+T3 — NAVİGASYON (ONAYLANDI)
+------------------------------------------------------------
+Proje büyüyecek — 10+ bölüm olacak. Üst menü taşımaz.
+
+  WEB → Sol Sidebar (sabit, daima görünür)
+    - Tüm bölümler rahat sığar
+    - Profesyonel araç hissi (Notion/Linear gibi)
+
+  MOBİL → Alt Bar (5 ana ikon) + Hamburger menü
+    - Başparmakla erişim, uygulama hissi
+    - Instagram/TikTok/Linear pattern'i
+
+------------------------------------------------------------
+T4 — İÇERİK KARTLARI VE ÖZET SİSTEMİ (ONAYLANDI)
+------------------------------------------------------------
+İki katmanlı kart sistemi:
+
+  KATMAN 1 — KART GÖRÜNÜMü (kompakt)
+    - Başlık + kaynak logosu + tarih
+    - Hızlı tarama için minimal
+    - Tıklanınca panel/modal açılır, dışarıya GİTMEZ
+
+  KATMAN 2 — AÇILAN PANEL (özet)
+    - Haberin verimli ve önemli özeti
+    - Sayılar, neden önemli, ne anlama geliyor
+    - En altta "Kaynağa git" butonu (kullanıcı isterse gider)
+    - Bu bir FİLTRE KATMANI — her haberi okumak zorunda değil
+
+ÖZET KAYNAĞI — HİBRİT:
+  Şimdi: RSS açıklaması (hemen çalışır, fallback)
+  İleride: AI özeti (DeepSeek API veya Gemini API)
+    - GitHub Actions içinde çalışır
+    - Her haber için özet üretir
+    - Statik JSON'a yazar, site okur
+    - DeepSeek: çok ucuz, güçlü
+    - Gemini: ücretsiz tier var, hızlı
+
+------------------------------------------------------------
+T5 — ANA SAYFA DASHBOARD (ONAYLANDI)
+------------------------------------------------------------
+Giriş yapınca dashboard karşılar. 4 blok — revize edilebilir.
+
+  BLOK 1 — Günün Özeti
+    "Bugün 12 yeni haber — 3 Meta, 2 Google, 7 diğer"
+    Hangi platform hareketli, kaç yeni içerik var
+
+  BLOK 2 — Öne Çıkan Haber
+    Tüm haberler arasından en güçlü 1-3 tanesi büyük gösterilir
+    Sabah ilk bakışta en önemlisini görürsün
+
+  BLOK 3 — Aktif Müşteri Hatırlatmaları
+    "Diş Hekimi — bu hafta kreatif yenilenmeli"
+    Bugün hangi müşteride ne yapman gerekiyor
+
+  BLOK 4 — Günlük Hedef
+    Koyduğun hedeflerden bir tanesi, günlük hatırlatma
+    "Bu ay: Meta sertifikasını tamamla"
+
+------------------------------------------------------------
+T6 — BİLGİ AĞACI NAVİGASYONU (ONAYLANDI)
+------------------------------------------------------------
+  WEB → Klasör/dosya sistemi (VS Code / Finder gibi)
+    Sol tarafta ağaç yapısı, sağda içerik açılır
+    Hızlı geçiş, neredesin belli, çok seviye görünür
+
+  MOBİL → Tam ekran geçiş
+    Her seviye tam ekranı kaplar
+    Geriye ok ile dönülür
+    Uygulama hissi, tam odak
+
+------------------------------------------------------------
+T7 — NOT ALMA SİSTEMİ (ONAYLANDI)
+------------------------------------------------------------
+İki ayrı not katmanı — karıştırılmaz:
+
+  KATMAN 1 — MİKRO NOT (içeriğe bağlı)
+    Haber kartlarında ve bilgi ağacı kartlarında
+    Küçük, hızlı, o içerikle birlikte saklanır
+    "Bu habere dair düşüncem: ..."
+    Firebase'de içerikle ilişkili olarak tutulur
+
+  KATMAN 2 — DETAYLI NOT SAYFASI (ayrı sayfa)
+    Müşteri takibi, ilerleme kaydı, planlama
+    Zengin içerik — başlık, paragraf, liste, tarih
+    Firebase'de tam kayıt
+    Müşteri alanı ile entegre çalışır
+
+------------------------------------------------------------
+T8 — ARAMA (ONAYLANDI)
+------------------------------------------------------------
+Basit arama kutusu — sade ve işlevsel.
+Sidebar üstünde sabit, yazınca o sayfada filtreler.
+Global arama yok — gereksiz karmaşıklık.
+
+------------------------------------------------------------
+T9 — MÜŞTERİ ALANI YAPISI (ONAYLANDI)
+------------------------------------------------------------
+Her müşteri profili şu alanları içerir:
+
+  - Genel bilgiler (sektör, hedef kitle, bütçe)
+  - Aktif kampanyalar (çalışan / duran)
+  - Kreatif notlar (ne tür içerik işe yarıyor)
+  - Yapılacaklar (bu müşteriye özel bekleyen işler)
+  - Geçmiş notlar (tarihli, birikimli kayıt)
+  - Hedef KPI'lar (dönüşüm maliyeti, ROAS, CTR hedefi vb.)
+  - Haftalık / Aylık Raporlama alanı (gerçekleşen vs hedef)
+  - Uyarı Sistemi:
+      Hedef KPI'larla gerçekleşen karşılaştırılır
+      Sapmalar dashboard'da uyarı olarak görünür
+      Örnek: "Diş Hekimi — CPA hedefin %30 üstünde"
+
+------------------------------------------------------------
+T10 — GELİŞİM ALANI (ONAYLANDI)
+------------------------------------------------------------
+4 bileşen — hepsi bir arada:
+
+  1. Hedefler listesi
+     "Bu ay Meta sertifikası, bu hafta kreatif analiz"
+     Tamamlandı / devam ediyor / bekliyor
+
+  2. Günlük log
+     Tarihli, birikimli kayıt
+     "Bugün şunu öğrendim, şunu denedim"
+
+  3. Beceri haritası
+     Her alanda öz değerlendirme (Meta 7/10, Kreatif 5/10)
+     Zaman içinde ilerleme görünür
+
+  4. BAĞLANTILI ÇALIŞMA ALANI (En kritik özellik)
+     Gelişim alanı, Bilgi Ağacı'na direkt bağlıdır.
+     Örnek:
+       Takip yazısı: "Kreatif kurgu üzerinde çalışıyorum"
+       → Tıkla → Meta > Kreatif > Hook türleri açılır
+       → Oku, not al, geri dön
+     İkisi tek deneyim — takip ve bilgi birbirinden kopuk değil.
+     Referans: Notion çift yönlü link mantığı, ajans odaklı.
+
+================================================================
+TASARIM SORULARI TAMAMLANDI
+================================================================
+
+================================================================
+SONRAKİ ADIM
+================================================================
+Tasarım soruları devam ediyor — T2 bekleniyor.
+================================================================

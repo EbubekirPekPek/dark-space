@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<!--
+  index.html
+  Dark Space — Ana Dashboard
+  Giriş yaptıktan sonra açılan ana sayfa.
+  Sol sidebar navigasyon + 4 dashboard bloğu içerir.
+  Veri Firebase Firestore'dan js/app.js üzerinden yüklenir.
+-->
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Dark Space — Dashboard">
+  <meta name="theme-color" content="#08080d">
+  <title>Dashboard — Dark Space</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body class="dashboard-page">
+
+  <!-- ============================================================
+       MOBİL: ÜSTTE HAMBURGERLİ TOP BAR
+       ============================================================ -->
+  <header class="top-bar">
+    <div class="top-bar-left">
+      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Menüyü aç" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <span class="top-bar-title">Dark Space</span>
+    </div>
+    <div class="top-bar-actions">
+      <button class="btn btn-icon btn-ghost" aria-label="Arama">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.3-4.3"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       SİDEBAR OVERLAY (mobil — karartma)
+       ============================================================ -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- ============================================================
+       SOL SİDEBAR
+       ============================================================ -->
+  <aside class="sidebar" id="sidebar" role="navigation" aria-label="Ana navigasyon">
+
+    <!-- Logo -->
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+      </div>
+      <div class="sidebar-logo-text">
+        <span class="sidebar-logo-name">Dark Space</span>
+        <span class="sidebar-logo-sub">v2.0</span>
+      </div>
+    </div>
+
+    <!-- Arama -->
+    <div class="sidebar-search">
+      <div class="search-input-wrap">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.3-4.3"/>
+        </svg>
+        <input type="search" placeholder="Ara..." aria-label="Site içi arama" id="globalSearch">
+      </div>
+    </div>
+
+    <!-- Navigasyon -->
+    <nav class="sidebar-nav">
+
+      <!-- Ana Bölümler -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Ana</div>
+
+        <a href="index.html" class="nav-link is-active" aria-current="page">
+          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="7" height="9" x="3" y="3" rx="1"/>
+            <rect width="7" height="5" x="14" y="3" rx="1"/>
+            <rect width="7" height="9" x="14" y="12" rx="1"/>
+            <rect width="7" height="5" x="3" y="16" rx="1"/>
+          </svg>
+          <span class="nav-link-label">Dashboard</span>
+        </a>
+      </div>
+
+      <!-- Haber Akışları -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Haber Akışları</div>
+
+        <a href="reklam.html" class="nav-link">
+          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 12h.01"/>
+            <rect width="20" height="14" x="2" y="5" rx="2"/>
+            <path d="M2 10h20"/>
+          </svg>
+          <span class="nav-link-label">Reklam</span>
+        </a>
+
+        <a href="pazarlama.html" class="nav-link">
+          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 3v18h18"/>
+            <path d="m19 9-5 5-4-4-3 3"/>
+          </svg>
+          <span class="nav-link-label">Pazarlama</span>
+        </a>
+
+        <a href="sosyal-medya.html" class="nav-link">
+          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="18" cy="5" r="3"/>
+            <circle cx="6" cy="12" r="3"/>
+            <circle cx="18" cy="19" r="3"/>
+            <line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/>
+            <line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/>
+          </svg>
+          <span class="nav-link-label">Sosyal Medya</span>
+        </a>
+
+        <a href="yapay-zeka.html" class="nav-link">
+          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a8 8 0 0 1 8 8v1a4 4 0 0 1-4 4h-1"/>
+            <path d="M9 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3"/>
+            <path d="M12 22v-4"/>
+            <path d="M8 22h8"/>
+          </svg>
+          <span class="nav-link-label">Yapay Zeka</span>
+        </a>
+
+        <a href="turkce.html" class="nav-link">
+          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
+          </svg>
+          <span class="nav-link-label">Türkçe Kaynaklar</span>
+        </a>
+
+        <a href="resmi.html" class="nav-link">
+          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          <span class="nav-link-label">Resmi Kaynaklar</span>
+        </a>
+      </div>
+
+      <!-- Çalışma Alanı -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Çalışma Alanı</div>
+
+        <a href="bilgi/index.html" class="nav-link">
+          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v11m0 0H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4m0-6h10m0 0v6a2 2 0 0 1-2 2h-4m6-8V9a2 2 0 0 0-2-2H9"/>
+          </svg>
+          <span class="nav-link-label">Bilgi Ağacı</span>
+        </a>
+
+        <a href="musteri/index.html" class="nav-link">
+          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          <span class="nav-link-label">Müşteri Alanı</span>
+        </a>
+
+        <a href="gelisim/index.html" class="nav-link">
+          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/>
+          </svg>
+          <span class="nav-link-label">Gelişim</span>
+        </a>
+      </div>
+
+    </nav>
+
+    <!-- Kullanıcı Alanı -->
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar" id="userAvatar">A</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" id="userName">Ajans Kullanıcısı</div>
+          <div class="sidebar-user-role">Dijital Pazarlama</div>
+        </div>
+        <button class="btn btn-icon btn-ghost btn-icon-sm" id="logoutBtn" aria-label="Çıkış yap" title="Çıkış Yap">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" x2="9" y1="12" y2="12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ============================================================
+       ANA İÇERİK — DASHBOARD
+       ============================================================ -->
+  <main class="main-content" id="mainContent">
+    <div class="content-inner">
+
+      <!-- Selamlama Satırı -->
+      <div class="dashboard-greeting">
+        <div>
+          <h1 class="dashboard-greeting-title" id="greetingTitle">Günaydın</h1>
+          <p class="dashboard-greeting-sub">Bugün sektörde neler döndüğüne bakalım.</p>
+        </div>
+        <div class="dashboard-greeting-date" id="currentDate">3 Haziran 2026, Çarşamba</div>
+      </div>
+
+      <!-- 4 Dashboard Bloğu -->
+      <div class="dashboard-blocks">
+
+        <!-- BLOK 1 — Günün Özeti -->
+        <div class="dashboard-block block-daily-summary">
+          <div class="block-header">
+            <div class="block-title">
+              <svg class="block-title-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20h9"/>
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+              </svg>
+              Günün Özeti
+            </div>
+            <span class="text-xs text-muted">Son güncelleme: 08:30</span>
+          </div>
+
+          <div class="block-value">12</div>
+          <div class="block-value-sub">bugün yeni haber</div>
+
+          <div class="block-stats">
+            <span class="block-stat-badge">
+              <span class="block-stat-dot" style="background: var(--color-meta);"></span>
+              Meta &nbsp;<strong>3</strong>
+            </span>
+            <span class="block-stat-badge">
+              <span class="block-stat-dot" style="background: var(--color-google);"></span>
+              Google &nbsp;<strong>2</strong>
+            </span>
+            <span class="block-stat-badge">
+              <span class="block-stat-dot" style="background: var(--color-tiktok);"></span>
+              TikTok &nbsp;<strong>4</strong>
+            </span>
+            <span class="block-stat-badge">
+              <span class="block-stat-dot" style="background: var(--color-shopify);"></span>
+              Shopify &nbsp;<strong>1</strong>
+            </span>
+            <span class="block-stat-badge">
+              <span class="block-stat-dot" style="background: var(--color-accent);"></span>
+              Diger &nbsp;<strong>2</strong>
+            </span>
+          </div>
+        </div>
+
+        <!-- BLOK 2 — Öne Çıkan Haber -->
+        <div class="dashboard-block block-featured">
+          <div class="block-header">
+            <div class="block-title">
+              <svg class="block-title-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+              </svg>
+              One Cikan Haber
+            </div>
+            <span class="badge badge-meta">META</span>
+          </div>
+
+          <div class="news-card news-card--featured" id="featuredNews" tabindex="0" role="button">
+            <div class="news-card-header">
+              <h3 class="news-card-title">
+                Meta, Advantage+ alisveris kampanyalarina yeni AI ozellikler ekliyor: Otomatik reklam yerlesimi ve butce optimizasyonu genisletildi
+              </h3>
+            </div>
+            <p class="news-card-summary">
+              Meta'nin Advantage+ sistemi artik daha fazla reklam bicimini otomatik olarak optimize ediyor. AI destekli yaratici secimi, capraz platform butce dagilimi ve gercek zamanli teklif ayarlamasi one cikiyor.
+            </p>
+            <div class="news-card-footer">
+              <div class="news-card-source">
+                <span class="news-card-source-dot" style="background: var(--color-meta);"></span>
+                Meta Newsroom
+              </div>
+              <div class="news-card-actions">
+                <span class="news-card-date">3 Haz 2026</span>
+                <button class="btn btn-sm btn-ghost">Ozeti Gor</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BLOK 3 — Müşteri Hatırlatmaları -->
+        <div class="dashboard-block">
+          <div class="block-header">
+            <div class="block-title">
+              <svg class="block-title-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+                <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+              </svg>
+              Hatirlatmalar
+            </div>
+            <a href="musteri/index.html" class="btn btn-sm btn-ghost" style="font-size:var(--text-xs);">Tumu</a>
+          </div>
+
+          <div class="reminder-list">
+            <div class="reminder-item">
+              <span class="reminder-dot reminder-dot--urgent"></span>
+              <span class="reminder-text">
+                <span class="reminder-client">Dis Hekimi Klinik —</span>
+                Bu hafta kreatif yenilenmeli
+              </span>
+            </div>
+            <div class="reminder-item">
+              <span class="reminder-dot"></span>
+              <span class="reminder-text">
+                <span class="reminder-client">Restoran Zinciri —</span>
+                Aylik raporlama hazirlanacak
+              </span>
+            </div>
+            <div class="reminder-item">
+              <span class="reminder-dot reminder-dot--ok"></span>
+              <span class="reminder-text">
+                <span class="reminder-client">E-ticaret Magaza —</span>
+                Kampanya butcesi incelendi
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- BLOK 4 — Günlük Hedef -->
+        <div class="dashboard-block">
+          <div class="block-header">
+            <div class="block-title">
+              <svg class="block-title-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+                <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"/>
+                <path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
+              </svg>
+              Gunluk Hedef
+            </div>
+            <a href="gelisim/index.html" class="btn btn-sm btn-ghost" style="font-size:var(--text-xs);">Tumu</a>
+          </div>
+
+          <div style="padding: var(--space-2) 0;">
+            <div style="font-size: var(--text-xs); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: var(--tracking-widest); margin-bottom: var(--space-2);">Bu Ay</div>
+            <div style="font-size: var(--text-sm); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); margin-bottom: var(--space-3);">Meta Blueprint sertifikasini tamamla</div>
+            <div class="kpi-progress">
+              <div class="kpi-progress-bar kpi-progress-bar--good" style="width: 65%;"></div>
+            </div>
+            <div style="font-size: var(--text-xs); color: var(--color-text-muted); margin-top: var(--space-1);">%65 tamamlandi</div>
+          </div>
+
+          <hr class="divider">
+
+          <div>
+            <div style="font-size: var(--text-xs); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: var(--tracking-widest); margin-bottom: var(--space-2);">Bugun</div>
+            <div class="goal-item" style="margin-bottom: var(--space-2);">
+              <div class="goal-checkbox is-done"></div>
+              <span class="goal-text is-done">Reklam haberlerini tara</span>
+            </div>
+            <div class="goal-item" style="margin-bottom: var(--space-2);">
+              <div class="goal-checkbox"></div>
+              <span class="goal-text">Dis klinik kreatifleri hazirla</span>
+            </div>
+            <div class="goal-item">
+              <div class="goal-checkbox"></div>
+              <span class="goal-text">Bilgi agaci — Hook turleri oku</span>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /dashboard-blocks -->
+
+      <!-- Son Haberler -->
+      <section>
+        <div class="page-header" style="margin-bottom: var(--space-4);">
+          <div>
+            <h2 class="page-title" style="font-size: var(--text-xl);">Son Haberler</h2>
+            <p class="page-subtitle">Tum kategorilerden en yeni gelismeler</p>
+          </div>
+          <a href="reklam.html" class="btn btn-secondary btn-sm">Tumunu Gor</a>
+        </div>
+
+        <div class="news-grid">
+
+          <div class="news-card" tabindex="0" role="button">
+            <div class="news-card-header">
+              <h3 class="news-card-title">Google Ads, Performance Max kampanyalarinda yeni raporlama araclari sunuyor</h3>
+              <div class="news-card-meta">
+                <span class="badge badge-google">Google</span>
+              </div>
+            </div>
+            <p class="news-card-summary">Yeni asset group raporlama ekrani, hangi gorselin ve metnin en iyi performans gosterdigi daha net ortaya koyuyor.</p>
+            <div class="news-card-footer">
+              <div class="news-card-source">
+                <span class="news-card-source-dot" style="background: var(--color-google);"></span>
+                Google Ads Blog
+              </div>
+              <span class="news-card-date">2 Haz 2026</span>
+            </div>
+          </div>
+
+          <div class="news-card" tabindex="0" role="button">
+            <div class="news-card-header">
+              <h3 class="news-card-title">TikTok, reklam platformuna yeni "Search Ads Toggle" ozelligi ekliyor</h3>
+              <div class="news-card-meta">
+                <span class="badge badge-tiktok">TikTok</span>
+              </div>
+            </div>
+            <p class="news-card-summary">Kullanicilar artik TikTok arama sonuclarinda da reklam gorebilecek. Arama davranisina dayali hedefleme, dusuk CPA saglayabilir.</p>
+            <div class="news-card-footer">
+              <div class="news-card-source">
+                <span class="news-card-source-dot" style="background: var(--color-tiktok);"></span>
+                TikTok For Business
+              </div>
+              <span class="news-card-date">2 Haz 2026</span>
+            </div>
+          </div>
+
+          <div class="news-card" tabindex="0" role="button">
+            <div class="news-card-header">
+              <h3 class="news-card-title">Meta'nin yeni "Andromeda" reklam motorunun performansi rakiplerini geciyor</h3>
+              <div class="news-card-meta">
+                <span class="badge badge-meta">Meta</span>
+              </div>
+            </div>
+            <p class="news-card-summary">Yeni makine ogrenmesi motoru Andromeda, reklam eslestirme dogruluğunu ciddi olcude artirdi. ROAS degerlerinde %20'ye varan iyilesme raporlaniyor.</p>
+            <div class="news-card-footer">
+              <div class="news-card-source">
+                <span class="news-card-source-dot" style="background: var(--color-meta);"></span>
+                Meta AI Blog
+              </div>
+              <span class="news-card-date">1 Haz 2026</span>
+            </div>
+          </div>
+
+          <div class="news-card" tabindex="0" role="button">
+            <div class="news-card-header">
+              <h3 class="news-card-title">LinkedIn, B2B kampanyalari icin "Predictive Audiences" ozelligini genisletiyor</h3>
+              <div class="news-card-meta">
+                <span class="badge badge-linkedin">LinkedIn</span>
+              </div>
+            </div>
+            <p class="news-card-summary">Tahmine dayali kitle ozelligi artik daha kucuk hesap listelerini de isleyebiliyor. B2B ajanslari icin Lookalike alternatifi olarak one cikiyor.</p>
+            <div class="news-card-footer">
+              <div class="news-card-source">
+                <span class="news-card-source-dot" style="background: var(--color-linkedin);"></span>
+                LinkedIn Marketing
+              </div>
+              <span class="news-card-date">1 Haz 2026</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div><!-- /content-inner -->
+  </main>
+
+  <!-- ============================================================
+       MOBİL ALT BAR
+       ============================================================ -->
+  <nav class="bottom-bar" aria-label="Mobil navigasyon">
+    <div class="bottom-bar-nav">
+
+      <a href="index.html" class="bottom-bar-item is-active" aria-current="page">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect width="7" height="9" x="3" y="3" rx="1"/>
+          <rect width="7" height="5" x="14" y="3" rx="1"/>
+          <rect width="7" height="9" x="14" y="12" rx="1"/>
+          <rect width="7" height="5" x="3" y="16" rx="1"/>
+        </svg>
+        <span class="bottom-bar-item-label">Ana</span>
+      </a>
+
+      <a href="reklam.html" class="bottom-bar-item">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2Z"/>
+          <path d="M9 12h6"/>
+          <path d="M9 16h4"/>
+          <path d="M9 8h1"/>
+        </svg>
+        <span class="bottom-bar-item-label">Haberler</span>
+      </a>
+
+      <a href="bilgi/index.html" class="bottom-bar-item">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v11m0 0H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4m0-6h10m0 0v6a2 2 0 0 1-2 2h-4m6-8V9a2 2 0 0 0-2-2H9"/>
+        </svg>
+        <span class="bottom-bar-item-label">Bilgi</span>
+      </a>
+
+      <a href="musteri/index.html" class="bottom-bar-item">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        <span class="bottom-bar-item-label">Musteri</span>
+      </a>
+
+      <a href="gelisim/index.html" class="bottom-bar-item">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/>
+        </svg>
+        <span class="bottom-bar-item-label">Gelisim</span>
+      </a>
+
+    </div>
+  </nav>
+
+  <!-- ============================================================
+       HABER ÖZET MODALİ
+       ============================================================ -->
+  <div class="modal-overlay" id="newsModal" role="dialog" aria-modal="true">
+    <div class="modal">
+      <div class="modal-drag-handle"></div>
+
+      <div class="modal-header">
+        <h2 class="modal-title" id="modalTitle">Haber Basligi</h2>
+        <button class="modal-close-btn" id="modalCloseBtn" aria-label="Kapat">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
+            <path d="M18 6 6 18"/>
+            <path d="m6 6 12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-meta">
+        <span class="badge badge-meta" id="modalPlatformBadge">Meta</span>
+        <span class="text-xs text-muted" id="modalSource">Meta Newsroom</span>
+        <span class="text-xs text-muted" id="modalDate">3 Haz 2026</span>
+      </div>
+
+      <div class="modal-body">
+        <p class="modal-summary" id="modalSummary">Haber ozeti burada gorunecek.</p>
+        <div class="modal-highlights" id="modalHighlights"></div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-ghost btn-sm" id="modalNoteBtn">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+          </svg>
+          Not Al
+        </button>
+        <a href="#" class="btn btn-secondary btn-sm" id="modalSourceLink" target="_blank" rel="noopener noreferrer">
+          Kaynaga Git
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15 3 21 3 21 9"/>
+            <line x1="10" x2="21" y1="14" y2="3"/>
+          </svg>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================
+       FIREBASE + JS DOSYALARI
+       ============================================================ -->
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
+
+  <script type="module" src="js/firebase-config.js"></script>
+  <script type="module" src="js/auth.js"></script>
+  <script type="module" src="js/firestore.js"></script>
+  <script type="module" src="js/app.js"></script>
+
+</body>
+</html>

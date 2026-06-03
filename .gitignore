@@ -1,0 +1,11 @@
+# Geçici dosyalar
+*.tmp
+*.log
+node_modules/
+
+# Firebase emülatör
+.firebase/
+
+# OS dosyaları
+.DS_Store
+Thumbs.db
