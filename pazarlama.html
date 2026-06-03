@@ -241,6 +241,20 @@
       <div class="modal-body">
         <p class="modal-summary" id="modal-desc">Özet yükleniyor...</p>
       </div>
+      <div class="modal-notes-section" style="padding:var(--space-4) var(--space-5);border-top:1px solid var(--color-border);">
+        <div class="modal-notes-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-2);">
+          <span class="text-xs text-muted">Notlarım</span>
+          <button class="btn btn-ghost btn-sm" id="addNoteToggle" style="font-size:12px;padding:2px 8px;">+ Not Ekle</button>
+        </div>
+        <div id="modal-note-form" style="display:none;margin-bottom:var(--space-3);">
+          <textarea id="noteTextarea" class="input" rows="3" placeholder="Bu haber hakkında notun..." style="width:100%;resize:vertical;font-size:13px;"></textarea>
+          <div style="display:flex;gap:8px;margin-top:8px;">
+            <button class="btn btn-primary btn-sm" id="saveNoteBtn">Kaydet</button>
+            <button class="btn btn-ghost btn-sm" id="cancelNoteBtn">İptal</button>
+          </div>
+        </div>
+        <div id="modal-notes-list" class="notes-list" style="display:flex;flex-direction:column;gap:var(--space-2);"></div>
+      </div>
       <div class="modal-footer">
         <a href="#" target="_blank" rel="noopener noreferrer" id="modal-link" class="btn btn-secondary btn-sm">
           Kaynağa Git
@@ -255,8 +269,9 @@
   </div>
 
   <script type="module">
-    import { initApp, formatDate } from './js/app.js';
+    import { initApp, formatDate, showToast } from './js/app.js';
     import { fetchAllFeeds, translateWithCache, sortByDate } from './js/feeds.js';
+    import { saveNote, getNotes, deleteNote } from './js/firestore.js';
 
     const FEEDS = [
       { name: 'HubSpot Blog',          url: 'https://blog.hubspot.com/marketing/rss.xml' },
@@ -360,7 +375,7 @@
       });
     }
 
-    function openModal(item) {
+    async function openModal(item) {
       document.getElementById('modal-title').textContent        = item.title || '';
       document.getElementById('modal-desc').textContent         = item.description || 'Özet mevcut değil.';
       document.getElementById('modal-link').href                = item.link || '#';
@@ -368,6 +383,85 @@
       document.getElementById('modal-date').textContent         = formatDate(item.pubDate);
       document.getElementById('news-modal').classList.add('is-open');
       document.body.style.overflow = 'hidden';
+
+      const notesList    = document.getElementById('modal-notes-list');
+      const noteForm     = document.getElementById('modal-note-form');
+      const noteTextarea = document.getElementById('noteTextarea');
+
+      if (noteForm) noteForm.style.display = 'none';
+      if (noteTextarea) noteTextarea.value = '';
+
+      if (notesList) {
+        notesList.innerHTML = '<span class="text-xs text-muted">Notlar yükleniyor...</span>';
+        try {
+          const notlar = await getNotes(item.link);
+          renderNotes(notlar, notesList, item.link);
+        } catch(e) {
+          notesList.innerHTML = '';
+        }
+      }
+
+      const addBtn = document.getElementById('addNoteToggle');
+      const addBtnClone = addBtn.cloneNode(true);
+      addBtn.parentNode.replaceChild(addBtnClone, addBtn);
+      addBtnClone.addEventListener('click', () => {
+        if (noteForm) noteForm.style.display = noteForm.style.display === 'none' ? 'block' : 'none';
+        noteTextarea?.focus();
+      });
+
+      const cancelBtn = document.getElementById('cancelNoteBtn');
+      const cancelBtnClone = cancelBtn.cloneNode(true);
+      cancelBtn.parentNode.replaceChild(cancelBtnClone, cancelBtn);
+      cancelBtnClone.addEventListener('click', () => {
+        if (noteForm) noteForm.style.display = 'none';
+        if (noteTextarea) noteTextarea.value = '';
+      });
+
+      const saveBtn = document.getElementById('saveNoteBtn');
+      const saveBtnClone = saveBtn.cloneNode(true);
+      saveBtn.parentNode.replaceChild(saveBtnClone, saveBtn);
+      saveBtnClone.addEventListener('click', async () => {
+        const text = noteTextarea?.value?.trim();
+        if (!text) return;
+        try {
+          await saveNote(item.link, 'haber', text);
+          if (noteTextarea) noteTextarea.value = '';
+          if (noteForm) noteForm.style.display = 'none';
+          const notlar = await getNotes(item.link);
+          renderNotes(notlar, notesList, item.link);
+          showToast('Not kaydedildi', 'success');
+        } catch(e) {
+          showToast('Not kaydedilemedi', 'error');
+        }
+      });
+    }
+
+    function renderNotes(notlar, container, contentId) {
+      if (!notlar || notlar.hata || !notlar.length) {
+        container.innerHTML = '<span class="text-xs text-muted">Henüz not alınmadı.</span>';
+        return;
+      }
+      container.innerHTML = notlar.map(n => `
+        <div class="micro-note" style="background:var(--color-surface-raised,rgba(255,255,255,0.04));border:1px solid var(--color-border);border-radius:var(--radius-md,6px);padding:var(--space-3);">
+          <p class="micro-note-text" style="margin:0 0 var(--space-2) 0;font-size:13px;line-height:1.5;color:var(--color-text-primary);">${(n.noteText || n.text || '').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</p>
+          <div class="micro-note-footer" style="display:flex;justify-content:space-between;align-items:center;">
+            <span class="text-xs text-muted">${n.createdAt ? new Date(n.createdAt.seconds * 1000).toLocaleDateString('tr-TR') : ''}</span>
+            <button class="micro-note-delete btn btn-ghost btn-sm" data-id="${n.id}" style="color:var(--color-danger,#f87171);font-size:11px;padding:2px 6px;">Sil</button>
+          </div>
+        </div>
+      `).join('');
+
+      container.querySelectorAll('.micro-note-delete').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          try {
+            await deleteNote(btn.dataset.id);
+            btn.closest('.micro-note').remove();
+            if (!container.querySelector('.micro-note')) {
+              container.innerHTML = '<span class="text-xs text-muted">Henüz not alınmadı.</span>';
+            }
+          } catch(e) { showToast('Silinemedi', 'error'); }
+        });
+      });
     }
 
     function closeModal() {

@@ -569,13 +569,374 @@
        FIREBASE + JS DOSYALARI
        ============================================================ -->
   <script type="module">
-    import { initApp } from './js/app.js';
-    initApp((user) => {
-      // Kullanıcı giriş yapmış — dashboard'u başlat
-      const nameEl = document.getElementById('userName');
+    import { initApp, formatDate, formatDateFull, showToast } from './js/app.js';
+    import { getGoals, getClients, getTodos }                  from './js/firestore.js';
+    import { fetchAllFeeds, sortByDate }                       from './js/feeds.js';
+
+    // ─── RSS Kaynakları ──────────────────────────────────────────────────────
+    const TUM_FEEDLER = [
+      { name: 'Adweek',        url: 'https://www.adweek.com/feed/' },
+      { name: 'Digiday',       url: 'https://digiday.com/feed/' },
+      { name: 'Meta Newsroom', url: 'https://about.fb.com/news/feed/' },
+      { name: 'The Verge AI',  url: 'https://www.theverge.com/rss/ai-artificial-intelligence/index.xml' },
+      { name: 'TechCrunch AI', url: 'https://techcrunch.com/category/artificial-intelligence/feed/' },
+      { name: 'Webrazzi',      url: 'https://webrazzi.com/feed/' },
+    ];
+
+    // ─── Saat bazlı selamlama ────────────────────────────────────────────────
+    function selamlama() {
+      const saat = new Date().getHours();
+      if (saat >= 6  && saat < 12) return 'Günaydın';
+      if (saat >= 12 && saat < 18) return 'İyi günler';
+      if (saat >= 18 && saat < 24) return 'İyi akşamlar';
+      return 'İyi geceler';
+    }
+
+    // ─── Platform tespiti (haber başlığı/kaynağı üzerinden) ─────────────────
+    function platformTespit(item) {
+      const metin = ((item.title || '') + ' ' + (item._src || '')).toLowerCase();
+      if (metin.includes('meta') || metin.includes('facebook') || metin.includes('instagram')) return 'meta';
+      if (metin.includes('google'))  return 'google';
+      if (metin.includes('tiktok'))  return 'tiktok';
+      if (metin.includes('yapay zeka') || metin.includes('artificial intelligence') ||
+          metin.includes(' ai ') || metin.includes('openai') || metin.includes('verge ai') ||
+          metin.includes('techcrunch ai')) return 'ai';
+      return 'diger';
+    }
+
+    // ─── Blok 1: Günün Özeti ─────────────────────────────────────────────────
+    async function yukleGununOzeti() {
+      try {
+        const haberler = await fetchAllFeeds(TUM_FEEDLER);
+        const toplam   = haberler.length;
+
+        // Toplam sayı
+        const blockValueEl = document.querySelector('.block-value');
+        if (blockValueEl) blockValueEl.textContent = toplam;
+
+        // Platform bazında say
+        const sayilar = { meta: 0, google: 0, tiktok: 0, ai: 0, diger: 0 };
+        haberler.forEach(item => {
+          const p = platformTespit(item);
+          sayilar[p] = (sayilar[p] || 0) + 1;
+        });
+
+        // Badge'leri güncelle
+        const badges = document.querySelectorAll('.block-stat-badge');
+        const platformSirasi = ['meta', 'google', 'tiktok', 'ai', 'diger'];
+        const platformEtiketleri = {
+          meta: 'Meta', google: 'Google', tiktok: 'TikTok', ai: 'Yapay Zeka', diger: 'Diğer'
+        };
+        badges.forEach((badge, i) => {
+          const platform = platformSirasi[i];
+          if (!platform) return;
+          const strong = badge.querySelector('strong');
+          // Etiket metnini de güncelle (dot'tan sonraki metin düğümü)
+          const textNodes = [...badge.childNodes].filter(n => n.nodeType === Node.TEXT_NODE);
+          textNodes.forEach(n => { n.textContent = ' ' + platformEtiketleri[platform] + ' '; });
+          if (strong) strong.textContent = sayilar[platform] || 0;
+        });
+
+        // Son güncelleme saati
+        const simdi    = new Date();
+        const saatStr  = simdi.getHours().toString().padStart(2, '0') + ':' +
+                         simdi.getMinutes().toString().padStart(2, '0');
+        const guncellemeEl = document.querySelector('.block-header .text-muted');
+        if (guncellemeEl) guncellemeEl.textContent = 'Son güncelleme: ' + saatStr;
+
+        return haberler; // Blok 2 için döndür
+      } catch (err) {
+        console.warn('Günün özeti yüklenemedi:', err);
+        return [];
+      }
+    }
+
+    // ─── Blok 2: Öne Çıkan Haber ────────────────────────────────────────────
+    function yukleOneCikanHaber(haberler) {
+      try {
+        if (!haberler.length) return;
+
+        const sirali  = sortByDate(haberler);
+        const en_yeni = sirali[0];
+        if (!en_yeni) return;
+
+        const platform = platformTespit(en_yeni);
+        const renkMap  = {
+          meta:   'var(--color-meta)',
+          google: 'var(--color-google)',
+          tiktok: 'var(--color-tiktok)',
+          ai:     'var(--color-accent)',
+          diger:  'var(--color-text-muted)',
+        };
+        const etiketMap = {
+          meta:   'META', google: 'GOOGLE', tiktok: 'TIKTOK', ai: 'YAPAY ZEKA', diger: 'HABER'
+        };
+        const badgeSinifMap = {
+          meta:   'badge-meta', google: 'badge-google', tiktok: 'badge-tiktok',
+          ai:     'badge-ai',   diger:  'badge-secondary'
+        };
+
+        // Üst badge
+        const ustBadge = document.querySelector('.block-featured .block-header .badge');
+        if (ustBadge) {
+          ustBadge.className = 'badge ' + (badgeSinifMap[platform] || 'badge-secondary');
+          ustBadge.textContent = etiketMap[platform] || 'HABER';
+        }
+
+        // Kart içeriği
+        const featuredEl = document.getElementById('featuredNews');
+        if (!featuredEl) return;
+
+        const tarihStr = en_yeni.pubDate ? formatDate(en_yeni.pubDate) : '';
+
+        featuredEl.innerHTML = `
+          <div class="news-card-header">
+            <h3 class="news-card-title">${en_yeni.title || 'Başlık yükleniyor...'}</h3>
+          </div>
+          ${en_yeni.description
+            ? `<p class="news-card-summary">${en_yeni.description}</p>`
+            : ''}
+          <div class="news-card-footer">
+            <div class="news-card-source">
+              <span class="news-card-source-dot" style="background: ${renkMap[platform]};"></span>
+              ${en_yeni._src || 'Kaynak'}
+            </div>
+            <div class="news-card-actions">
+              <span class="news-card-date">${tarihStr}</span>
+            </div>
+          </div>
+        `;
+
+        // Tıklayınca habere git
+        featuredEl.style.cursor = 'pointer';
+        featuredEl.addEventListener('click', () => {
+          if (en_yeni.link) window.open(en_yeni.link, '_blank', 'noopener,noreferrer');
+        });
+        featuredEl.addEventListener('keydown', (e) => {
+          if ((e.key === 'Enter' || e.key === ' ') && en_yeni.link) {
+            window.open(en_yeni.link, '_blank', 'noopener,noreferrer');
+          }
+        });
+
+      } catch (err) {
+        console.warn('Öne çıkan haber yüklenemedi:', err);
+      }
+    }
+
+    // ─── Blok 3: Müşteri Hatırlatmaları ─────────────────────────────────────
+    async function yukleHatirlatmalar() {
+      try {
+        const [todos, clients] = await Promise.all([
+          getTodos({ done: false }),
+          getClients(),
+        ]);
+
+        // Hata kontrolü
+        if (todos?.hata || clients?.hata) {
+          console.warn('Hatırlatmalar yüklenemedi:', todos?.hata || clients?.hata);
+          return;
+        }
+
+        // Müşteri ID → ad haritası
+        const musteriMap = {};
+        if (Array.isArray(clients)) {
+          clients.forEach(c => { musteriMap[c.id] = c.name; });
+        }
+
+        // Sadece müşteriye bağlı todo'lar
+        const musteriTodolari = Array.isArray(todos)
+          ? todos.filter(t => t.clientId).slice(0, 3)
+          : [];
+
+        const reminderList = document.querySelector('.reminder-list');
+        if (!reminderList) return;
+
+        if (!musteriTodolari.length) {
+          reminderList.innerHTML = `
+            <div class="reminder-item">
+              <span class="reminder-dot reminder-dot--ok"></span>
+              <span class="reminder-text">Bekleyen müşteri görevi yok</span>
+            </div>
+          `;
+          return;
+        }
+
+        reminderList.innerHTML = musteriTodolari.map(todo => {
+          const musteriAdi  = musteriMap[todo.clientId] || 'Müşteri';
+          const oncelikDot  = todo.priority === 'yuksek'
+            ? 'reminder-dot--urgent'
+            : todo.priority === 'orta'
+              ? ''
+              : 'reminder-dot--ok';
+          return `
+            <div class="reminder-item">
+              <span class="reminder-dot ${oncelikDot}"></span>
+              <span class="reminder-text">
+                <span class="reminder-client">${musteriAdi} —</span>
+                ${todo.title}
+              </span>
+            </div>
+          `;
+        }).join('');
+
+      } catch (err) {
+        console.warn('Hatırlatmalar yüklenemedi:', err);
+      }
+    }
+
+    // ─── Blok 4: Günlük Hedef ────────────────────────────────────────────────
+    async function yukleHedefler() {
+      try {
+        const [goals, todos] = await Promise.all([
+          getGoals(),
+          getTodos({ done: false }),
+        ]);
+
+        // Aktif hedef
+        const hedefBlok = document.querySelector('.dashboard-block:last-child');
+        if (!hedefBlok) return;
+
+        // Hedef ilerleme alanı
+        const hedefIcElem = hedefBlok.querySelector('div[style*="padding"]');
+
+        if (!goals?.hata && Array.isArray(goals)) {
+          const aktifHedef = goals.find(g => g.status === 'devam_ediyor');
+
+          if (aktifHedef && hedefIcElem) {
+            // Deadline'a göre ilerleme hesapla
+            let ilerleme = 0;
+            if (aktifHedef.deadline) {
+              const baslangic = aktifHedef.createdAt?.toDate
+                ? aktifHedef.createdAt.toDate()
+                : new Date(aktifHedef.createdAt?.seconds
+                    ? aktifHedef.createdAt.seconds * 1000
+                    : aktifHedef.createdAt || Date.now());
+              const bitis   = new Date(aktifHedef.deadline);
+              const simdi   = new Date();
+              const toplam  = bitis - baslangic;
+              const gecen   = simdi - baslangic;
+              ilerleme = toplam > 0
+                ? Math.min(100, Math.max(0, Math.round((gecen / toplam) * 100)))
+                : 50;
+            }
+
+            const barSinif = ilerleme >= 70 ? 'kpi-progress-bar--good'
+                           : ilerleme >= 40 ? 'kpi-progress-bar--warn'
+                           : 'kpi-progress-bar--bad';
+
+            hedefIcElem.innerHTML = `
+              <div style="font-size: var(--text-xs); color: var(--color-text-muted);
+                          text-transform: uppercase; letter-spacing: var(--tracking-widest);
+                          margin-bottom: var(--space-2);">Bu Ay</div>
+              <div style="font-size: var(--text-sm); font-weight: var(--font-weight-semibold);
+                          color: var(--color-text-primary); margin-bottom: var(--space-3);">
+                ${aktifHedef.title}
+              </div>
+              <div class="kpi-progress">
+                <div class="kpi-progress-bar ${barSinif}" style="width: ${ilerleme}%;"></div>
+              </div>
+              <div style="font-size: var(--text-xs); color: var(--color-text-muted);
+                          margin-top: var(--space-1);">%${ilerleme} tamamlandı</div>
+            `;
+          } else if (hedefIcElem) {
+            hedefIcElem.innerHTML = `
+              <div style="font-size: var(--text-sm); color: var(--color-text-muted);
+                          padding: var(--space-2) 0;">Henüz hedef eklenmedi</div>
+            `;
+          }
+        }
+
+        // Bugünkü kişisel todo'lar (clientId'siz, max 3)
+        const divider   = hedefBlok.querySelector('.divider');
+        const todoBolum = divider?.nextElementSibling;
+
+        if (todoBolum && !todos?.hata && Array.isArray(todos)) {
+          const kisiselTodolar = todos
+            .filter(t => !t.clientId)
+            .slice(0, 3);
+
+          if (!kisiselTodolar.length) {
+            todoBolum.innerHTML = `
+              <div style="font-size: var(--text-xs); color: var(--color-text-muted);
+                          text-transform: uppercase; letter-spacing: var(--tracking-widest);
+                          margin-bottom: var(--space-2);">Bugün</div>
+              <div style="font-size: var(--text-sm); color: var(--color-text-muted);">
+                Bekleyen kişisel görev yok
+              </div>
+            `;
+          } else {
+            todoBolum.innerHTML = `
+              <div style="font-size: var(--text-xs); color: var(--color-text-muted);
+                          text-transform: uppercase; letter-spacing: var(--tracking-widest);
+                          margin-bottom: var(--space-2);">Bugün</div>
+              ${kisiselTodolar.map(todo => `
+                <div class="goal-item" style="margin-bottom: var(--space-2);">
+                  <div class="goal-checkbox${todo.done ? ' is-done' : ''}"></div>
+                  <span class="goal-text${todo.done ? ' is-done' : ''}">${todo.title}</span>
+                </div>
+              `).join('')}
+            `;
+          }
+        }
+
+      } catch (err) {
+        console.warn('Hedefler yüklenemedi:', err);
+      }
+    }
+
+    // ─── Logout butonu ───────────────────────────────────────────────────────
+    function logoutBaglanti() {
+      // index.html'de id="logoutBtn" olarak tanımlanmış
+      const logoutBtn = document.getElementById('logoutBtn');
+      if (!logoutBtn) return;
+      logoutBtn.addEventListener('click', async () => {
+        try {
+          const { logout } = await import('./js/auth.js');
+          const sonuc = await logout();
+          if (sonuc?.hata) {
+            showToast(sonuc.hata, 'error');
+          } else {
+            window.location.href = 'login.html';
+          }
+        } catch (e) {
+          showToast('Çıkış yapılamadı', 'error');
+        }
+      });
+    }
+
+    // ─── Ana başlatma ────────────────────────────────────────────────────────
+    initApp(async (user) => {
+      // 1. Kullanıcı bilgisi
+      const nameEl   = document.getElementById('userName');
       const avatarEl = document.getElementById('userAvatar');
-      if (nameEl) nameEl.textContent = user.displayName || user.email;
+      if (nameEl)   nameEl.textContent   = user.displayName || user.email || 'Kullanıcı';
       if (avatarEl) avatarEl.textContent = (user.displayName || user.email || 'U')[0].toUpperCase();
+
+      // 2. Selamlama ve tarih
+      const greetingEl = document.getElementById('greetingTitle');
+      const dateEl     = document.getElementById('currentDate');
+      if (greetingEl) greetingEl.textContent = selamlama();
+      if (dateEl) {
+        const bugun = new Date();
+        const gunler = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'];
+        const tarih  = formatDateFull(bugun);
+        dateEl.textContent = tarih + ', ' + gunler[bugun.getDay()];
+      }
+
+      // 3. Logout bağlantısı
+      logoutBaglanti();
+
+      // 4. Blok 1: RSS — sonuç Blok 2'ye de aktarılır
+      const haberler = await yukleGununOzeti();
+
+      // 5. Blok 2: Öne çıkan haber
+      yukleOneCikanHaber(haberler);
+
+      // 6. Blok 3 ve 4: Firestore verileri paralel çek
+      await Promise.allSettled([
+        yukleHatirlatmalar(),
+        yukleHedefler(),
+      ]);
     });
   </script>
 
