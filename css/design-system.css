@@ -266,6 +266,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  isolation: isolate; /* Kendi stacking context'ini oluşturur — ambient orb'lar bu sayede z-index:-1 ile doğru çalışır */
 }
 
 /* Özel scrollbar — koyu tema */
@@ -504,34 +505,24 @@ input, textarea, select {
   border-radius: 50%;
 }
 
-/* Sol üst — hafif mor spot */
+/* Sol üst — mor ambient ışık */
 .ambient-orb--purple {
-  width: 600px;
-  height: 600px;
-  background: rgba(139, 92, 246, 0.06);
+  width: 900px;
+  height: 900px;
+  background: rgba(147, 51, 234, 0.10);
   filter: blur(140px);
-  top: -180px;
-  left: -120px;
+  top: -250px;
+  left: -200px;
 }
 
-/* Sağ orta — derin lacivert spot */
+/* Sağ orta/alt — mavi ambient ışık */
 .ambient-orb--blue {
-  width: 500px;
-  height: 500px;
-  background: rgba(59, 130, 246, 0.05);
+  width: 1000px;
+  height: 1000px;
+  background: rgba(59, 130, 246, 0.08);
   filter: blur(160px);
-  top: 35%;
-  right: -100px;
-}
-
-/* Alt merkez — indigo dolgu */
-.ambient-orb--indigo {
-  width: 400px;
-  height: 400px;
-  background: rgba(99, 102, 241, 0.07);
-  filter: blur(130px);
-  bottom: 5%;
-  left: 25%;
+  top: 30%;
+  right: -250px;
 }
 
 /* ============================================================
