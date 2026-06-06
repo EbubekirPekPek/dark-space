@@ -123,6 +123,7 @@ async function saveClient(clientData, clientId = null) {
       targetAudience: clientData.targetAudience || '',
       budget:         clientData.budget         || '',
       status:         clientData.status         || 'aktif',
+      brief:          clientData.brief          || '',
       socialLinks:    clientData.socialLinks    || {},
       updatedAt:      serverTimestamp(),
     };
