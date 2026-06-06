@@ -122,6 +122,7 @@ async function saveClient(clientData, clientId = null) {
       sector:         clientData.sector         || '',
       targetAudience: clientData.targetAudience || '',
       budget:         clientData.budget         || '',
+      status:         clientData.status         || 'aktif',
       socialLinks:    clientData.socialLinks    || {},
       updatedAt:      serverTimestamp(),
     };
@@ -148,13 +149,15 @@ async function saveClient(clientData, clientId = null) {
 async function getClients() {
   try {
     const userId = uid();
+    // orderBy kaldırıldı — where+orderBy(farklı alan) Firestore composite index gerektirir.
+    // İstemci tarafında Türkçe sıralama yapılır.
     const q = query(
       collection(db, 'clients'),
-      where('userId', '==', userId),
-      orderBy('name', 'asc')
+      where('userId', '==', userId)
     );
     const snap = await getDocs(q);
-    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    const results = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    return results.sort((a, b) => (a.name || '').localeCompare(b.name || '', 'tr'));
   } catch (err) {
     return { hata: `Müşteriler getirilemedi: ${err.message}` };
   }
