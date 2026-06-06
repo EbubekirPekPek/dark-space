@@ -15,9 +15,9 @@
   <title>Dashboard — Dark Space</title>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="css/design-system.css?v=6">
-  <link rel="stylesheet" href="css/components.css?v=6">
-  <link rel="stylesheet" href="css/pages.css?v=6">
+  <link rel="stylesheet" href="css/design-system.css?v=7">
+  <link rel="stylesheet" href="css/components.css?v=7">
+  <link rel="stylesheet" href="css/pages.css?v=7">
 </head>
 <body class="dashboard-page">
 
@@ -30,27 +30,7 @@
     <div class="ambient-orb ambient-orb--blue"></div>
   </div>
 
-  <!-- ============================================================
-       MOBİL: ÜSTTE HAMBURGERLİ TOP BAR
-       ============================================================ -->
-  <header class="top-bar">
-    <div class="top-bar-left">
-      <button class="hamburger-btn" id="sidebar-toggle" aria-label="Menüyü aç" aria-expanded="false">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      <span class="top-bar-title">Dark Space</span>
-    </div>
-    <div class="top-bar-actions">
-      <button class="btn btn-icon btn-ghost" aria-label="Arama">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;">
-          <circle cx="11" cy="11" r="8"/>
-          <path d="m21 21-4.3-4.3"/>
-        </svg>
-      </button>
-    </div>
-  </header>
+  <!-- Top-bar kaldırıldı: Kapsül navbar main-content içine taşındı -->
 
   <!-- ============================================================
        SİDEBAR OVERLAY (mobil — karartma)
@@ -171,16 +151,78 @@
        ANA İÇERİK — DASHBOARD
        ============================================================ -->
   <main class="main-content" id="mainContent">
+
+    <!-- ============================================================
+         YÜZEN KAPSÜL NAVBAR — FAZ 2
+         Sticky — sayfa kaydırılsa da üstte asılı kalır
+         ============================================================ -->
+    <div class="navbar-wrap">
+      <nav class="navbar-capsule" aria-label="Ana navigasyon">
+
+        <!-- Sol: Logo -->
+        <a href="index.html" class="navbar-logo">
+          <div class="navbar-logo-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+          </div>
+          <span class="navbar-logo-name">Dark Space</span>
+        </a>
+
+        <!-- Orta: Nav linkleri (masaüstü) -->
+        <div class="navbar-links">
+          <a href="index.html" class="navbar-link is-active">Dashboard</a>
+          <a href="haberler.html" class="navbar-link">Haberler</a>
+          <a href="bilgi/index.html" class="navbar-link">Bilgi Ağacı</a>
+        </div>
+
+        <!-- Sağ: Aksiyon -->
+        <div class="navbar-actions">
+          <!-- Hamburger — sadece mobilde -->
+          <button class="hamburger-btn navbar-hamburger" id="sidebar-toggle" aria-label="Menüyü aç" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <!-- CTA — sadece masaüstünde -->
+          <button class="navbar-cta" onclick="alert('Hızlı not yakında!')">+ Hızlı Not</button>
+        </div>
+
+      </nav>
+    </div>
+
     <div class="content-inner">
 
-      <!-- Selamlama Satırı -->
-      <div class="dashboard-greeting">
-        <div>
-          <h1 class="dashboard-greeting-title" id="greetingTitle">Günaydın</h1>
-          <p class="dashboard-greeting-sub">Bugün sektörde neler döndüğüne bakalım.</p>
+      <!-- ============================================================
+           HERO SECTION — FAZ 2: Agresif Tipografi
+           ============================================================ -->
+      <section class="dashboard-hero">
+
+        <!-- Üst etiket -->
+        <p class="hero-eyebrow">Dijital Ajans Paneli</p>
+
+        <!-- Ana başlık — JS greetingTitle ile dinamik güncellenir -->
+        <h1 class="hero-title" id="greetingTitle">Günaydın</h1>
+
+        <!-- Açıklama -->
+        <p class="hero-sub">Bugün sektörde neler döndüğüne bakalım.</p>
+
+        <!-- Buton + Tarih satırı -->
+        <div class="hero-actions">
+          <a href="haberler.html" class="hero-btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;flex-shrink:0;">
+              <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2Z"/>
+              <path d="M9 12h6"/><path d="M9 16h4"/><path d="M9 8h1"/>
+            </svg>
+            Haberlere Git
+          </a>
+          <button class="hero-btn-secondary" onclick="document.querySelector('.dashboard-blocks')?.scrollIntoView({behavior:'smooth'})">
+            Günün Özeti ↓
+          </button>
+          <div class="dashboard-greeting-date" id="currentDate">3 Haziran 2026, Çarşamba</div>
         </div>
-        <div class="dashboard-greeting-date" id="currentDate">3 Haziran 2026, Çarşamba</div>
-      </div>
+
+      </section>
 
       <!-- 4 Dashboard Bloğu -->
       <div class="dashboard-blocks">
