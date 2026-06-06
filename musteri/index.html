@@ -440,6 +440,19 @@
         </div>
       </div>
 
+      <!-- Bugünkü Takipler Paneli -->
+      <div id="bugunPanel" style="display:none;margin-bottom:var(--space-5);">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-3);">
+          <div style="display:flex;align-items:center;gap:var(--space-2);">
+            <span style="font-size:16px;">⏰</span>
+            <span style="font-size:var(--text-sm);font-weight:var(--font-weight-semibold);color:var(--color-text-primary);">Bugünkü Takipler</span>
+            <span id="bugunOzet" style="font-size:var(--text-xs);color:var(--color-text-muted);background:var(--color-bg-inset);padding:2px 8px;border-radius:var(--radius-full);"></span>
+          </div>
+          <button id="bugunPanelToggle" style="background:none;border:none;color:var(--color-text-muted);cursor:pointer;font-size:var(--text-xs);padding:4px 8px;border-radius:var(--radius-sm);border:1px solid var(--color-border-subtle);">Gizle</button>
+        </div>
+        <div id="bugunGorevler" style="display:flex;flex-direction:column;gap:var(--space-2);"></div>
+      </div>
+
       <!-- JS tarafından doldurulur -->
       <div class="customer-grid" id="customerGrid"></div>
 
@@ -528,6 +541,10 @@
         <button class="customer-tab" data-tab="kpi">KPI</button>
         <button class="customer-tab" data-tab="notlar">Notlar</button>
         <button class="customer-tab" data-tab="todo">Yapılacaklar</button>
+        <button class="customer-tab" data-tab="gunluk" style="position:relative;">
+          Günlük
+          <span id="gunlukBadge" style="display:none;position:absolute;top:4px;right:4px;width:7px;height:7px;background:var(--color-error);border-radius:50%;"></span>
+        </button>
       </div>
 
       <div class="customer-modal-body">
@@ -536,6 +553,7 @@
         <div class="tab-panel" id="tab-kpi"></div>
         <div class="tab-panel" id="tab-notlar"></div>
         <div class="tab-panel" id="tab-todo"></div>
+        <div class="tab-panel" id="tab-gunluk"></div>
       </div>
     </div>
   </div>
@@ -627,12 +645,13 @@
   </div>
 
   <script type="module">
-    import { initApp, showToast } from '../js/app.js?v=3';
+    import { initApp, showToast } from '../js/app.js?v=5';
     import {
       saveClient, getClients, saveClientNote, getClientNotes,
       saveKPI, updateKPIActual, getKPIs,
-      saveTodo, updateTodoStatus, getTodos
-    } from '../js/firestore.js?v=3';
+      saveTodo, updateTodoStatus, getTodos,
+      saveDailyTask, getDailyTasks, toggleDailyTask, deleteDailyTask,
+    } from '../js/firestore.js?v=5';
 
     // ─── Durum ──────────────────────────────────────────────────────────────────
     let aktifMusteri = null; // Şu an açık müşteri objesi
@@ -651,6 +670,8 @@
         }
       }
       await musteriListesiYukle();
+      await bugunPanelGuncelle();
+      hatirlaticiIzniAl();   // bildirim izni iste (sessizce, reddetse de devam et)
     });
 
     // ─── Müşteri Listesi ─────────────────────────────────────────────────────────
@@ -911,6 +932,7 @@
       if (tabId === 'kpi')    kpiSekmeYukle();
       if (tabId === 'notlar') notlarSekmeYukle();
       if (tabId === 'todo')   todoSekmeYukle();
+      if (tabId === 'gunluk') gunlukSekmeYukle();
     }
 
     document.querySelectorAll('.customer-tab').forEach(tab => {
@@ -1194,6 +1216,270 @@
         showToast('Durum güncellenemedi: ' + err.message, 'error');
       }
     }
+
+    // ─── Günlük Sekmesi ──────────────────────────────────────────────────────────
+    const BUGUN = () => new Date().toISOString().split('T')[0]; // "YYYY-MM-DD"
+
+    async function gunlukSekmeYukle() {
+      if (!aktifMusteri) return;
+      const panel = document.getElementById('tab-gunluk');
+      panel.innerHTML = '<div style="color:var(--color-text-muted);font-size:var(--text-sm);">Yükleniyor...</div>';
+      try {
+        const gorevler = await getDailyTasks(aktifMusteri.id);
+        if (gorevler.hata) throw new Error(gorevler.hata);
+        renderGunlukGorevler(gorevler, panel);
+        gunlukBadgeGuncelle(gorevler);
+      } catch (err) {
+        console.error('[gunlukSekme]', err);
+        showToast('Günlük görevler yüklenemedi: ' + err.message, 'error');
+        panel.innerHTML = '<div style="color:var(--color-error);font-size:var(--text-sm);">Yüklenemedi.</div>';
+      }
+    }
+
+    function renderGunlukGorevler(gorevler, panel) {
+      const bugun = BUGUN();
+      const tamamlanan = gorevler.filter(g => g.lastCompletedDate === bugun).length;
+      const toplam = gorevler.length;
+
+      panel.innerHTML = '';
+
+      // İlerleme çubuğu
+      const progressDiv = document.createElement('div');
+      progressDiv.style.cssText = 'margin-bottom:var(--space-4);';
+      const yuzde = toplam ? Math.round((tamamlanan / toplam) * 100) : 0;
+      const renkClass = yuzde === 100 ? 'var(--color-success)' : yuzde >= 50 ? 'var(--color-accent)' : 'var(--color-warning, #f59e0b)';
+      progressDiv.innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-1);">
+          <span style="font-size:var(--text-xs);font-weight:var(--font-weight-semibold);color:var(--color-text-muted);text-transform:uppercase;letter-spacing:var(--tracking-wider);">Bugün</span>
+          <span style="font-size:var(--text-xs);color:var(--color-text-muted);">${tamamlanan}/${toplam} tamamlandı</span>
+        </div>
+        <div style="height:4px;background:var(--color-bg-inset);border-radius:2px;overflow:hidden;">
+          <div style="height:100%;width:${yuzde}%;background:${renkClass};border-radius:2px;transition:width 0.3s ease;"></div>
+        </div>
+      `;
+      panel.appendChild(progressDiv);
+
+      // Görev listesi
+      if (!gorevler.length) {
+        const bos = document.createElement('div');
+        bos.style.cssText = 'color:var(--color-text-muted);font-size:var(--text-sm);padding:var(--space-4) 0;';
+        bos.textContent = 'Henüz günlük görev eklenmedi.';
+        panel.appendChild(bos);
+      } else {
+        const liste = document.createElement('div');
+        liste.style.cssText = 'display:flex;flex-direction:column;gap:var(--space-2);margin-bottom:var(--space-4);';
+        gorevler.forEach(g => {
+          const tamamli = g.lastCompletedDate === bugun;
+          const el = document.createElement('div');
+          el.style.cssText = `display:flex;align-items:center;gap:var(--space-3);padding:var(--space-2) var(--space-3);background:var(--color-bg-inset);border:1px solid ${tamamli ? 'var(--color-success)22' : 'var(--color-border-subtle)'};border-radius:var(--radius-md);transition:opacity 0.2s;${tamamli ? 'opacity:0.65;' : ''}`;
+          el.innerHTML = `
+            <div class="todo-checkbox ${tamamli ? 'is-done' : ''}" data-id="${g.id}" tabindex="0" role="checkbox" aria-checked="${tamamli}" style="flex-shrink:0;">
+              ${tamamli ? checkSvg() : ''}
+            </div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:var(--text-sm);color:var(--color-text-${tamamli ? 'muted' : 'primary'});${tamamli ? 'text-decoration:line-through;' : ''}">${escHtml(g.title)}</div>
+              ${g.time ? `<div style="font-size:var(--text-xs);color:var(--color-accent);margin-top:1px;">⏰ ${g.time}</div>` : ''}
+            </div>
+            <button class="gunluk-sil-btn" data-id="${g.id}" style="background:none;border:none;color:var(--color-text-muted);cursor:pointer;padding:4px;border-radius:var(--radius-sm);font-size:12px;opacity:0;transition:opacity 0.15s;" title="Sil">✕</button>
+          `;
+          // Hover'da sil butonu göster
+          el.addEventListener('mouseenter', () => el.querySelector('.gunluk-sil-btn').style.opacity = '1');
+          el.addEventListener('mouseleave', () => el.querySelector('.gunluk-sil-btn').style.opacity = '0');
+          // Checkbox toggle
+          const cb = el.querySelector('.todo-checkbox');
+          const toggle = async () => {
+            cb.style.pointerEvents = 'none';
+            const sonuc = await toggleDailyTask(aktifMusteri.id, g.id, !tamamli);
+            cb.style.pointerEvents = '';
+            if (sonuc.hata) { showToast('Güncellenemedi: ' + sonuc.hata, 'error'); return; }
+            await gunlukSekmeYukle();
+            await bugunPanelGuncelle();
+          };
+          cb.addEventListener('click', toggle);
+          cb.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') toggle(); });
+          // Sil
+          el.querySelector('.gunluk-sil-btn').addEventListener('click', async (e) => {
+            e.stopPropagation();
+            if (!confirm(`"${g.title}" silinsin mi?`)) return;
+            const sonuc = await deleteDailyTask(aktifMusteri.id, g.id);
+            if (sonuc.hata) { showToast('Silinemedi: ' + sonuc.hata, 'error'); return; }
+            await gunlukSekmeYukle();
+            await bugunPanelGuncelle();
+          });
+          liste.appendChild(el);
+        });
+        panel.appendChild(liste);
+      }
+
+      // Yeni görev ekleme formu
+      const form = document.createElement('div');
+      form.style.cssText = 'border-top:1px solid var(--color-border-subtle);padding-top:var(--space-4);';
+      form.innerHTML = `
+        <div style="font-size:var(--text-xs);font-weight:var(--font-weight-semibold);color:var(--color-text-muted);text-transform:uppercase;letter-spacing:var(--tracking-wider);margin-bottom:var(--space-2);">Yeni Günlük Görev</div>
+        <div style="display:flex;gap:var(--space-2);">
+          <input type="text" id="gunlukGorevAdi" placeholder="Görev adı..." maxlength="100"
+            style="flex:1;background:var(--color-bg-inset);border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:var(--space-2) var(--space-3);font-size:var(--text-sm);color:var(--color-text-primary);font-family:var(--font-family-base);">
+          <input type="time" id="gunlukGorevSaat"
+            style="width:90px;background:var(--color-bg-inset);border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:var(--space-2) var(--space-3);font-size:var(--text-sm);color:var(--color-text-primary);font-family:var(--font-family-base);">
+          <button class="btn btn-primary btn-sm" id="gunlukGorevEkleBtn">Ekle</button>
+        </div>
+        <div style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:var(--space-1);">Saat seçersen hatırlatıcı kurulur (bildirim izni gerekli).</div>
+      `;
+      panel.appendChild(form);
+
+      // Görev ekleme handler
+      const ekleBtn = panel.querySelector('#gunlukGorevEkleBtn');
+      const adInp   = panel.querySelector('#gunlukGorevAdi');
+      const saatInp = panel.querySelector('#gunlukGorevSaat');
+      const gunlukEkle = async () => {
+        const baslik = adInp.value.trim();
+        if (!baslik) { showToast('Görev adı zorunludur', 'error'); return; }
+        ekleBtn.disabled = true;
+        const sonuc = await saveDailyTask(aktifMusteri.id, { title: baslik, time: saatInp.value });
+        ekleBtn.disabled = false;
+        if (sonuc.hata) { showToast('Eklenemedi: ' + sonuc.hata, 'error'); return; }
+        adInp.value = ''; saatInp.value = '';
+        showToast('Günlük görev eklendi', 'success');
+        await gunlukSekmeYukle();
+        await bugunPanelGuncelle();  // bugunPanel içinde hatirlaticiKur() çağrılır
+      };
+      ekleBtn.addEventListener('click', gunlukEkle);
+      adInp.addEventListener('keydown', e => { if (e.key === 'Enter') gunlukEkle(); });
+    }
+
+    function gunlukBadgeGuncelle(gorevler) {
+      const bugun = BUGUN();
+      const bekleyen = gorevler.filter(g => g.lastCompletedDate !== bugun).length;
+      const badge = document.getElementById('gunlukBadge');
+      if (badge) badge.style.display = bekleyen > 0 ? 'block' : 'none';
+    }
+
+    // ─── Bugünkü Takipler Paneli (tüm müşteriler) ───────────────────────────────
+    async function bugunPanelGuncelle() {
+      const panel  = document.getElementById('bugunPanel');
+      const liste  = document.getElementById('bugunGorevler');
+      const ozet   = document.getElementById('bugunOzet');
+      if (!panel || !liste) return;
+
+      try {
+        const musteriler = await getClients();
+        if (musteriler.hata || !musteriler.length) { panel.style.display = 'none'; return; }
+
+        const bugun = BUGUN();
+        const satirlar = [];
+        let toplamBekleyen = 0;
+        let toplamToplam = 0;
+
+        for (const m of musteriler) {
+          const gorevler = await getDailyTasks(m.id);
+          if (gorevler.hata || !gorevler.length) continue;
+          const bekleyen = gorevler.filter(g => g.lastCompletedDate !== bugun);
+          toplamToplam += gorevler.length;
+          toplamBekleyen += bekleyen.length;
+          if (gorevler.length > 0) {
+            satirlar.push({ musteri: m, gorevler, bekleyen: bekleyen.length });
+          }
+        }
+
+        if (toplamToplam === 0) { panel.style.display = 'none'; return; }
+
+        panel.style.display = 'block';
+        ozet.textContent = `${toplamBekleyen} bekliyor / ${toplamToplam} toplam`;
+        ozet.style.color = toplamBekleyen > 0 ? 'var(--color-warning, #f59e0b)' : 'var(--color-success)';
+
+        liste.innerHTML = '';
+        satirlar.forEach(({ musteri: m, gorevler, bekleyen }) => {
+          const satir = document.createElement('div');
+          satir.style.cssText = 'background:var(--color-bg-surface);border:1px solid var(--color-border-subtle);border-radius:var(--radius-md);padding:var(--space-3) var(--space-4);';
+          const tamamlanan = gorevler.length - bekleyen;
+          satir.innerHTML = `
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-2);">
+              <div style="display:flex;align-items:center;gap:var(--space-2);">
+                <div style="width:24px;height:24px;background:var(--color-accent);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;">${(m.name||'?')[0].toUpperCase()}</div>
+                <span style="font-size:var(--text-sm);font-weight:var(--font-weight-semibold);color:var(--color-text-primary);">${escHtml(m.name)}</span>
+              </div>
+              <span style="font-size:var(--text-xs);color:${bekleyen > 0 ? 'var(--color-warning,#f59e0b)' : 'var(--color-success)'};">${tamamlanan}/${gorevler.length}</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              ${gorevler.map(g => {
+                const tam = g.lastCompletedDate === bugun;
+                return `<div style="display:flex;align-items:center;gap:var(--space-2);${tam ? 'opacity:0.5;' : ''}">
+                  <div style="width:14px;height:14px;border:2px solid ${tam ? 'var(--color-success)' : 'var(--color-border-strong)'};border-radius:3px;background:${tam ? 'var(--color-success)' : 'transparent'};flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+                    ${tam ? '<svg viewBox="0 0 10 10" style="width:8px;height:8px;"><polyline points="1.5,5 4,7.5 8.5,2.5" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' : ''}
+                  </div>
+                  <span style="font-size:var(--text-xs);color:var(--color-text-secondary);${tam ? 'text-decoration:line-through;' : ''}">${escHtml(g.title)}</span>
+                  ${g.time ? `<span style="font-size:10px;color:var(--color-accent);margin-left:auto;">${g.time}</span>` : ''}
+                </div>`;
+              }).join('')}
+            </div>
+          `;
+          // Müşteriye tıklayınca detay aç
+          satir.style.cursor = 'pointer';
+          satir.addEventListener('click', () => musteriDetay(m));
+          liste.appendChild(satir);
+        });
+
+        // Hatırlatıcıları güncelle
+        hatirlaticiKur();
+      } catch (err) {
+        console.error('[bugunPanel]', err);
+      }
+    }
+
+    // ─── Tarayıcı Bildirimleri ────────────────────────────────────────────────────
+    const _hatirlaticiTimers = [];
+
+    async function hatirlaticiIzniAl() {
+      if (!('Notification' in window)) return false;
+      if (Notification.permission === 'granted') return true;
+      if (Notification.permission === 'denied') return false;
+      const izin = await Notification.requestPermission();
+      return izin === 'granted';
+    }
+
+    async function hatirlaticiKur() {
+      // Önceki timer'ları temizle
+      _hatirlaticiTimers.forEach(t => clearTimeout(t));
+      _hatirlaticiTimers.length = 0;
+
+      if (!('Notification' in window) || Notification.permission !== 'granted') return;
+
+      const musteriler = await getClients();
+      if (musteriler.hata) return;
+      const bugun = BUGUN();
+      const simdi = new Date();
+
+      for (const m of musteriler) {
+        const gorevler = await getDailyTasks(m.id);
+        if (gorevler.hata) continue;
+        gorevler.forEach(g => {
+          if (!g.time || g.lastCompletedDate === bugun) return;
+          const [saat, dakika] = g.time.split(':').map(Number);
+          const hedef = new Date();
+          hedef.setHours(saat, dakika, 0, 0);
+          const fark = hedef - simdi;
+          if (fark > 0 && fark < 12 * 3600 * 1000) {  // en fazla 12 saat ilerisi
+            const t = setTimeout(() => {
+              new Notification(`⏰ ${m.name}`, {
+                body: g.title,
+                tag:  `daily-${m.id}-${g.id}`,
+              });
+            }, fark);
+            _hatirlaticiTimers.push(t);
+          }
+        });
+      }
+    }
+
+    // Paneli gizle/göster toggle
+    document.getElementById('bugunPanelToggle').addEventListener('click', () => {
+      const liste = document.getElementById('bugunGorevler');
+      const btn   = document.getElementById('bugunPanelToggle');
+      const gizli = liste.style.display === 'none';
+      liste.style.display = gizli ? 'flex' : 'none';
+      if (gizli) liste.style.flexDirection = 'column';
+      btn.textContent = gizli ? 'Gizle' : 'Göster';
+    });
 
     function checkSvg() {
       return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;"><polyline points="20 6 9 17 4 12"/></svg>';
