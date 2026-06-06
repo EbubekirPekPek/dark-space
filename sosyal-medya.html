@@ -29,7 +29,7 @@
 
   <header class="top-bar">
     <div class="top-bar-left">
-      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Menüyü aç" aria-expanded="false">
+      <button class="hamburger-btn" id="sidebar-toggle" aria-label="Menüyü aç" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
       <span class="top-bar-title">Sosyal Medya</span>
@@ -43,7 +43,7 @@
     </div>
   </header>
 
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
   <aside class="sidebar" id="sidebar" role="navigation" aria-label="Ana navigasyon">
     <div class="sidebar-logo">
@@ -147,7 +147,7 @@
           <div class="sidebar-user-name" id="userName">Ajans Kullanıcısı</div>
           <div class="sidebar-user-role">Dijital Pazarlama</div>
         </div>
-        <button class="btn btn-icon btn-ghost btn-icon-sm" id="logoutBtn" aria-label="Çıkış yap" title="Çıkış Yap">
+        <button class="btn btn-icon btn-ghost btn-icon-sm" id="logout-btn" aria-label="Çıkış yap" title="Çıkış Yap">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
             <polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/>
@@ -513,25 +513,6 @@
 
     document.getElementById('refreshBtn').addEventListener('click', loadFeeds);
 
-    const hamburgerBtn = document.getElementById('hamburgerBtn');
-    const sidebar      = document.getElementById('sidebar');
-    const overlay      = document.getElementById('sidebarOverlay');
-    hamburgerBtn.addEventListener('click', () => {
-      sidebar.classList.toggle('is-open');
-      overlay.classList.toggle('is-visible');
-      hamburgerBtn.setAttribute('aria-expanded', sidebar.classList.contains('is-open'));
-    });
-    overlay.addEventListener('click', () => {
-      sidebar.classList.remove('is-open');
-      overlay.classList.remove('is-visible');
-      hamburgerBtn.setAttribute('aria-expanded', 'false');
-    });
-
-    document.getElementById('logoutBtn').addEventListener('click', async () => {
-      const { getAuth, signOut } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
-      await signOut(getAuth());
-      window.location.href = 'login.html';
-    });
   </script>
 </body>
 </html>

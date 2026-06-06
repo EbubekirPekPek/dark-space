@@ -231,19 +231,21 @@ function initSidebar() {
 
   // ─── Mobil: hamburger aç/kapat ────────────────────────────────────────────
   function sidebarAc() {
-    sidebar.classList.add('open');
-    overlay?.classList.add('visible');
+    sidebar.classList.add('is-open');
+    overlay?.classList.add('is-visible');
+    toggle?.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
   }
 
   function sidebarKapat() {
-    sidebar.classList.remove('open');
-    overlay?.classList.remove('visible');
+    sidebar.classList.remove('is-open');
+    overlay?.classList.remove('is-visible');
+    toggle?.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
   }
 
   toggle?.addEventListener('click', () => {
-    sidebar.classList.contains('open') ? sidebarKapat() : sidebarAc();
+    sidebar.classList.contains('is-open') ? sidebarKapat() : sidebarAc();
   });
 
   overlay?.addEventListener('click', sidebarKapat);
