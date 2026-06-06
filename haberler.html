@@ -1,42 +1,96 @@
 <!DOCTYPE html>
 <!--
-  turkce.html
-  Dark Space — Türkçe Kaynaklar
-  Webrazzi, Shiftdelete — çeviri YOK (zaten Türkçe)
+  haberler.html
+  Dark Space — Haberler
+  Tüm haber kategorileri tek sayfada.
+  Kategori tab'ları: Reklam, Pazarlama, Sosyal Medya, Yapay Zeka, Türkçe, Resmi
+  Seçili kategorinin kaynakları filtre olarak sunulur.
 -->
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Dark Space — Türkçe Kaynaklar">
+  <meta name="description" content="Dark Space — Haberler">
   <meta name="theme-color" content="#08080d">
-  <title>Türkçe Kaynaklar — Dark Space</title>
-
+  <title>Haberler — Dark Space</title>
   <link rel="stylesheet" href="css/design-system.css">
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/pages.css">
+  <style>
+    /* Kategori sekmeleri */
+    .cat-tabs {
+      display: flex;
+      gap: var(--space-1);
+      overflow-x: auto;
+      padding-bottom: var(--space-2);
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .cat-tabs::-webkit-scrollbar { display: none; }
+
+    .cat-tab {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-2) var(--space-4);
+      border-radius: var(--radius-full);
+      border: 1px solid var(--color-border);
+      background: transparent;
+      color: var(--color-text-secondary);
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-medium);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .cat-tab:hover {
+      background: var(--color-surface-raised);
+      color: var(--color-text-primary);
+      border-color: var(--color-border-strong);
+    }
+    .cat-tab.is-active {
+      background: var(--color-accent-500);
+      border-color: var(--color-accent-500);
+      color: #fff;
+    }
+    .cat-tab .cat-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.7;
+    }
+    .cat-tab.is-active .cat-dot { opacity: 1; }
+  </style>
 </head>
 <body>
 
+  <!-- MOBİL TOP BAR -->
   <header class="top-bar">
     <div class="top-bar-left">
       <button class="hamburger-btn" id="sidebar-toggle" aria-label="Menüyü aç" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
-      <span class="top-bar-title">Türkçe Kaynaklar</span>
+      <span class="top-bar-title" id="topBarTitle">Haberler</span>
     </div>
     <div class="top-bar-actions">
-      <button class="btn btn-icon btn-ghost" aria-label="Arama">
+      <button class="btn btn-icon btn-ghost" aria-label="Yenile" id="refreshBtn">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;">
-          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+          <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+          <path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+          <path d="M8 16H3v5"/>
         </svg>
       </button>
     </div>
   </header>
 
+  <!-- SİDEBAR OVERLAY -->
   <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
+  <!-- SOL SİDEBAR -->
   <aside class="sidebar" id="sidebar" role="navigation" aria-label="Ana navigasyon">
+
     <div class="sidebar-logo">
       <div class="sidebar-logo-icon">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -48,14 +102,16 @@
         <span class="sidebar-logo-sub">v2.0</span>
       </div>
     </div>
+
     <div class="sidebar-search">
       <div class="search-input-wrap">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
         </svg>
-        <input type="search" placeholder="Ara..." aria-label="Haber ara" id="feedSearch">
+        <input type="search" placeholder="Haberlerde ara..." aria-label="Haber ara" id="feedSearch">
       </div>
     </div>
+
     <nav class="sidebar-nav">
       <div class="sidebar-section">
         <div class="sidebar-section-label">Ana</div>
@@ -67,10 +123,10 @@
           <span class="nav-link-label">Dashboard</span>
         </a>
       </div>
+
       <div class="sidebar-section">
         <div class="sidebar-section-label">Haber Akışları</div>
-
-        <a href="haberler.html" class="nav-link">
+        <a href="haberler.html" class="nav-link is-active" aria-current="page">
           <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2Z"/>
             <path d="M9 12h6"/><path d="M9 16h4"/><path d="M9 8h1"/>
@@ -78,14 +134,17 @@
           <span class="nav-link-label">Haberler</span>
         </a>
       </div>
+
       <div class="sidebar-section">
         <div class="sidebar-section-label">Çalışma Alanı</div>
+
         <a href="bilgi/index.html" class="nav-link">
           <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v11m0 0H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4m0-6h10m0 0v6a2 2 0 0 1-2 2h-4m6-8V9a2 2 0 0 0-2-2H9"/>
           </svg>
           <span class="nav-link-label">Bilgi Ağacı</span>
         </a>
+
         <a href="musteri/index.html" class="nav-link">
           <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
@@ -93,6 +152,7 @@
           </svg>
           <span class="nav-link-label">Müşteri Alanı</span>
         </a>
+
         <a href="gelisim/index.html" class="nav-link">
           <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/>
@@ -101,6 +161,7 @@
         </a>
       </div>
     </nav>
+
     <div class="sidebar-footer">
       <div class="sidebar-user">
         <div class="sidebar-user-avatar" id="userAvatar">A</div>
@@ -116,44 +177,81 @@
         </button>
       </div>
     </div>
+
   </aside>
 
+  <!-- ANA İÇERİK -->
   <main class="main-content" id="mainContent">
     <div class="content-inner">
+
       <div class="page-header">
         <div>
-          <h1 class="page-title">Türkçe Kaynaklar</h1>
-          <p class="page-subtitle">Yerli teknoloji ve dijital pazarlama haberleri</p>
+          <h1 class="page-title">Haberler</h1>
+          <p class="page-subtitle" id="pageSubtitle">Dijital pazarlama dünyasındaki son gelişmeler</p>
         </div>
         <div class="page-header-actions">
           <span class="badge badge-outline" id="feedCount">Yükleniyor...</span>
-          <button class="btn btn-secondary btn-sm" id="refreshBtn">
+          <button class="btn btn-secondary btn-sm" id="refreshBtnDesktop">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
               <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
-              <path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>
+              <path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+              <path d="M8 16H3v5"/>
             </svg>
             Yenile
           </button>
         </div>
       </div>
 
-      <div class="filter-bar">
-        <button class="filter-btn is-active" data-source="all">Tümü</button>
-        <button class="filter-btn" data-source="Webrazzi">Webrazzi</button>
-        <button class="filter-btn" data-source="Shiftdelete">Shiftdelete</button>
+      <!-- Kategori Sekmeleri -->
+      <div class="cat-tabs" id="catTabs" role="tablist" aria-label="Haber kategorileri">
+        <button class="cat-tab is-active" data-cat="reklam" role="tab" aria-selected="true">
+          <span class="cat-dot"></span>Reklam
+        </button>
+        <button class="cat-tab" data-cat="pazarlama" role="tab" aria-selected="false">
+          <span class="cat-dot"></span>Pazarlama
+        </button>
+        <button class="cat-tab" data-cat="sosyal-medya" role="tab" aria-selected="false">
+          <span class="cat-dot"></span>Sosyal Medya
+        </button>
+        <button class="cat-tab" data-cat="yapay-zeka" role="tab" aria-selected="false">
+          <span class="cat-dot"></span>Yapay Zeka
+        </button>
+        <button class="cat-tab" data-cat="turkce" role="tab" aria-selected="false">
+          <span class="cat-dot"></span>Türkçe
+        </button>
+        <button class="cat-tab" data-cat="resmi" role="tab" aria-selected="false">
+          <span class="cat-dot"></span>Resmi
+        </button>
       </div>
 
+      <!-- Kaynak Filtre Barı -->
+      <div class="filter-bar" id="sourceFilterBar" style="margin-top:var(--space-3);">
+        <!-- JS tarafından doldurulur -->
+      </div>
+
+      <!-- Arama -->
+      <div style="margin:var(--space-3) 0 var(--space-4);">
+        <input type="search" class="input" id="searchInput" placeholder="Haberlerde ara..." style="max-width:340px;font-size:var(--text-sm);">
+      </div>
+
+      <!-- Yükleniyor -->
       <div class="feed-loading" id="feedLoading">
         <div class="loading-spinner"></div>
         <p class="text-secondary">Haberler yükleniyor...</p>
       </div>
+
+      <!-- Haber Grid -->
       <div class="news-grid" id="feed-grid" style="display:none;"></div>
+
+      <!-- Boş Durum -->
       <div class="feed-empty" id="feedEmpty" style="display:none;">
         <p class="text-muted">Gösterilecek haber bulunamadı.</p>
       </div>
+
     </div>
   </main>
 
+  <!-- MOBİL ALT BAR -->
   <nav class="bottom-bar" aria-label="Mobil navigasyon">
     <div class="bottom-bar-nav">
       <a href="index.html" class="bottom-bar-item">
@@ -163,7 +261,7 @@
         </svg>
         <span class="bottom-bar-item-label">Ana</span>
       </a>
-      <a href="reklam.html" class="bottom-bar-item is-active" aria-current="page">
+      <a href="haberler.html" class="bottom-bar-item is-active" aria-current="page">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2Z"/>
           <path d="M9 12h6"/><path d="M9 16h4"/><path d="M9 8h1"/>
@@ -192,6 +290,7 @@
     </div>
   </nav>
 
+  <!-- HABER MODAL -->
   <div class="modal-overlay" id="news-modal" role="dialog" aria-modal="true">
     <div class="modal">
       <div class="modal-drag-handle"></div>
@@ -239,17 +338,79 @@
 
   <script type="module">
     import { initApp, formatDate, showToast } from './js/app.js';
-    import { fetchAllFeeds, sortByDate } from './js/feeds.js';
+    import { fetchAllFeeds, translateWithCache, sortByDate } from './js/feeds.js';
     import { saveNote, getNotes, deleteNote } from './js/firestore.js';
 
-    // Türkçe kaynaklar — çeviri YOK
-    const FEEDS = [
-      { name: 'Webrazzi',    url: 'https://webrazzi.com/feed/' },
-      { name: 'Shiftdelete', url: 'https://shiftdelete.net/feed' }
-    ];
+    // ─── Kategori tanımları ───────────────────────────────────────────────────
+    const CATEGORIES = {
+      'reklam': {
+        label: 'Reklam',
+        subtitle: 'Dijital reklam dünyasındaki son gelişmeler',
+        feeds: [
+          { name: 'Adweek',         url: 'https://www.adweek.com/feed/' },
+          { name: 'Digiday',        url: 'https://digiday.com/feed/' },
+          { name: 'Marketing Week', url: 'https://www.marketingweek.com/feed/' },
+        ],
+        translate: true,
+      },
+      'pazarlama': {
+        label: 'Pazarlama',
+        subtitle: 'Pazarlama stratejileri ve dijital büyüme taktikleri',
+        feeds: [
+          { name: 'HubSpot Blog',          url: 'https://blog.hubspot.com/marketing/rss.xml' },
+          { name: 'Neil Patel',            url: 'https://neilpatel.com/blog/feed/' },
+          { name: 'Search Engine Journal', url: 'https://www.searchenginejournal.com/feed/' },
+        ],
+        translate: true,
+      },
+      'sosyal-medya': {
+        label: 'Sosyal Medya',
+        subtitle: 'Sosyal medya trendleri ve platform güncellemeleri',
+        feeds: [
+          { name: 'Social Media Examiner', url: 'https://www.socialmediaexaminer.com/feed/' },
+          { name: 'Meta Newsroom',         url: 'https://about.fb.com/news/feed/' },
+        ],
+        translate: true,
+      },
+      'yapay-zeka': {
+        label: 'Yapay Zeka',
+        subtitle: 'AI araçları, modeller ve sektör haberleri',
+        feeds: [
+          { name: 'The Verge AI',  url: 'https://www.theverge.com/rss/ai-artificial-intelligence/index.xml' },
+          { name: 'TechCrunch AI', url: 'https://techcrunch.com/category/artificial-intelligence/feed/' },
+          { name: 'HuggingFace',   url: 'https://huggingface.co/blog/feed.xml' },
+          { name: 'Google AI',     url: 'https://blog.google/technology/ai/rss/' },
+        ],
+        translate: true,
+      },
+      'turkce': {
+        label: 'Türkçe',
+        subtitle: 'Yerli teknoloji ve dijital pazarlama haberleri',
+        feeds: [
+          { name: 'Webrazzi',    url: 'https://webrazzi.com/feed/' },
+          { name: 'Shiftdelete', url: 'https://shiftdelete.net/feed' },
+        ],
+        translate: false,
+      },
+      'resmi': {
+        label: 'Resmi',
+        subtitle: 'Meta, Google ve platform resmi duyuruları',
+        feeds: [
+          { name: 'Meta Newsroom',     url: 'https://about.fb.com/news/feed/' },
+          { name: 'Meta for Business', url: 'https://www.facebook.com/business/news/rss' },
+          { name: 'Meta Developers',   url: 'https://developers.facebook.com/blog/feed/' },
+        ],
+        translate: true,
+      },
+    };
 
-    let allItems = [];
+    // ─── Durum ───────────────────────────────────────────────────────────────
+    const feedCache   = new Map();   // categoryId → items[]
+    let activeCat     = 'reklam';
+    let activeSource  = 'all';
+    let allItems      = [];
 
+    // ─── Başlatma ────────────────────────────────────────────────────────────
     initApp((user) => {
       if (user) {
         const avatar = document.getElementById('userAvatar');
@@ -262,29 +423,135 @@
           avatar.textContent = user.email[0].toUpperCase();
         }
       }
-      loadFeeds();
+
+      // URL hash'ten başlangıç kategorisini al
+      const hash = window.location.hash.replace('#', '');
+      if (CATEGORIES[hash]) activeCat = hash;
+
+      setupCategoryTabs();
+      selectCategory(activeCat);
     });
 
-    async function loadFeeds() {
-      const grid = document.getElementById('feed-grid');
-      document.getElementById('feedLoading').style.display = 'flex';
-      grid.style.display = 'none';
-      grid.innerHTML = '';
+    // ─── Kategori sekmeleri ───────────────────────────────────────────────────
+    function setupCategoryTabs() {
+      document.querySelectorAll('.cat-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          const cat = tab.dataset.cat;
+          if (cat === activeCat) return;
+          selectCategory(cat);
+        });
+      });
+    }
+
+    function selectCategory(catId) {
+      activeCat    = catId;
+      activeSource = 'all';
+
+      // Tab görünümü güncelle
+      document.querySelectorAll('.cat-tab').forEach(t => {
+        const isThis = t.dataset.cat === catId;
+        t.classList.toggle('is-active', isThis);
+        t.setAttribute('aria-selected', isThis ? 'true' : 'false');
+      });
+
+      // Sayfa başlığı güncelle
+      const cat = CATEGORIES[catId];
+      document.getElementById('pageSubtitle').textContent = cat.subtitle;
+      document.getElementById('topBarTitle').textContent  = cat.label;
+
+      // URL hash güncelle
+      history.replaceState(null, '', `#${catId}`);
+
+      // Kaynak filtrelerini güncelle
+      renderSourceFilters(catId);
+
+      // Feed yükle (cache'den veya fresh)
+      if (feedCache.has(catId)) {
+        allItems = feedCache.get(catId);
+        renderCards(allItems);
+      } else {
+        loadFeeds(catId);
+      }
+    }
+
+    // ─── Kaynak filtre butonları ──────────────────────────────────────────────
+    function renderSourceFilters(catId) {
+      const bar  = document.getElementById('sourceFilterBar');
+      const feeds = CATEGORIES[catId].feeds;
+
+      bar.innerHTML = `
+        <button class="filter-btn is-active" data-source="all">Tümü</button>
+        ${feeds.map(f => `<button class="filter-btn" data-source="${f.name}">${f.name}</button>`).join('')}
+      `;
+
+      bar.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          bar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('is-active'));
+          btn.classList.add('is-active');
+          activeSource = btn.dataset.source;
+          applyFilters();
+        });
+      });
+    }
+
+    // ─── Feed yükleme ─────────────────────────────────────────────────────────
+    async function loadFeeds(catId) {
+      const cat    = CATEGORIES[catId];
+      const grid   = document.getElementById('feed-grid');
+      const loading = document.getElementById('feedLoading');
+      const count  = document.getElementById('feedCount');
+
+      loading.style.display = 'flex';
+      grid.style.display    = 'none';
+      grid.innerHTML        = '';
+      count.textContent     = 'Yükleniyor...';
 
       try {
-        let items = await fetchAllFeeds(FEEDS);
+        let items = await fetchAllFeeds(cat.feeds);
         items = sortByDate(items);
+
+        if (cat.translate) {
+          items = await translateItems(items);
+        }
+
+        feedCache.set(catId, items);
         allItems = items;
         renderCards(allItems);
       } catch (err) {
         console.error('Feed yükleme hatası:', err);
-        document.getElementById('feedLoading').style.display = 'none';
-        grid.style.display = 'block';
-        grid.innerHTML = '<div class="empty-state" style="padding:var(--space-8);text-align:center;color:var(--color-text-muted);">Kaynaklar geçici olarak erişilemez.</div>';
-        document.getElementById('feedCount').textContent = '0 haber';
+        loading.style.display = 'none';
+        grid.style.display    = 'block';
+        grid.innerHTML        = '<div class="empty-state" style="padding:var(--space-8);text-align:center;color:var(--color-text-muted);">Kaynaklar geçici olarak erişilemez.</div>';
+        count.textContent = '0 haber';
       }
     }
 
+    async function translateItems(items) {
+      return Promise.all(items.map(async item => {
+        const [trTitle, trDesc] = await Promise.all([
+          translateWithCache(item.title, item.link + ':title:tr'),
+          translateWithCache(item.description, item.link + ':desc:tr'),
+        ]);
+        return { ...item, title: trTitle, description: trDesc };
+      }));
+    }
+
+    // ─── Arama + kaynak filtresi uygula ──────────────────────────────────────
+    function applyFilters() {
+      const q = (document.getElementById('searchInput').value || '').toLowerCase();
+      let filtered = allItems;
+
+      if (activeSource !== 'all') {
+        filtered = filtered.filter(i => i._src === activeSource);
+      }
+      if (q) {
+        filtered = filtered.filter(i => (i.title || '').toLowerCase().includes(q));
+      }
+
+      renderCards(filtered);
+    }
+
+    // ─── Kartları çiz ────────────────────────────────────────────────────────
     function renderCards(items) {
       const grid    = document.getElementById('feed-grid');
       const loading = document.getElementById('feedLoading');
@@ -300,34 +567,38 @@
         return;
       }
 
-      count.textContent   = items.length + ' haber';
-      grid.style.display  = 'grid';
+      count.textContent  = items.length + ' haber';
+      grid.style.display = 'grid';
       empty.style.display = 'none';
-      grid.innerHTML      = '';
+      grid.innerHTML     = '';
 
       items.forEach(item => {
         const card = document.createElement('div');
         card.className = 'news-card';
         card.setAttribute('tabindex', '0');
         card.setAttribute('role', 'button');
-        card.setAttribute('data-source', item._src || '');
         card.innerHTML = `
           <div class="news-card-header">
             <h3 class="news-card-title">${item.title || 'Başlıksız'}</h3>
-            <div class="news-card-meta"><span class="badge badge-outline">${item._src || 'Kaynak'}</span></div>
+            <div class="news-card-meta">
+              <span class="badge badge-outline">${item._src || 'Kaynak'}</span>
+            </div>
           </div>
           <div class="news-card-footer">
             <div class="news-card-source">
-              <span class="news-card-source-dot" style="background:var(--color-accent);"></span>${item._src || ''}
+              <span class="news-card-source-dot" style="background:var(--color-accent);"></span>
+              ${item._src || ''}
             </div>
             <span class="news-card-date">${formatDate(item.pubDate)}</span>
-          </div>`;
+          </div>
+        `;
         card.addEventListener('click', () => openModal(item));
         card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openModal(item); });
         grid.appendChild(card);
       });
     }
 
+    // ─── Modal ────────────────────────────────────────────────────────────────
     async function openModal(item) {
       document.getElementById('modal-title').textContent        = item.title || '';
       document.getElementById('modal-desc').textContent         = item.description || 'Özet mevcut değil.';
@@ -341,7 +612,7 @@
       const noteForm     = document.getElementById('modal-note-form');
       const noteTextarea = document.getElementById('noteTextarea');
 
-      if (noteForm) noteForm.style.display = 'none';
+      if (noteForm)     noteForm.style.display = 'none';
       if (noteTextarea) noteTextarea.value = '';
 
       if (notesList) {
@@ -366,7 +637,7 @@
       const cancelBtnClone = cancelBtn.cloneNode(true);
       cancelBtn.parentNode.replaceChild(cancelBtnClone, cancelBtn);
       cancelBtnClone.addEventListener('click', () => {
-        if (noteForm) noteForm.style.display = 'none';
+        if (noteForm)     noteForm.style.display = 'none';
         if (noteTextarea) noteTextarea.value = '';
       });
 
@@ -379,7 +650,7 @@
         try {
           await saveNote(item.link, 'haber', text);
           if (noteTextarea) noteTextarea.value = '';
-          if (noteForm) noteForm.style.display = 'none';
+          if (noteForm)     noteForm.style.display = 'none';
           const notlar = await getNotes(item.link);
           renderNotes(notlar, notesList, item.link);
           showToast('Not kaydedildi', 'success');
@@ -427,24 +698,27 @@
     document.getElementById('news-modal').addEventListener('click', e => {
       if (e.target === document.getElementById('news-modal')) closeModal();
     });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('is-active'));
-        btn.classList.add('is-active');
-        const source = btn.dataset.source;
-        renderCards(source === 'all' ? allItems : allItems.filter(i => i._src === source));
-      });
-    });
-
+    // ─── Arama ───────────────────────────────────────────────────────────────
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
     document.getElementById('feedSearch').addEventListener('input', e => {
-      const q = e.target.value.toLowerCase();
-      renderCards(allItems.filter(i => (i.title || '').toLowerCase().includes(q)));
+      document.getElementById('searchInput').value = e.target.value;
+      applyFilters();
     });
 
-    document.getElementById('refreshBtn').addEventListener('click', loadFeeds);
+    // ─── Yenile ──────────────────────────────────────────────────────────────
+    function doRefresh() {
+      feedCache.delete(activeCat);
+      loadFeeds(activeCat);
+    }
+    document.getElementById('refreshBtn').addEventListener('click', doRefresh);
+    document.getElementById('refreshBtnDesktop').addEventListener('click', doRefresh);
 
+    // ─── Klavye ──────────────────────────────────────────────────────────────
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeModal();
+    });
   </script>
+
 </body>
 </html>
