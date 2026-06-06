@@ -274,45 +274,294 @@
   -webkit-backdrop-filter: blur(8px);
 }
 
-/* Dashboard blok düzeni */
+/* ============================================================
+   BENTO GRID — FAZ 3: Asimetrik İçerik Izgarası
+   3 sütun, bazı kartlar 2 sütun kaplıyor — teknoloji arayüzü havası
+   ============================================================ */
+
+/* Grid container */
 .dashboard-blocks {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-4);
+  gap: 1.25rem;
+  padding-bottom: 6rem;
 }
 
 @media (min-width: 768px) {
   .dashboard-blocks {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
   }
 }
 
-@media (min-width: 1280px) {
-  .dashboard-blocks {
-    grid-template-columns: repeat(4, 1fr);
+/* ---- Bento hücresi — temel ---- */
+.bento-card {
+  background: #0c0c0c;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  padding: 1.75rem;
+  transition: border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: default;
+}
+
+@media (min-width: 768px) {
+  .bento-card {
+    padding: 2rem;
   }
 }
 
-/* Blok 1 — Günün Özeti: tam genişlik veya 2 kolon */
-.block-daily-summary {
-  grid-column: 1 / -1;
+.bento-card:hover {
+  border-color: rgba(255, 255, 255, 0.10);
+  transform: translateY(-2px);
 }
 
-@media (min-width: 1280px) {
-  .block-daily-summary {
-    grid-column: span 2;
-  }
+.bento-card:active {
+  transform: scale(0.99);
 }
 
-/* Blok 2 — Öne Çıkan */
-.block-featured {
+/* 2 sütun genişlik — asimetri */
+.bento-span-2 {
   grid-column: 1 / -1;
 }
 
 @media (min-width: 768px) {
-  .block-featured {
+  .bento-span-2 {
     grid-column: span 2;
   }
+}
+
+/* ---- Bento iç tipografi ---- */
+.bento-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: rgba(107, 114, 128, 1);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  line-height: 1;
+}
+
+.bento-title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  line-height: 1.35;
+  margin-bottom: 0.375rem;
+}
+
+/* ---- Büyük sayı — gradient ---- */
+.bento-stat-big {
+  font-size: clamp(2.75rem, 5vw, 4rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  background: linear-gradient(180deg, #ffffff 0%, rgba(172, 172, 200, 0.70) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.bento-stat-meta {
+  font-size: 0.75rem;
+  color: rgba(107, 114, 128, 1);
+  letter-spacing: 0.01em;
+}
+
+/* ---- Platform badge (minimal) ---- */
+.bento-badges-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.bento-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: rgba(156, 163, 175, 1);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 9999px;
+  padding: 0.28rem 0.65rem;
+}
+
+.bento-badge-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.bento-badge strong {
+  color: rgba(209, 213, 219, 1);
+  font-weight: 600;
+}
+
+/* ---- İnce ayırıcı ---- */
+.bento-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.055);
+  margin: 1.25rem 0;
+  border: none;
+}
+
+/* ---- Hatırlatma satırları ---- */
+.bento-reminder {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.bento-reminder:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.bento-reminder-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-top: 0.3rem;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.bento-reminder-dot--urgent { background: rgba(239, 68, 68, 0.80); }
+.bento-reminder-dot--ok     { background: rgba(34, 197, 94, 0.60); }
+
+.bento-reminder-text {
+  font-size: 0.8125rem;
+  color: rgba(156, 163, 175, 1);
+  line-height: 1.5;
+}
+
+.bento-reminder-client {
+  color: rgba(209, 213, 219, 1);
+  font-weight: 500;
+}
+
+/* ---- Öne Çıkan Haber ---- */
+.bento-news-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: rgba(107, 114, 128, 1);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  margin-bottom: 0.875rem;
+}
+
+.bento-news-source-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.bento-news-title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  line-height: 1.45;
+  margin-bottom: 0.75rem;
+}
+
+.bento-news-summary {
+  font-size: 0.8125rem;
+  color: rgba(107, 114, 128, 1);
+  line-height: 1.6;
+}
+
+.bento-news-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.25rem;
+}
+
+.bento-news-date {
+  font-size: 0.6875rem;
+  color: rgba(75, 85, 99, 1);
+}
+
+.bento-news-link {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: rgba(139, 92, 246, 0.80);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.bento-news-link:hover {
+  color: rgba(167, 139, 250, 1);
+}
+
+/* ---- Progress bar ---- */
+.bento-progress {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 9999px;
+  overflow: hidden;
+  margin: 0.5rem 0;
+}
+
+.bento-progress-fill {
+  height: 100%;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, rgba(139, 92, 246, 0.80), rgba(99, 102, 241, 0.50));
+}
+
+/* ---- Hedef öğeleri ---- */
+.bento-goal {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.45rem 0;
+}
+
+.bento-goal-check {
+  width: 15px;
+  height: 15px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+
+.bento-goal-check.is-done {
+  background: rgba(34, 197, 94, 0.12);
+  border-color: rgba(34, 197, 94, 0.28);
+}
+
+.bento-goal-check.is-done::after {
+  content: '';
+  width: 5px;
+  height: 5px;
+  background: rgba(34, 197, 94, 0.75);
+  border-radius: 1px;
+}
+
+.bento-goal-text {
+  font-size: 0.8125rem;
+  color: rgba(156, 163, 175, 1);
+  line-height: 1.4;
+}
+
+.bento-goal-text.is-done {
+  text-decoration: line-through;
+  color: rgba(107, 114, 128, 1);
 }
 
 /* Hatırlatma listesi */
