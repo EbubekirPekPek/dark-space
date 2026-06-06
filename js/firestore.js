@@ -547,6 +547,80 @@ async function getTodos(filters = {}) {
   }
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+//  MÜŞTERİ GÜNLÜK GÖREVLER
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Müşteri için tekrar eden günlük görev ekler.
+ * @param {string} clientId
+ * @param {{ title: string, time?: string }} taskData - time: "HH:MM" opsiyonel
+ */
+async function saveDailyTask(clientId, taskData) {
+  try {
+    const userId = uid();
+    const ref = await addDoc(
+      collection(db, 'clients', clientId, 'dailyTasks'),
+      {
+        userId,
+        title:             taskData.title || '',
+        time:              taskData.time  || '',  // "09:30" hatırlatıcı saati
+        lastCompletedDate: null,                  // YYYY-MM-DD veya null
+        createdAt:         serverTimestamp(),
+      }
+    );
+    return { id: ref.id };
+  } catch (err) {
+    return { hata: `Günlük görev eklenemedi: ${err.message}` };
+  }
+}
+
+/**
+ * Müşterinin tüm günlük görevlerini getirir.
+ * @param {string} clientId
+ */
+async function getDailyTasks(clientId) {
+  try {
+    const q = query(
+      collection(db, 'clients', clientId, 'dailyTasks'),
+      orderBy('createdAt', 'asc')
+    );
+    const snap = await getDocs(q);
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  } catch (err) {
+    return { hata: `Günlük görevler getirilemedi: ${err.message}` };
+  }
+}
+
+/**
+ * Günlük görevin tamamlanma durumunu günceller.
+ * tamamlandi=true → lastCompletedDate = bugün (YYYY-MM-DD)
+ * tamamlandi=false → lastCompletedDate = null
+ */
+async function toggleDailyTask(clientId, taskId, tamamlandi) {
+  try {
+    const today = new Date().toISOString().split('T')[0];
+    await updateDoc(doc(db, 'clients', clientId, 'dailyTasks', taskId), {
+      lastCompletedDate: tamamlandi ? today : null,
+    });
+    return { basarili: true };
+  } catch (err) {
+    return { hata: `Günlük görev güncellenemedi: ${err.message}` };
+  }
+}
+
+/**
+ * Günlük görevi siler.
+ */
+async function deleteDailyTask(clientId, taskId) {
+  try {
+    await deleteDoc(doc(db, 'clients', clientId, 'dailyTasks', taskId));
+    return { basarili: true };
+  } catch (err) {
+    return { hata: `Günlük görev silinemedi: ${err.message}` };
+  }
+}
+
 export {
   // Notlar
   saveNote, getNotes, deleteNote,
@@ -562,4 +636,6 @@ export {
   saveSkillRating, getSkillRatings,
   // Yapılacaklar
   saveTodo, updateTodoStatus, getTodos,
+  // Günlük Görevler (müşteri bazlı)
+  saveDailyTask, getDailyTasks, toggleDailyTask, deleteDailyTask,
 };
