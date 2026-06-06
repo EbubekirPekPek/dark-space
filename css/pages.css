@@ -39,9 +39,11 @@
 .login-card {
   width: 100%;
   max-width: 420px;
-  background: var(--color-bg-elevated);
-  border: 1px solid var(--color-border-subtle);
-  border-radius: var(--radius-2xl);
+  background: rgba(8, 8, 8, 0.90);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-3xl);
   padding: var(--space-8);
   box-shadow: var(--shadow-2xl);
   position: relative;
@@ -157,7 +159,10 @@
 .dashboard-greeting-title {
   font-size: var(--text-3xl);
   font-weight: var(--font-weight-extrabold);
-  color: var(--color-text-primary);
+  background: linear-gradient(160deg, #ffffff 0%, rgba(240, 240, 248, 0.60) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   letter-spacing: var(--tracking-tighter);
   line-height: var(--leading-tight);
 }
@@ -171,11 +176,13 @@
 .dashboard-greeting-date {
   font-size: var(--text-sm);
   color: var(--color-text-muted);
-  background: var(--color-bg-surface);
-  border: 1px solid var(--color-border-subtle);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: var(--radius-full);
-  padding: var(--space-1) var(--space-4);
+  padding: var(--space-2) var(--space-5);
   white-space: nowrap;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 /* Dashboard blok düzeni */
@@ -559,26 +566,31 @@
 
 .client-card {
   background: var(--color-bg-surface);
-  border: 1px solid var(--color-border-subtle);
-  border-radius: var(--radius-xl);
-  padding: var(--space-5);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-6);
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
   cursor: pointer;
   transition:
-    background var(--transition-base),
+    background var(--transition-ease-out),
     border-color var(--transition-base),
-    box-shadow var(--transition-base),
-    transform var(--transition-bounce);
+    box-shadow var(--transition-ease-out),
+    transform var(--transition-ease-out);
   text-decoration: none;
 }
 
 .client-card:hover {
-  background: var(--color-bg-overlay);
-  border-color: var(--color-border-default);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
+  background: #0f0f12;
+  border-color: rgba(255, 255, 255, 0.10);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-3px);
+}
+
+.client-card:active {
+  transform: scale(0.98);
+  transition: transform 0.1s ease;
 }
 
 .client-card-header {
@@ -1038,17 +1050,27 @@
   gap: var(--space-3);
   padding: var(--space-4);
   background: var(--color-bg-surface);
-  border: 1px solid var(--color-border-default);
-  border-radius: var(--radius-xl);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-2xl);
   text-decoration: none;
   color: inherit;
-  transition: border-color var(--duration-fast), background var(--duration-fast), transform var(--duration-fast);
+  transition:
+    border-color var(--transition-base),
+    background var(--transition-ease-out),
+    transform var(--transition-ease-out),
+    box-shadow var(--transition-ease-out);
 }
 
 .platform-quick-card:hover {
-  border-color: var(--color-border-strong);
-  background: var(--color-bg-overlay);
-  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.10);
+  background: #0f0f12;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.platform-quick-card:active {
+  transform: scale(0.98);
+  transition: transform 0.1s ease;
 }
 
 .platform-quick-icon {

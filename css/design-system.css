@@ -21,12 +21,12 @@
      ---------------------------------------------------------- */
 
   /* Ana arka planlar — katmanlı derinlik */
-  --color-bg-base:        #08080d;   /* En derin arka plan (body) */
-  --color-bg-elevated:    #0f0f18;   /* Yüksek yüzey (sidebar, panel) */
-  --color-bg-surface:     #14141f;   /* Kart, input yüzeyi */
-  --color-bg-overlay:     #1a1a28;   /* Hover, aktif yüzey */
-  --color-bg-inset:       #1f1f30;   /* İç girinti, çizgi arkaplanı */
-  --color-bg-modal:       #12121c;   /* Modal/drawer arka planı */
+  --color-bg-base:        #030303;   /* Sinematik siyah — Framer / Apple hissi */
+  --color-bg-elevated:    #080808;   /* Sidebar, panel yüzeyi */
+  --color-bg-surface:     #0d0d0d;   /* Kart yüzeyi — bento box */
+  --color-bg-overlay:     #111115;   /* Hover, aktif yüzey */
+  --color-bg-inset:       #161620;   /* İç girinti, çizgi arkaplanı */
+  --color-bg-modal:       #0a0a0e;   /* Modal/drawer arka planı */
 
   /* ----------------------------------------------------------
      METİN RENKLERİ
@@ -40,10 +40,10 @@
   /* ----------------------------------------------------------
      BORDER (ÇIZGI) RENKLERİ
      ---------------------------------------------------------- */
-  --color-border-subtle:  #1e1e2e;   /* Çok ince bölücüler */
-  --color-border-default: #2a2a3e;   /* Normal border */
-  --color-border-strong:  #3a3a54;   /* Belirgin border */
-  --color-border-focus:   #6366f1;   /* Focus halkası — accent rengi */
+  --color-border-subtle:  rgba(255, 255, 255, 0.05);  /* Hairline — neredeyse görünmez */
+  --color-border-default: rgba(255, 255, 255, 0.08);  /* Normal hairline */
+  --color-border-strong:  rgba(255, 255, 255, 0.14);  /* Belirgin hairline */
+  --color-border-focus:   #6366f1;                    /* Focus halkası — accent rengi */
 
   /* ----------------------------------------------------------
      ACCENT — İNDİGO SPECTRUM
@@ -218,11 +218,13 @@
   /* ----------------------------------------------------------
      ANİMASYON / GEÇİŞLER
      ---------------------------------------------------------- */
-  --transition-fast:    0.1s ease;
-  --transition-base:    0.18s ease;
-  --transition-smooth:  0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-bounce:  0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  --transition-slow:    0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast:      0.1s ease;
+  --transition-base:      0.18s ease;
+  --transition-smooth:    0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce:    0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --transition-slow:      0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-ease-out:  0.35s cubic-bezier(0.16, 1, 0.3, 1);  /* Expo ease-out — yay fiziği */
+  --transition-spring:    0.45s cubic-bezier(0.34, 1.56, 0.64, 1); /* Spring — organik yaylanma */
 
   /* ----------------------------------------------------------
      Z-INDEX KATMANLARI
@@ -424,13 +426,19 @@ input, textarea, select {
 /* İçerik iç padding */
 .content-inner {
   max-width: var(--content-max-width);
-  padding: var(--space-6) var(--space-6);
+  padding: var(--space-6) var(--space-5);
   margin: 0 auto;
 }
 
 @media (min-width: 768px) {
   .content-inner {
-    padding: var(--space-8);
+    padding: var(--space-10) var(--space-8);
+  }
+}
+
+@media (min-width: 1280px) {
+  .content-inner {
+    padding: var(--space-12) var(--space-10);
   }
 }
 
@@ -478,3 +486,69 @@ input, textarea, select {
    xl:  min-width: 1280px  — masaüstü
    2xl: min-width: 1536px  — geniş ekran
 */
+
+/* ============================================================
+   AMBIENT BACKGROUND — Mesh Gradient Ortam Işıkları
+   FAZ 1: Sinematik atmosfer — sayfa kaydırılsa bile sabit kalır
+   ============================================================ */
+.ambient-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.ambient-orb {
+  position: absolute;
+  border-radius: 50%;
+}
+
+/* Sol üst — hafif mor spot */
+.ambient-orb--purple {
+  width: 600px;
+  height: 600px;
+  background: rgba(139, 92, 246, 0.06);
+  filter: blur(140px);
+  top: -180px;
+  left: -120px;
+}
+
+/* Sağ orta — derin lacivert spot */
+.ambient-orb--blue {
+  width: 500px;
+  height: 500px;
+  background: rgba(59, 130, 246, 0.05);
+  filter: blur(160px);
+  top: 35%;
+  right: -100px;
+}
+
+/* Alt merkez — indigo dolgu */
+.ambient-orb--indigo {
+  width: 400px;
+  height: 400px;
+  background: rgba(99, 102, 241, 0.07);
+  filter: blur(130px);
+  bottom: 5%;
+  left: 25%;
+}
+
+/* ============================================================
+   GRADIENT METİN YARDIMCISI
+   Başlık yazılarına top→bottom beyaz degradesi
+   ============================================================ */
+.text-gradient-hero {
+  background: linear-gradient(160deg, #ffffff 0%, rgba(240, 240, 248, 0.65) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Accent gradient — indigo ton */
+.text-gradient-accent {
+  background: linear-gradient(135deg, var(--color-accent-300) 0%, var(--color-accent-500) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
