@@ -914,5 +914,66 @@
     });
   </script>
 
+  <!-- ============================================================
+       FAZ 4: MOTION KATMANI — Spring Fizik & Mikro Etkileşimler
+       Firebase bağımsız, saf DOM olayları
+       ============================================================ -->
+  <script>
+    (() => {
+      'use strict';
+
+      /* ─────────────────────────────────────────────────
+         1. NAVBAR SCROLL DOCK
+         Sayfa 24px'den fazla kaydırılınca .is-scrolled eklenir
+         → CSS: background rgba artar, box-shadow yoğunlaşır
+         ───────────────────────────────────────────────── */
+      const navCapsule = document.querySelector('.navbar-capsule');
+
+      if (navCapsule) {
+        const updateNavScroll = () => {
+          navCapsule.classList.toggle('is-scrolled', window.scrollY > 24);
+        };
+        window.addEventListener('scroll', updateNavScroll, { passive: true });
+        updateNavScroll(); /* ilk render'da kontrol et */
+      }
+
+      /* ─────────────────────────────────────────────────
+         2. BENTO KART CURSOR SPOTLIGHT
+         Fare bento kutusunun içinde hareket ettikçe
+         radyal ışık hâlesi fareyi takip eder.
+         → CSS: .bento-card::before — --card-mouse-x/y değişkenleri
+         ───────────────────────────────────────────────── */
+      document.querySelectorAll('.bento-card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const r = card.getBoundingClientRect();
+          card.style.setProperty('--card-mouse-x', `${e.clientX - r.left}px`);
+          card.style.setProperty('--card-mouse-y', `${e.clientY - r.top}px`);
+        }, { passive: true });
+      });
+
+      /* ─────────────────────────────────────────────────
+         3. BENTO KART TIKLAMA GERİ BİLDİRİMİ
+         Tıklama anında kartı scale(0.98)'e iter,
+         sonra spring ile normale döner (CSS transition üstüne ek)
+         ───────────────────────────────────────────────── */
+      document.querySelectorAll('.bento-card').forEach(card => {
+        card.addEventListener('pointerdown', () => {
+          card.style.transition =
+            'transform 0.1s cubic-bezier(0.16,1,0.3,1), background-color 0.1s ease';
+        }, { passive: true });
+
+        card.addEventListener('pointerup', () => {
+          /* Spring geri dönüş için orijinal transition'ı geri ver */
+          card.style.transition = '';
+        }, { passive: true });
+
+        card.addEventListener('pointerleave', () => {
+          card.style.transition = '';
+        }, { passive: true });
+      });
+
+    })();
+  </script>
+
 </body>
 </html>

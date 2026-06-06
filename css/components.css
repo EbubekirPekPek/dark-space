@@ -393,21 +393,34 @@
   }
 }
 
-/* Kapsülün kendisi — buzlu cam efekti */
+/* Kapsülün kendisi — FAZ 4: Scroll ile güçlenen buzlu cam */
 .navbar-capsule {
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 48px;
   padding: 0 var(--space-4);
-  background: rgba(0, 0, 0, 0.42);
+  /* İlk konum: hafif şeffaf — scroll'da yoğunlaşır */
+  background: rgba(0, 0, 0, 0.30);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 9999px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35),
-              inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.20),
+              inset 0 1px 0 rgba(255, 255, 255, 0.04);
   position: relative;
+  /* Spring geçiş — scroll state değişiminde yumuşak */
+  transition: background    0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow    0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color  0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Sayfa kaydırıldı — opaklık + blur görsel olarak güçleniyor */
+.navbar-capsule.is-scrolled {
+  background: rgba(0, 0, 0, 0.72);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.60),
+              inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 /* Sol: Logo grubu */
@@ -467,18 +480,34 @@
   padding: 0.35rem 0.8rem;
   border-radius: 9999px;
   text-decoration: none;
-  transition: color 0.2s ease, background 0.2s ease;
   white-space: nowrap;
+  display: inline-block;
+  /* Spring geçiş */
+  transition: color       0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              background  0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              transform   0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .navbar-link:hover {
   color: #ffffff;
   background: rgba(255, 255, 255, 0.07);
+  transform: scale(1.06);
+}
+
+/* Squish — tıklanınca yaya basılmış hissi */
+.navbar-link:active {
+  transform: scale(0.92);
+  transition: transform 0.08s ease;
 }
 
 .navbar-link.is-active {
   color: #ffffff;
   background: rgba(255, 255, 255, 0.09);
+}
+
+/* Aktif link hover'ı daha kısıtlı */
+.navbar-link.is-active:hover {
+  transform: scale(1.03);
 }
 
 /* Sağ: Aksiyon grubu */
@@ -512,7 +541,8 @@
   padding: 0.4rem 0.9rem;
   cursor: pointer;
   white-space: nowrap;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition: opacity    0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              transform  0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.40);
 }
 
@@ -524,13 +554,16 @@
 }
 
 .navbar-cta:hover {
-  opacity: 0.88;
-  transform: translateY(-1px);
+  opacity: 0.90;
+  /* Spring bounce: hafif yukarı + büyüme */
+  transform: translateY(-1px) scale(1.04);
 }
 
+/* Squish — en hızlı geri basma */
 .navbar-cta:active {
-  transform: scale(0.97);
+  transform: scale(0.94);
   opacity: 1;
+  transition: transform 0.07s ease;
 }
 
 /* ============================================================

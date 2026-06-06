@@ -225,19 +225,24 @@
   padding: 0.625rem 1.25rem;
   cursor: pointer;
   text-decoration: none;
-  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity    0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              transform  0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.40);
 }
 
 .hero-btn-primary:hover {
-  opacity: 0.88;
-  transform: translateY(-1px);
+  opacity: 0.90;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.40),
+              0 4px 16px rgba(255, 255, 255, 0.10);
 }
 
 .hero-btn-primary:active {
-  transform: scale(0.98);
+  transform: scale(0.96);
   opacity: 1;
+  /* Anlık sıkışma — spring değil, hızlı ease */
+  transition: transform 0.08s ease, opacity 0.08s ease;
 }
 
 /* Secondary CTA — Transparan çerçeveli pill */
@@ -254,11 +259,20 @@
   padding: 0.625rem 1.25rem;
   cursor: pointer;
   text-decoration: none;
-  transition: background 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background    0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              transform     0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+              border-color  0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .hero-btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.09);
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.20);
+}
+
+.hero-btn-secondary:active {
+  transform: scale(0.96);
+  transition: transform 0.08s ease;
 }
 
 /* Tarih pill — glassmorphism (hero-actions içinde kullanılır) */
@@ -294,14 +308,19 @@
   }
 }
 
-/* ---- Bento hücresi — temel ---- */
+/* ---- Bento hücresi — FAZ 4: Spring fizik + spotlight ---- */
 .bento-card {
   background: #0c0c0c;
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 24px;
   padding: 1.75rem;
-  transition: border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+  /* Spring overshoot: transform için 0.34,1.56 (hafif bounce) */
+  transition: border-color    0.4s  cubic-bezier(0.16, 1, 0.3, 1),
+              transform       0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+              background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow      0.4s  cubic-bezier(0.16, 1, 0.3, 1);
   cursor: default;
 }
 
@@ -311,13 +330,52 @@
   }
 }
 
-.bento-card:hover {
-  border-color: rgba(255, 255, 255, 0.10);
-  transform: translateY(-2px);
+/* Cursor spotlight — farenin gittiği yerde mikro ışık hâlesi */
+.bento-card::before {
+  content: '';
+  position: absolute;
+  top:  var(--card-mouse-y, 50%);
+  left: var(--card-mouse-x, 50%);
+  transform: translate(-50%, -50%);
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.038) 0%,
+    transparent 65%
+  );
+  pointer-events: none;
+  opacity: 0;
+  border-radius: 50%;
+  transition: opacity 0.4s ease;
+  z-index: 0;
 }
 
+/* İçerik spotlight'ın üstünde kalmalı */
+.bento-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.bento-card:hover::before {
+  opacity: 1;
+}
+
+/* Lift + border + background parlaması */
+.bento-card:hover {
+  border-color: rgba(255, 255, 255, 0.13);
+  transform: translateY(-3px);
+  background-color: #121212;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55),
+              0 4px  12px rgba(0, 0, 0, 0.30);
+}
+
+/* Squish — yaya basılmış gibi anlık sıkışma */
 .bento-card:active {
-  transform: scale(0.99);
+  transform: scale(0.98) translateY(0px);
+  background-color: #0e0e0e;
+  transition: transform        0.1s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.1s ease;
 }
 
 /* 2 sütun genişlik — asimetri */
