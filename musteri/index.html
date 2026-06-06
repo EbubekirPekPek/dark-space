@@ -605,12 +605,12 @@
   </div>
 
   <script type="module">
-    import { initApp, showToast } from '../js/app.js';
+    import { initApp, showToast } from '../js/app.js?v=3';
     import {
       saveClient, getClients, saveClientNote, getClientNotes,
       saveKPI, updateKPIActual, getKPIs,
       saveTodo, updateTodoStatus, getTodos
-    } from '../js/firestore.js';
+    } from '../js/firestore.js?v=3';
 
     // ─── Durum ──────────────────────────────────────────────────────────────────
     let aktifMusteri = null; // Şu an açık müşteri objesi
@@ -1072,6 +1072,8 @@
           liste.appendChild(el);
         });
       } catch (err) {
+        console.error('[todolariRenderEt]', err);
+        showToast('Yapılacaklar yüklenemedi: ' + err.message, 'error');
         liste.innerHTML = '<div style="color:var(--color-error);font-size:var(--text-sm);">Yapılacaklar yüklenemedi.</div>';
       }
     }
@@ -1080,14 +1082,17 @@
       const input = document.getElementById('newTodoInput');
       const metin = input.value.trim();
       if (!metin) return;
+      if (!aktifMusteri) { showToast('Müşteri seçili değil', 'error'); return; }
       const btn = document.getElementById('addTodoBtn');
       btn.disabled = true;
       try {
         const sonuc = await saveTodo({ title: metin, clientId: aktifMusteri.id });
         if (sonuc.hata) throw new Error(sonuc.hata);
+        showToast('Yapılacak eklendi', 'success');
         input.value = '';
         await todolariRenderEt();
       } catch (err) {
+        console.error('[todoEkle]', err);
         showToast('Yapılacak eklenemedi: ' + err.message, 'error');
       } finally {
         btn.disabled = false;
