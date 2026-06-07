@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <!--
   musteri/index.html
-  Dark Space — Müşteri Alanı
-  Müşteri listesi + detay modal (sekmeli: Genel, KPI, Notlar, Yapılacaklar)
+  Dark Space — Müşteri Alanı  v9
+  Bento hub grid + design system upgrade
 -->
 <html lang="tr">
 <head>
@@ -12,19 +12,281 @@
   <meta name="theme-color" content="#08080d">
   <title>Müşteri Alanı — Dark Space</title>
 
-  <link rel="stylesheet" href="../css/design-system.css?v=6">
-  <link rel="stylesheet" href="../css/components.css?v=6">
-  <link rel="stylesheet" href="../css/pages.css?v=6">
+  <link rel="stylesheet" href="../css/design-system.css?v=10">
+  <link rel="stylesheet" href="../css/components.css?v=10">
+  <link rel="stylesheet" href="../css/pages.css?v=10">
 
   <style>
-    /* Müşteri Grid */
+    /* ── Hub Profil ─────────────────────────────────────────────────────────── */
+    .hub-avatar-wrap {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      margin-bottom: var(--space-4);
+    }
+    .hub-avatar {
+      width: 54px;
+      height: 54px;
+      border-radius: var(--radius-xl);
+      background: linear-gradient(135deg, rgba(139,92,246,0.85) 0%, rgba(99,102,241,0.65) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--text-xl);
+      font-weight: var(--font-weight-bold);
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .hub-member-name {
+      font-size: var(--text-lg);
+      font-weight: var(--font-weight-bold);
+      background: linear-gradient(135deg, #e5e7eb 0%, #9ca3af 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.2;
+    }
+    .hub-member-role {
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      margin-top: 2px;
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+    }
+    .hub-membership-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: linear-gradient(135deg, rgba(139,92,246,0.16) 0%, rgba(99,102,241,0.10) 100%);
+      border: 1px solid rgba(139,92,246,0.26);
+      border-radius: var(--radius-full);
+      padding: 3px 10px 3px 7px;
+      font-size: 0.6875rem;
+      font-weight: var(--font-weight-semibold);
+      color: rgba(167,139,250,1);
+      letter-spacing: var(--tracking-wide);
+      margin-top: var(--space-3);
+    }
+    .hub-membership-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(167,139,250,0.85);
+      flex-shrink: 0;
+    }
+    .hub-stat-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-3);
+      margin-top: var(--space-4);
+    }
+    .hub-stat {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--radius-lg);
+      padding: var(--space-3) var(--space-4);
+    }
+    .hub-stat-value {
+      font-size: var(--text-xl);
+      font-weight: var(--font-weight-bold);
+      color: var(--color-text-primary);
+      line-height: 1;
+    }
+    .hub-stat-label {
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      margin-top: 4px;
+    }
+
+    /* ── Hub Hizmetler ──────────────────────────────────────────────────────── */
+    .hub-services-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-4);
+    }
+    .hub-manage-btn {
+      font-size: 0.6875rem;
+      color: var(--color-text-muted);
+      background: none;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-sm);
+      padding: 3px 10px;
+      cursor: pointer;
+      transition: color var(--duration-fast), border-color var(--duration-fast);
+      font-family: var(--font-family-base);
+    }
+    @media (hover: hover) {
+      .hub-manage-btn:hover { color: var(--color-text-primary); border-color: rgba(255,255,255,0.16); }
+    }
+    .hub-service-list { display: flex; flex-direction: column; gap: var(--space-2); }
+    .hub-service-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-3) var(--space-4);
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--radius-lg);
+      transition: background var(--duration-fast), border-color var(--duration-fast);
+    }
+    @media (hover: hover) {
+      .hub-service-item:hover {
+        background: rgba(255,255,255,0.055);
+        border-color: rgba(255,255,255,0.10);
+      }
+    }
+    .hub-service-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .hub-service-dot--green  { background: rgba(34,197,94,0.85); }
+    .hub-service-dot--yellow { background: rgba(234,179,8,0.85); }
+    .hub-service-dot--blue   { background: rgba(99,102,241,0.85); }
+    .hub-service-name  { font-size: var(--text-sm); color: var(--color-text-primary); flex: 1; }
+    .hub-service-platform {
+      font-size: 0.6875rem;
+      color: var(--color-text-muted);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--radius-sm);
+      padding: 2px 7px;
+    }
+    .hub-service-budget {
+      font-size: var(--text-xs);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-secondary);
+      min-width: 70px;
+      text-align: right;
+    }
+
+    /* ── Hub Finans ─────────────────────────────────────────────────────────── */
+    .hub-invoice-table { display: flex; flex-direction: column; gap: var(--space-2); }
+    .hub-invoice-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-3) var(--space-4);
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--radius-lg);
+    }
+    .hub-invoice-date {
+      font-size: 0.6875rem;
+      color: var(--color-text-muted);
+      min-width: 56px;
+      flex-shrink: 0;
+    }
+    .hub-invoice-desc {
+      font-size: var(--text-xs);
+      color: var(--color-text-secondary);
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .hub-invoice-amount {
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-primary);
+      min-width: 72px;
+      text-align: right;
+    }
+    .hub-invoice-badge {
+      font-size: 0.625rem;
+      font-weight: var(--font-weight-semibold);
+      padding: 2px 7px;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-wider);
+      flex-shrink: 0;
+    }
+    .hub-invoice-badge--paid    { background: rgba(34,197,94,0.12); color: rgba(74,222,128,0.9); border: 1px solid rgba(34,197,94,0.20); }
+    .hub-invoice-badge--pending { background: rgba(234,179,8,0.12);  color: rgba(250,204,21,0.9); border: 1px solid rgba(234,179,8,0.20);  }
+
+    /* ── Hub Destek ─────────────────────────────────────────────────────────── */
+    .hub-support-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-5);
+    }
+    @media (max-width: 640px) { .hub-support-grid { grid-template-columns: 1fr; } }
+    .hub-support-label {
+      font-size: 0.6875rem;
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-wider);
+      margin-bottom: var(--space-3);
+    }
+    .hub-ticket-list { display: flex; flex-direction: column; gap: var(--space-2); }
+    .hub-ticket {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-3);
+      padding: var(--space-3);
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--radius-lg);
+    }
+    .hub-ticket-priority {
+      font-size: 0.5625rem;
+      font-weight: var(--font-weight-bold);
+      padding: 2px 5px;
+      border-radius: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .hub-ticket-priority--high   { background: rgba(239,68,68,0.15);   color: rgba(252,165,165,0.95); }
+    .hub-ticket-priority--medium { background: rgba(234,179,8,0.15);   color: rgba(253,224,71,0.95);  }
+    .hub-ticket-priority--low    { background: rgba(99,102,241,0.15);  color: rgba(165,180,252,0.95); }
+    .hub-ticket-info   { flex: 1; min-width: 0; }
+    .hub-ticket-title  { font-size: var(--text-xs); color: var(--color-text-secondary); line-height: 1.4; }
+    .hub-ticket-meta   { font-size: 0.625rem; color: var(--color-text-muted); margin-top: 2px; }
+    .hub-support-form  { display: flex; flex-direction: column; gap: var(--space-3); }
+    .hub-glass-input,
+    .hub-glass-select {
+      width: 100%;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-md);
+      padding: var(--space-2) var(--space-3);
+      font-size: var(--text-sm);
+      color: var(--color-text-primary);
+      font-family: var(--font-family-base);
+      box-sizing: border-box;
+      transition: border-color var(--duration-fast), background var(--duration-fast);
+    }
+    .hub-glass-input:focus,
+    .hub-glass-select:focus  { outline: none; border-color: rgba(255,255,255,0.20); background: rgba(255,255,255,0.05); }
+    .hub-glass-input::placeholder { color: var(--color-text-disabled); }
+    .hub-submit-btn {
+      width: 100%;
+      padding: var(--space-2) var(--space-4);
+      background: linear-gradient(135deg, rgba(139,92,246,0.22) 0%, rgba(99,102,241,0.16) 100%);
+      border: 1px solid rgba(139,92,246,0.28);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-semibold);
+      color: rgba(196,181,253,0.95);
+      cursor: pointer;
+      transition: background var(--duration-fast), border-color var(--duration-fast), transform var(--duration-fast);
+      font-family: var(--font-family-base);
+    }
+    @media (hover: hover) {
+      .hub-submit-btn:hover {
+        background: linear-gradient(135deg, rgba(139,92,246,0.34) 0%, rgba(99,102,241,0.26) 100%);
+        border-color: rgba(139,92,246,0.42);
+        transform: translateY(-1px);
+      }
+    }
+
+    /* ── Müşteri Grid ───────────────────────────────────────────────────────── */
     .customer-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: var(--space-4);
-      margin-top: var(--space-6);
+      margin-top: var(--space-4);
     }
-
     .customer-card {
       background: var(--color-bg-surface);
       border: 1px solid var(--color-border-default);
@@ -33,20 +295,19 @@
       cursor: pointer;
       transition: border-color var(--duration-fast), transform var(--duration-fast), background var(--duration-fast);
     }
-
-    .customer-card:hover {
-      border-color: var(--color-accent);
-      background: var(--color-bg-overlay);
-      transform: translateY(-2px);
+    @media (hover: hover) {
+      .customer-card:hover {
+        border-color: var(--color-accent);
+        background: var(--color-bg-overlay);
+        transform: translateY(-2px);
+      }
     }
-
     .customer-card-top {
       display: flex;
       align-items: center;
       gap: var(--space-3);
       margin-bottom: var(--space-3);
     }
-
     .customer-avatar {
       width: 44px;
       height: 44px;
@@ -60,38 +321,16 @@
       color: #fff;
       flex-shrink: 0;
     }
+    .customer-info  { flex: 1; min-width: 0; }
+    .customer-name  { font-size: var(--text-base); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .customer-sector { font-size: var(--text-xs); color: var(--color-text-muted); margin-top: 2px; }
+    .customer-card-footer { display: flex; align-items: center; justify-content: space-between; }
 
-    .customer-info {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .customer-name {
-      font-size: var(--text-base);
-      font-weight: var(--font-weight-semibold);
-      color: var(--color-text-primary);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .customer-sector {
-      font-size: var(--text-xs);
-      color: var(--color-text-muted);
-      margin-top: 2px;
-    }
-
-    .customer-card-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    /* Müşteri Detay Modal */
+    /* ── Müşteri Detay Modal ────────────────────────────────────────────────── */
     .customer-modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0,0,0,0.72);
       z-index: var(--z-modal);
       display: flex;
       align-items: center;
@@ -101,12 +340,7 @@
       pointer-events: none;
       transition: opacity var(--duration-normal);
     }
-
-    .customer-modal-overlay.is-open {
-      opacity: 1;
-      pointer-events: all;
-    }
-
+    .customer-modal-overlay.is-open { opacity: 1; pointer-events: all; }
     .customer-modal {
       background: var(--color-bg-modal);
       border: 1px solid var(--color-border-default);
@@ -119,11 +353,7 @@
       transform: translateY(12px);
       transition: transform var(--duration-normal);
     }
-
-    .customer-modal-overlay.is-open .customer-modal {
-      transform: translateY(0);
-    }
-
+    .customer-modal-overlay.is-open .customer-modal { transform: translateY(0); }
     .customer-modal-header {
       display: flex;
       align-items: center;
@@ -131,14 +361,7 @@
       padding: var(--space-5) var(--space-6);
       border-bottom: 1px solid var(--color-border-subtle);
     }
-
-    .customer-modal-title {
-      font-size: var(--text-lg);
-      font-weight: var(--font-weight-semibold);
-      color: var(--color-text-primary);
-    }
-
-    /* Sekmeler */
+    .customer-modal-title { font-size: var(--text-lg); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); }
     .customer-tabs {
       display: flex;
       gap: 0;
@@ -147,7 +370,6 @@
       overflow-x: auto;
       scrollbar-width: none;
     }
-
     .customer-tab {
       padding: var(--space-3) var(--space-4);
       font-size: var(--text-sm);
@@ -162,150 +384,37 @@
       border-left: none;
       border-right: none;
     }
-
-    .customer-tab:hover { color: var(--color-text-primary); }
+    @media (hover: hover) { .customer-tab:hover { color: var(--color-text-primary); } }
     .customer-tab.is-active { color: var(--color-accent); border-bottom-color: var(--color-accent); }
-
-    .customer-modal-body {
-      flex: 1;
-      overflow-y: auto;
-      padding: var(--space-6);
-    }
-
+    .customer-modal-body { flex: 1; overflow-y: auto; padding: var(--space-6); }
     .tab-panel { display: none; }
     .tab-panel.is-active { display: block; }
 
-    /* KPI Alanı */
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-3);
-    }
-
-    @media (max-width: 500px) {
-      .kpi-grid { grid-template-columns: 1fr; }
-    }
-
-    .kpi-field {
-      background: var(--color-bg-inset);
-      border: 1px solid var(--color-border-default);
-      border-radius: var(--radius-lg);
-      padding: var(--space-3);
-    }
-
-    .kpi-field-label {
-      font-size: var(--text-xs);
-      color: var(--color-text-muted);
-      text-transform: uppercase;
-      letter-spacing: var(--tracking-widest);
-      margin-bottom: var(--space-2);
-    }
-
-    .kpi-field input {
-      width: 100%;
-      background: transparent;
-      border: none;
-      color: var(--color-text-primary);
-      font-size: var(--text-base);
-      font-weight: var(--font-weight-semibold);
-      font-family: var(--font-family-base);
-      outline: none;
-      box-sizing: border-box;
-    }
-
+    /* KPI */
+    .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); }
+    @media (max-width: 500px) { .kpi-grid { grid-template-columns: 1fr; } }
+    .kpi-field { background: var(--color-bg-inset); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); padding: var(--space-3); }
+    .kpi-field-label { font-size: var(--text-xs); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: var(--tracking-widest); margin-bottom: var(--space-2); }
+    .kpi-field input { width: 100%; background: transparent; border: none; color: var(--color-text-primary); font-size: var(--text-base); font-weight: var(--font-weight-semibold); font-family: var(--font-family-base); outline: none; box-sizing: border-box; }
     .kpi-field input::placeholder { color: var(--color-text-disabled); font-weight: var(--font-weight-normal); }
 
-    /* Yapılacaklar */
-    .todo-list {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-2);
-      margin-bottom: var(--space-4);
-    }
-
-    .todo-item {
-      display: flex;
-      align-items: center;
-      gap: var(--space-3);
-      padding: var(--space-3) var(--space-4);
-      background: var(--color-bg-inset);
-      border: 1px solid var(--color-border-subtle);
-      border-radius: var(--radius-md);
-    }
-
-    .todo-checkbox {
-      width: 16px;
-      height: 16px;
-      border: 2px solid var(--color-border-strong);
-      border-radius: 4px;
-      cursor: pointer;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background var(--duration-fast), border-color var(--duration-fast);
-    }
-
-    .todo-checkbox.is-done {
-      background: var(--color-success);
-      border-color: var(--color-success);
-    }
-
-    .todo-text {
-      font-size: var(--text-sm);
-      color: var(--color-text-secondary);
-      flex: 1;
-    }
-
-    .todo-text.is-done {
-      text-decoration: line-through;
-      color: var(--color-text-muted);
-    }
-
-    .todo-add-row {
-      display: flex;
-      gap: var(--space-2);
-    }
-
-    .todo-add-row input {
-      flex: 1;
-      background: var(--color-bg-inset);
-      border: 1px solid var(--color-border-default);
-      border-radius: var(--radius-md);
-      padding: var(--space-2) var(--space-3);
-      font-size: var(--text-sm);
-      color: var(--color-text-primary);
-      font-family: var(--font-family-base);
-    }
-
+    /* Todo */
+    .todo-list { display: flex; flex-direction: column; gap: var(--space-2); margin-bottom: var(--space-4); }
+    .todo-item { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); background: var(--color-bg-inset); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); }
+    .todo-checkbox { width: 16px; height: 16px; border: 2px solid var(--color-border-strong); border-radius: 4px; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: background var(--duration-fast), border-color var(--duration-fast); }
+    .todo-checkbox.is-done { background: var(--color-success); border-color: var(--color-success); }
+    .todo-text { font-size: var(--text-sm); color: var(--color-text-secondary); flex: 1; }
+    .todo-text.is-done { text-decoration: line-through; color: var(--color-text-muted); }
+    .todo-add-row { display: flex; gap: var(--space-2); }
+    .todo-add-row input { flex: 1; background: var(--color-bg-inset); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); padding: var(--space-2) var(--space-3); font-size: var(--text-sm); color: var(--color-text-primary); font-family: var(--font-family-base); }
     .todo-add-row input:focus { outline: none; border-color: var(--color-border-focus); }
 
-    /* Bilgi satırları */
-    .info-row {
-      display: flex;
-      gap: var(--space-3);
-      margin-bottom: var(--space-3);
-      align-items: flex-start;
-    }
+    /* Info rows */
+    .info-row { display: flex; gap: var(--space-3); margin-bottom: var(--space-3); align-items: flex-start; }
+    .info-label { font-size: var(--text-xs); font-weight: var(--font-weight-semibold); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: var(--tracking-wider); width: 100px; flex-shrink: 0; padding-top: 2px; }
+    .info-value { font-size: var(--text-sm); color: var(--color-text-primary); flex: 1; }
 
-    .info-label {
-      font-size: var(--text-xs);
-      font-weight: var(--font-weight-semibold);
-      color: var(--color-text-muted);
-      text-transform: uppercase;
-      letter-spacing: var(--tracking-wider);
-      width: 100px;
-      flex-shrink: 0;
-      padding-top: 2px;
-    }
-
-    .info-value {
-      font-size: var(--text-sm);
-      color: var(--color-text-primary);
-      flex: 1;
-    }
-
-    /* Yeni müşteri ekle butonu */
+    /* Add customer placeholder */
     .add-customer-placeholder {
       border: 2px dashed var(--color-border-default);
       border-radius: var(--radius-xl);
@@ -316,30 +425,48 @@
       gap: var(--space-2);
       padding: var(--space-8);
       cursor: pointer;
-      transition: border-color var(--duration-fast), background var(--duration-fast);
+      transition: border-color var(--duration-fast), background var(--duration-fast), color var(--duration-fast);
       color: var(--color-text-muted);
     }
+    @media (hover: hover) {
+      .add-customer-placeholder:hover {
+        border-color: var(--color-accent);
+        background: var(--color-accent-subtle);
+        color: var(--color-accent);
+      }
+    }
 
-    .add-customer-placeholder:hover {
-      border-color: var(--color-accent);
-      background: var(--color-accent-subtle);
-      color: var(--color-accent);
+    /* Section divider */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-6) 0 0;
+      margin-bottom: var(--space-1);
+    }
+    .section-divider-title {
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-widest);
     }
   </style>
 </head>
 <body>
 
-  <header class="top-bar">
-    <div class="top-bar-left">
-      <button class="hamburger-btn" id="sidebar-toggle" aria-label="Menüyü aç" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-      <span class="top-bar-title">Müşteri Alanı</span>
-    </div>
-  </header>
+  <!-- Mesh Gradient Ambient Arka Plan -->
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="ambient-orb ambient-orb--purple"></div>
+    <div class="ambient-orb ambient-orb--blue"></div>
+  </div>
 
+  <!-- Sidebar Overlay -->
   <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
+  <!-- ================================================================
+       SIDEBAR
+       ================================================================ -->
   <aside class="sidebar" id="sidebar" role="navigation" aria-label="Ana navigasyon">
     <div class="sidebar-logo">
       <div class="sidebar-logo-icon">
@@ -373,7 +500,6 @@
       </div>
       <div class="sidebar-section">
         <div class="sidebar-section-label">Haber Akışları</div>
-
         <a href="../haberler.html" class="nav-link">
           <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2Z"/>
@@ -422,25 +548,185 @@
     </div>
   </aside>
 
+  <!-- ================================================================
+       MAIN
+       ================================================================ -->
   <main class="main-content" id="mainContent">
     <div class="content-inner">
 
-      <div class="page-header">
-        <div>
-          <h1 class="page-title">Müşteri Alanı</h1>
-          <p class="page-subtitle">Aktif müşterilerinizin kampanya ve hedef takibi</p>
+      <!-- ── Hero ──────────────────────────────────────────────────── -->
+      <section class="dashboard-hero anim-fade-up anim-d100" aria-label="Müşteri Alanı başlığı">
+        <div class="hero-greeting">
+          <div class="hero-greeting-label">Çalışma Alanı</div>
+          <h1 class="hero-title">Müşteri Alanı</h1>
+          <p class="hero-subtitle">Ajans müşterilerinizi yönetin, kampanya KPI ve görevleri takip edin.</p>
         </div>
-        <div class="page-header-actions">
-          <button class="btn btn-primary btn-sm" id="addCustomerBtn">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
+        <div class="hero-actions">
+          <button class="hero-btn-primary" id="addCustomerBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;">
               <path d="M5 12h14"/><path d="M12 5v14"/>
             </svg>
             Yeni Müşteri Ekle
           </button>
         </div>
+      </section>
+
+      <!-- ── Hub Bento Grid ─────────────────────────────────────────── -->
+      <section class="dashboard-blocks" aria-label="Ajans özet paneller">
+
+        <!-- BENTO 1 — Ajans Profili -->
+        <article class="bento-card anim-fade-up anim-d200" aria-label="Ajans profil kartı">
+          <div class="bento-card-label">Ajans Profili</div>
+          <div class="hub-avatar-wrap">
+            <div class="hub-avatar">DS</div>
+            <div>
+              <div class="hub-member-name">Dark Space Dijital</div>
+              <div class="hub-member-role">Dijital Pazarlama Ajansı</div>
+            </div>
+          </div>
+          <div class="hub-membership-badge">
+            <span class="hub-membership-badge-dot"></span>
+            Elite Üye
+          </div>
+          <div class="hub-stat-row">
+            <div class="hub-stat">
+              <div class="hub-stat-value" id="hubActiveCount">7</div>
+              <div class="hub-stat-label">Aktif Müşteri</div>
+            </div>
+            <div class="hub-stat">
+              <div class="hub-stat-value">18</div>
+              <div class="hub-stat-label">Ay Üyelik</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- BENTO 2 — Aktif Hizmetler (span 2) -->
+        <article class="bento-card bento-span-2 anim-fade-up anim-d300" aria-label="Aktif hizmetler">
+          <div class="hub-services-header">
+            <div class="bento-card-label" style="margin-bottom:0;">Aktif Hizmetler</div>
+            <button class="hub-manage-btn">Yönet</button>
+          </div>
+          <div class="hub-service-list">
+            <div class="hub-service-item">
+              <span class="hub-service-dot hub-service-dot--green"></span>
+              <span class="hub-service-name">Meta Ads</span>
+              <span class="hub-service-platform">Facebook / Instagram</span>
+              <span class="hub-service-budget">₺18.500</span>
+            </div>
+            <div class="hub-service-item">
+              <span class="hub-service-dot hub-service-dot--blue"></span>
+              <span class="hub-service-name">Google Ads</span>
+              <span class="hub-service-platform">Search / Display</span>
+              <span class="hub-service-budget">₺12.000</span>
+            </div>
+            <div class="hub-service-item">
+              <span class="hub-service-dot hub-service-dot--green"></span>
+              <span class="hub-service-name">TikTok Ads</span>
+              <span class="hub-service-platform">TikTok For Business</span>
+              <span class="hub-service-budget">₺8.000</span>
+            </div>
+            <div class="hub-service-item">
+              <span class="hub-service-dot hub-service-dot--yellow"></span>
+              <span class="hub-service-name">SEO</span>
+              <span class="hub-service-platform">Organik / İçerik</span>
+              <span class="hub-service-budget">₺5.500</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- BENTO 3 — Finansal Geçmiş -->
+        <article class="bento-card anim-fade-up anim-d400" aria-label="Finansal geçmiş">
+          <div class="bento-card-label">Son Faturalar</div>
+          <div class="hub-invoice-table">
+            <div class="hub-invoice-row">
+              <span class="hub-invoice-date">Haz 2026</span>
+              <span class="hub-invoice-desc">Meta Ads — Haziran</span>
+              <span class="hub-invoice-amount">₺18.500</span>
+              <span class="hub-invoice-badge hub-invoice-badge--paid">Ödendi</span>
+            </div>
+            <div class="hub-invoice-row">
+              <span class="hub-invoice-date">Haz 2026</span>
+              <span class="hub-invoice-desc">Google Ads + SEO</span>
+              <span class="hub-invoice-amount">₺17.500</span>
+              <span class="hub-invoice-badge hub-invoice-badge--pending">Bekliyor</span>
+            </div>
+            <div class="hub-invoice-row">
+              <span class="hub-invoice-date">May 2026</span>
+              <span class="hub-invoice-desc">TikTok Ads — Mayıs</span>
+              <span class="hub-invoice-amount">₺8.000</span>
+              <span class="hub-invoice-badge hub-invoice-badge--paid">Ödendi</span>
+            </div>
+            <div class="hub-invoice-row">
+              <span class="hub-invoice-date">May 2026</span>
+              <span class="hub-invoice-desc">Strateji Danışmanlık</span>
+              <span class="hub-invoice-amount">₺4.200</span>
+              <span class="hub-invoice-badge hub-invoice-badge--paid">Ödendi</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- BENTO 4 — Hızlı Destek (span 2) -->
+        <article class="bento-card bento-span-2 anim-fade-up anim-d500" aria-label="Destek ve talepler">
+          <div class="bento-card-label" style="margin-bottom: var(--space-4);">Destek Merkezi</div>
+          <div class="hub-support-grid">
+
+            <!-- Açık Talepler -->
+            <div>
+              <div class="hub-support-label">Açık Talepler</div>
+              <div class="hub-ticket-list">
+                <div class="hub-ticket">
+                  <span class="hub-ticket-priority hub-ticket-priority--high">HIGH</span>
+                  <div class="hub-ticket-info">
+                    <div class="hub-ticket-title">Meta Ads CPM artışı — acil aksiyon</div>
+                    <div class="hub-ticket-meta">Açıldı: 5 Haz &nbsp;·&nbsp; Meta Ads</div>
+                  </div>
+                </div>
+                <div class="hub-ticket">
+                  <span class="hub-ticket-priority hub-ticket-priority--medium">MED</span>
+                  <div class="hub-ticket-info">
+                    <div class="hub-ticket-title">Google Ads reklam metni güncelleme talebi</div>
+                    <div class="hub-ticket-meta">Açıldı: 3 Haz &nbsp;·&nbsp; Google Ads</div>
+                  </div>
+                </div>
+                <div class="hub-ticket">
+                  <span class="hub-ticket-priority hub-ticket-priority--low">LOW</span>
+                  <div class="hub-ticket-info">
+                    <div class="hub-ticket-title">Aylık rapor tarihi değişikliği</div>
+                    <div class="hub-ticket-meta">Açıldı: 1 Haz &nbsp;·&nbsp; Genel</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Yeni Talep Formu -->
+            <div>
+              <div class="hub-support-label">Yeni Talep Oluştur</div>
+              <div class="hub-support-form">
+                <input class="hub-glass-input" type="text" placeholder="Konu başlığı..." aria-label="Talep başlığı">
+                <select class="hub-glass-select" aria-label="Hizmet seç">
+                  <option value="">Hizmet seç...</option>
+                  <option>Meta Ads</option>
+                  <option>Google Ads</option>
+                  <option>TikTok Ads</option>
+                  <option>SEO</option>
+                  <option>Genel</option>
+                </select>
+                <textarea class="hub-glass-input" rows="3" placeholder="Detaylar, ekran görüntüsü linki..." style="resize:vertical;" aria-label="Talep detayı"></textarea>
+                <button class="hub-submit-btn" type="button">Talep Gönder</button>
+              </div>
+            </div>
+
+          </div>
+        </article>
+
+      </section>
+
+      <!-- ── Müşteri Listesi Başlığı ─────────────────────────────── -->
+      <div class="section-divider anim-fade-up anim-d600">
+        <span class="section-divider-title">Müşteri Listesi</span>
       </div>
 
-      <!-- Bugünkü Takipler Paneli -->
+      <!-- ── Bugünkü Takipler Paneli ─────────────────────────────── -->
       <div id="bugunPanel" style="display:none;margin-bottom:var(--space-5);">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-3);">
           <div style="display:flex;align-items:center;gap:var(--space-2);">
@@ -448,18 +734,43 @@
             <span style="font-size:var(--text-sm);font-weight:var(--font-weight-semibold);color:var(--color-text-primary);">Bugünkü Takipler</span>
             <span id="bugunOzet" style="font-size:var(--text-xs);color:var(--color-text-muted);background:var(--color-bg-inset);padding:2px 8px;border-radius:var(--radius-full);"></span>
           </div>
-          <button id="bugunPanelToggle" style="background:none;border:none;color:var(--color-text-muted);cursor:pointer;font-size:var(--text-xs);padding:4px 8px;border-radius:var(--radius-sm);border:1px solid var(--color-border-subtle);">Gizle</button>
+          <button id="bugunPanelToggle" style="background:none;border:none;color:var(--color-text-muted);cursor:pointer;font-size:var(--text-xs);padding:4px 8px;border-radius:var(--radius-sm);border:1px solid var(--color-border-subtle);font-family:var(--font-family-base);">Gizle</button>
         </div>
         <div id="bugunGorevler" style="display:flex;flex-direction:column;gap:var(--space-2);"></div>
       </div>
 
-      <!-- JS tarafından doldurulur -->
+      <!-- ── Müşteri Grid (JS fills this) ──────────────────────── -->
       <div class="customer-grid" id="customerGrid"></div>
+
+      <!-- ── Footer ─────────────────────────────────────────────── -->
+      <footer class="site-footer anim-fade-up anim-d700" aria-label="Site altbilgisi">
+        <div class="footer-inner">
+          <div class="footer-brand">
+            <div class="footer-logo-wrap">
+              <div class="footer-logo-mark" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                </svg>
+              </div>
+              <span class="footer-logo-name">Dark Space</span>
+            </div>
+            <p class="footer-copy">&copy; 2026 Dark Space. Tüm hakları saklıdır.</p>
+            <p class="footer-tagline">Bilgi. Takip. Gelişim.</p>
+          </div>
+          <nav class="footer-links" aria-label="Alt navigasyon">
+            <a href="#" class="footer-link">Gizlilik</a>
+            <a href="#" class="footer-link">Kullanım Koşulları</a>
+            <a href="mailto:info@darkspace.app" class="footer-link">İletişim</a>
+          </nav>
+        </div>
+      </footer>
 
     </div>
   </main>
 
-  <!-- MOBİL ALT BAR -->
+  <!-- ================================================================
+       MOBİL ALT BAR
+       ================================================================ -->
   <nav class="bottom-bar" aria-label="Mobil navigasyon">
     <div class="bottom-bar-nav">
       <a href="../index.html" class="bottom-bar-item">
@@ -469,7 +780,7 @@
         </svg>
         <span class="bottom-bar-item-label">Ana</span>
       </a>
-      <a href="../reklam.html" class="bottom-bar-item">
+      <a href="../haberler.html" class="bottom-bar-item">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2Z"/>
           <path d="M9 12h6"/><path d="M9 16h4"/><path d="M9 8h1"/>
@@ -498,7 +809,9 @@
     </div>
   </nav>
 
-  <!-- MÜŞTERİ DETAY MODAL -->
+  <!-- ================================================================
+       MÜŞTERİ DETAY MODAL
+       ================================================================ -->
   <div class="customer-modal-overlay" id="customerModal" role="dialog" aria-modal="true">
     <div class="customer-modal">
 
@@ -517,14 +830,14 @@
         </div>
       </div>
 
-      <!-- Brief Bölümü (her zaman görünür) -->
+      <!-- Brief Bölümü -->
       <div id="briefSection" style="padding:var(--space-3) var(--space-5);border-bottom:1px solid var(--color-border-subtle);background:var(--color-bg-inset);">
         <div id="briefView" style="display:flex;align-items:flex-start;gap:var(--space-3);">
           <div style="flex:1;min-width:0;">
             <div style="font-size:var(--text-xs);font-weight:var(--font-weight-semibold);color:var(--color-accent);text-transform:uppercase;letter-spacing:var(--tracking-wider);margin-bottom:var(--space-1);">Brief / Hedef</div>
             <p id="briefDisplay" style="font-size:var(--text-sm);color:var(--color-text-secondary);margin:0;line-height:1.6;white-space:pre-wrap;"></p>
           </div>
-          <button id="editBriefBtn" style="flex-shrink:0;background:none;border:1px solid var(--color-border-default);border-radius:var(--radius-sm);padding:3px 10px;font-size:var(--text-xs);color:var(--color-text-muted);cursor:pointer;white-space:nowrap;margin-top:var(--space-5);">✏ Düzenle</button>
+          <button id="editBriefBtn" style="flex-shrink:0;background:none;border:1px solid var(--color-border-default);border-radius:var(--radius-sm);padding:3px 10px;font-size:var(--text-xs);color:var(--color-text-muted);cursor:pointer;white-space:nowrap;margin-top:var(--space-5);font-family:var(--font-family-base);">✏ Düzenle</button>
         </div>
         <div id="briefEditSection" style="display:none;">
           <textarea id="briefTextarea" rows="3" placeholder="Müşteri briefinği, hedefler, kısıtlar, önemli notlar..." style="width:100%;background:var(--color-bg-surface);border:1px solid var(--color-accent);border-radius:var(--radius-md);padding:var(--space-2) var(--space-3);font-size:var(--text-sm);color:var(--color-text-primary);font-family:var(--font-family-base);resize:vertical;box-sizing:border-box;"></textarea>
@@ -548,7 +861,6 @@
       </div>
 
       <div class="customer-modal-body">
-        <!-- Tüm sekme içerikleri JS tarafından dinamik olarak doldurulur -->
         <div class="tab-panel is-active" id="tab-genel"></div>
         <div class="tab-panel" id="tab-kpi"></div>
         <div class="tab-panel" id="tab-notlar"></div>
@@ -558,7 +870,9 @@
     </div>
   </div>
 
-  <!-- YENİ MÜŞTERİ MODAL -->
+  <!-- ================================================================
+       YENİ MÜŞTERİ MODAL
+       ================================================================ -->
   <div class="customer-modal-overlay" id="addCustomerModal" role="dialog" aria-modal="true" aria-labelledby="addModalTitle">
     <div class="customer-modal">
       <div class="customer-modal-header">
@@ -600,7 +914,9 @@
     </div>
   </div>
 
-  <!-- KPI EKLE MODAL -->
+  <!-- ================================================================
+       KPI EKLE MODAL
+       ================================================================ -->
   <div class="customer-modal-overlay" id="addKpiModal" role="dialog" aria-modal="true" aria-labelledby="addKpiTitle">
     <div class="customer-modal" style="max-width:480px;">
       <div class="customer-modal-header">
@@ -644,6 +960,9 @@
     </div>
   </div>
 
+  <!-- ================================================================
+       FIREBASE + JS (UNCHANGED)
+       ================================================================ -->
   <script type="module">
     import { initApp, showToast } from '../js/app.js?v=5';
     import {
@@ -682,6 +1001,9 @@
         const musteriler = await getClients();
         if (musteriler.hata) throw new Error(musteriler.hata);
         renderMusteriler(musteriler);
+        // Hub sayacını güncelle
+        const cnt = document.getElementById('hubActiveCount');
+        if (cnt) cnt.textContent = musteriler.filter(m => m.status === 'aktif').length || musteriler.length;
       } catch (err) {
         showToast('Müşteriler yüklenemedi: ' + err.message, 'error');
         document.getElementById('customerGrid').innerHTML = '<div class="empty-state">Müşteriler yüklenemedi. Sayfayı yenileyin.</div>';
@@ -694,7 +1016,6 @@
 
       if (!musteriler.length) {
         grid.innerHTML = '<div class="empty-state" style="padding:var(--space-8);color:var(--color-text-muted);font-size:var(--text-sm);">Henüz müşteri eklenmedi. Yeni müşteri ekle →</div>';
-        // Placeholder'ı yeniden ekle
         const placeholder = document.createElement('div');
         placeholder.className = 'add-customer-placeholder';
         placeholder.id = 'addCustomerPlaceholder';
@@ -849,7 +1170,6 @@
       briefEl.textContent = musteri.brief || '';
       briefEl.style.color = musteri.brief ? 'var(--color-text-secondary)' : 'var(--color-text-muted)';
       if (!musteri.brief) briefEl.textContent = 'Brief eklenmedi — Düzenle tuşuna bas.';
-      // Brief edit alanını sıfırla
       document.getElementById('briefEditSection').style.display = 'none';
       document.getElementById('briefView').style.display = 'flex';
 
@@ -899,16 +1219,13 @@
           socialLinks:    aktifMusteri.socialLinks,
         }, aktifMusteri.id);
         if (sonuc.hata) throw new Error(sonuc.hata);
-        // Lokal state güncelle
         aktifMusteri.brief = yeniBrief;
-        // Brief gösterimi güncelle
         const briefEl = document.getElementById('briefDisplay');
         briefEl.textContent = yeniBrief || 'Brief eklenmedi — Düzenle tuşuna bas.';
         briefEl.style.color = yeniBrief ? 'var(--color-text-secondary)' : 'var(--color-text-muted)';
         document.getElementById('briefEditSection').style.display = 'none';
         document.getElementById('briefView').style.display = 'flex';
         showToast('Brief kaydedildi', 'success');
-        // Kart önizlemesini de güncelle
         await musteriListesiYukle();
       } catch (err) {
         showToast('Brief kaydedilemedi: ' + err.message, 'error');
@@ -917,7 +1234,6 @@
       }
     });
 
-    // Ctrl+Enter ile brief kaydet
     document.getElementById('briefTextarea').addEventListener('keydown', e => {
       if (e.key === 'Enter' && e.ctrlKey) document.getElementById('saveBriefBtn').click();
     });
@@ -987,7 +1303,6 @@
         });
         panel.appendChild(liste);
 
-        // Gerçekleşen güncelle butonları
         panel.querySelectorAll('.kpi-guncelle-btn').forEach(btn => {
           btn.addEventListener('click', async () => {
             const kpiId = btn.dataset.kpiId;
@@ -1009,7 +1324,6 @@
         });
       }
 
-      // KPI Ekle butonu
       const ekleBtn = document.createElement('button');
       ekleBtn.className = 'btn btn-primary btn-sm';
       ekleBtn.textContent = '+ Yeni KPI Ekle';
@@ -1218,7 +1532,7 @@
     }
 
     // ─── Günlük Sekmesi ──────────────────────────────────────────────────────────
-    const BUGUN = () => new Date().toISOString().split('T')[0]; // "YYYY-MM-DD"
+    const BUGUN = () => new Date().toISOString().split('T')[0];
 
     async function gunlukSekmeYukle() {
       if (!aktifMusteri) return;
@@ -1243,7 +1557,6 @@
 
       panel.innerHTML = '';
 
-      // İlerleme çubuğu
       const progressDiv = document.createElement('div');
       progressDiv.style.cssText = 'margin-bottom:var(--space-4);';
       const yuzde = toplam ? Math.round((tamamlanan / toplam) * 100) : 0;
@@ -1259,7 +1572,6 @@
       `;
       panel.appendChild(progressDiv);
 
-      // Görev listesi
       if (!gorevler.length) {
         const bos = document.createElement('div');
         bos.style.cssText = 'color:var(--color-text-muted);font-size:var(--text-sm);padding:var(--space-4) 0;';
@@ -1282,10 +1594,8 @@
             </div>
             <button class="gunluk-sil-btn" data-id="${g.id}" style="background:none;border:none;color:var(--color-text-muted);cursor:pointer;padding:4px;border-radius:var(--radius-sm);font-size:12px;opacity:0;transition:opacity 0.15s;" title="Sil">✕</button>
           `;
-          // Hover'da sil butonu göster
           el.addEventListener('mouseenter', () => el.querySelector('.gunluk-sil-btn').style.opacity = '1');
           el.addEventListener('mouseleave', () => el.querySelector('.gunluk-sil-btn').style.opacity = '0');
-          // Checkbox toggle
           const cb = el.querySelector('.todo-checkbox');
           const toggle = async () => {
             cb.style.pointerEvents = 'none';
@@ -1297,7 +1607,6 @@
           };
           cb.addEventListener('click', toggle);
           cb.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') toggle(); });
-          // Sil
           el.querySelector('.gunluk-sil-btn').addEventListener('click', async (e) => {
             e.stopPropagation();
             if (!confirm(`"${g.title}" silinsin mi?`)) return;
@@ -1311,7 +1620,6 @@
         panel.appendChild(liste);
       }
 
-      // Yeni görev ekleme formu
       const form = document.createElement('div');
       form.style.cssText = 'border-top:1px solid var(--color-border-subtle);padding-top:var(--space-4);';
       form.innerHTML = `
@@ -1327,7 +1635,6 @@
       `;
       panel.appendChild(form);
 
-      // Görev ekleme handler
       const ekleBtn = panel.querySelector('#gunlukGorevEkleBtn');
       const adInp   = panel.querySelector('#gunlukGorevAdi');
       const saatInp = panel.querySelector('#gunlukGorevSaat');
@@ -1341,7 +1648,7 @@
         adInp.value = ''; saatInp.value = '';
         showToast('Günlük görev eklendi', 'success');
         await gunlukSekmeYukle();
-        await bugunPanelGuncelle();  // bugunPanel içinde hatirlaticiKur() çağrılır
+        await bugunPanelGuncelle();
       };
       ekleBtn.addEventListener('click', gunlukEkle);
       adInp.addEventListener('keydown', e => { if (e.key === 'Enter') gunlukEkle(); });
@@ -1354,7 +1661,7 @@
       if (badge) badge.style.display = bekleyen > 0 ? 'block' : 'none';
     }
 
-    // ─── Bugünkü Takipler Paneli (tüm müşteriler) ───────────────────────────────
+    // ─── Bugünkü Takipler Paneli ─────────────────────────────────────────────────
     async function bugunPanelGuncelle() {
       const panel  = document.getElementById('bugunPanel');
       const liste  = document.getElementById('bugunGorevler');
@@ -1413,20 +1720,18 @@
               }).join('')}
             </div>
           `;
-          // Müşteriye tıklayınca detay aç
           satir.style.cursor = 'pointer';
           satir.addEventListener('click', () => musteriDetay(m));
           liste.appendChild(satir);
         });
 
-        // Hatırlatıcıları güncelle
         hatirlaticiKur();
       } catch (err) {
         console.error('[bugunPanel]', err);
       }
     }
 
-    // ─── Tarayıcı Bildirimleri ────────────────────────────────────────────────────
+    // ─── Bildirimler ─────────────────────────────────────────────────────────────
     const _hatirlaticiTimers = [];
 
     async function hatirlaticiIzniAl() {
@@ -1438,7 +1743,6 @@
     }
 
     async function hatirlaticiKur() {
-      // Önceki timer'ları temizle
       _hatirlaticiTimers.forEach(t => clearTimeout(t));
       _hatirlaticiTimers.length = 0;
 
@@ -1458,7 +1762,7 @@
           const hedef = new Date();
           hedef.setHours(saat, dakika, 0, 0);
           const fark = hedef - simdi;
-          if (fark > 0 && fark < 12 * 3600 * 1000) {  // en fazla 12 saat ilerisi
+          if (fark > 0 && fark < 12 * 3600 * 1000) {
             const t = setTimeout(() => {
               new Notification(`⏰ ${m.name}`, {
                 body: g.title,
@@ -1471,7 +1775,6 @@
       }
     }
 
-    // Paneli gizle/göster toggle
     document.getElementById('bugunPanelToggle').addEventListener('click', () => {
       const liste = document.getElementById('bugunGorevler');
       const btn   = document.getElementById('bugunPanelToggle');
@@ -1485,7 +1788,6 @@
       return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;"><polyline points="20 6 9 17 4 12"/></svg>';
     }
 
-    // ─── Yardımcılar ─────────────────────────────────────────────────────────────
     function escHtml(str) {
       return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     }

@@ -147,6 +147,7 @@
 }
 
 .sidebar-section-label {
+  font-family: var(--font-family-mono); /* Vercel caption-mono: teknik etiket = mono */
   font-size: var(--text-xs);
   font-weight: var(--font-weight-semibold);
   color: var(--color-text-muted);
@@ -406,8 +407,11 @@
   -webkit-backdrop-filter: blur(14px);
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 9999px;
-  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.20),
-              inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  /* Vercel stacked Level 3 — navbar kapsülü orta yükseklik */
+  box-shadow:
+    0px 2px 2px rgba(0, 0, 0, 0.25),
+    0px 8px 8px -8px rgba(0, 0, 0, 0.35),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.07);
   position: relative;
   /* Spring geçiş — scroll state değişiminde yumuşak */
   transition: background    0.5s cubic-bezier(0.16, 1, 0.3, 1),
@@ -415,11 +419,13 @@
               border-color  0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Sayfa kaydırıldı — opaklık + blur görsel olarak güçleniyor */
+/* Sayfa kaydırıldı — Vercel stacked Level 4 ile derinleşir */
 .navbar-capsule.is-scrolled {
   background: rgba(0, 0, 0, 0.72);
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.60),
-              inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  box-shadow:
+    0px 2px 2px rgba(0, 0, 0, 0.30),
+    0px 8px 16px -4px rgba(0, 0, 0, 0.40),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
   border-color: rgba(255, 255, 255, 0.12);
 }
 
@@ -488,10 +494,12 @@
               transform   0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.navbar-link:hover {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.07);
-  transform: scale(1.06);
+@media (hover: hover) {
+  .navbar-link:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.07);
+    transform: scale(1.06);
+  }
 }
 
 /* Squish — tıklanınca yaya basılmış hissi */
@@ -506,8 +514,10 @@
 }
 
 /* Aktif link hover'ı daha kısıtlı */
-.navbar-link.is-active:hover {
-  transform: scale(1.03);
+@media (hover: hover) {
+  .navbar-link.is-active:hover {
+    transform: scale(1.03);
+  }
 }
 
 /* Sağ: Aksiyon grubu */
@@ -529,7 +539,7 @@
   }
 }
 
-/* Masaüstü CTA butonu — tactile beyaz pill */
+/* Masaüstü CTA butonu — Vercel nav-scale: 6px radius (not marketing pill) */
 .navbar-cta {
   display: none;
   font-size: var(--text-xs);
@@ -537,7 +547,7 @@
   color: #000000;
   background: #ffffff;
   border: none;
-  border-radius: 9999px;
+  border-radius: var(--radius-sm); /* Vercel nav-cta-signup = 6px */
   padding: 0.4rem 0.9rem;
   cursor: pointer;
   white-space: nowrap;
@@ -553,10 +563,12 @@
   }
 }
 
-.navbar-cta:hover {
-  opacity: 0.90;
-  /* Spring bounce: hafif yukarı + büyüme */
-  transform: translateY(-1px) scale(1.04);
+@media (hover: hover) {
+  .navbar-cta:hover {
+    opacity: 0.90;
+    /* Spring bounce: hafif yukarı + büyüme */
+    transform: translateY(-1px) scale(1.04);
+  }
 }
 
 /* Squish — en hızlı geri basma */
@@ -664,7 +676,7 @@
   background: #121212;
   border-color: rgba(255, 255, 255, 0.10);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-level-4); /* Vercel stacked Level 4 */
 }
 
 .news-card:active {
@@ -820,7 +832,7 @@
   overflow-y: auto;
   transform: translateY(100%);
   transition: transform var(--transition-ease-out);
-  box-shadow: var(--shadow-2xl);
+  box-shadow: var(--shadow-level-5); /* Vercel stacked Level 5 — en yüksek yükseklik */
   position: relative;
 }
 
@@ -950,7 +962,10 @@
 }
 
 /* ============================================================
-   6. BUTONLAR
+   6. BUTONLAR — Vercel Button System
+   İki ölçek:
+   • Marketing CTA → pill (100px) — hero butonlar, ana CTA
+   • Nav / UI → sm (6px)         — navbar, small form butonlar
    ============================================================ */
 .btn {
   display: inline-flex;
@@ -958,13 +973,14 @@
   justify-content: center;
   gap: var(--space-2);
   padding: var(--space-2) var(--space-4);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-pill); /* Vercel marketing pill — 100px */
   font-size: var(--text-sm);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-medium); /* Vercel: button-md = 500 */
   line-height: 1;
   white-space: nowrap;
   cursor: pointer;
   border: 1px solid transparent;
+  letter-spacing: -0.01em; /* Vercel button tracking */
   transition:
     background var(--transition-base),
     border-color var(--transition-base),
@@ -985,33 +1001,39 @@
   flex-shrink: 0;
 }
 
-/* Primary */
+/* Primary — Vercel: siyah dolgu, beyaz metin, pill */
 .btn-primary {
   background: var(--color-accent);
   color: #fff;
   border-color: var(--color-accent);
-  /* Taktil 3D — fiziksel tuş hissi veren üst ışık dolgusu */
-  box-shadow: 0 1px 3px rgba(99, 102, 241, 0.35),
-              inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  font-weight: var(--font-weight-semibold);
+  /* Vercel stacked shadow — inset üst ışık + kademeli drop */
+  box-shadow:
+    0px 1px 1px rgba(99, 102, 241, 0.20),
+    0px 2px 4px rgba(99, 102, 241, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
 .btn-primary:hover {
   background: var(--color-accent-hover);
   border-color: var(--color-accent-hover);
-  box-shadow: var(--shadow-accent),
-              inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  box-shadow:
+    0px 2px 2px rgba(99, 102, 241, 0.25),
+    0px 8px 16px -4px rgba(99, 102, 241, 0.30),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
-/* Secondary */
+/* Secondary — Vercel: şeffaf arka, ince border */
 .btn-secondary {
   background: rgba(255, 255, 255, 0.05);
   color: var(--color-text-primary);
   border-color: rgba(255, 255, 255, 0.10);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
 }
 
 .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.18);
 }
 
 /* Ghost */
@@ -1019,6 +1041,7 @@
   background: transparent;
   color: var(--color-text-secondary);
   border-color: transparent;
+  border-radius: var(--radius-sm); /* Nav-scale ghost butonlar küçük radius */
 }
 
 .btn-ghost:hover {
@@ -1031,6 +1054,7 @@
   background: var(--color-error-subtle);
   color: var(--color-error);
   border-color: transparent;
+  border-radius: var(--radius-sm);
 }
 
 .btn-danger:hover {
@@ -1044,6 +1068,7 @@
   color: var(--color-text-primary);
   border-color: var(--color-border-default);
   width: 100%;
+  box-shadow: var(--shadow-level-2);
 }
 
 .btn-google:hover {
@@ -1051,17 +1076,39 @@
   border-color: var(--color-border-strong);
 }
 
-/* Boyutlar */
+/* Boyutlar
+   btn-sm: Vercel nav-scale — 6px radius (btn-sm = nav / in-app butonu)
+   btn-lg: Vercel marketing-scale — pill korunur
+*/
 .btn-sm {
   padding: var(--space-1) var(--space-3);
   font-size: var(--text-xs);
+  font-weight: var(--font-weight-medium);
   min-height: 28px;
+  border-radius: var(--radius-sm); /* Vercel nav-cta-signup: 6px */
 }
 
 .btn-lg {
   padding: var(--space-3) var(--space-6);
   font-size: var(--text-base);
-  min-height: 44px;
+  font-weight: var(--font-weight-semibold);
+  min-height: 48px; /* Vercel marketing CTA 48px yükseklik */
+  border-radius: var(--radius-pill);
+}
+
+/* Tab ghost pill — Vercel tab-ghost: 64px radius */
+.btn-tab {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-text-secondary);
+  border-color: rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-pill-sm); /* 64px */
+  padding: 0 var(--space-4);
+}
+
+.btn-tab.is-active {
+  background: rgba(255, 255, 255, 0.10);
+  color: var(--color-text-primary);
+  border-color: rgba(255, 255, 255, 0.14);
 }
 
 /* Icon-only */
@@ -1069,18 +1116,22 @@
   padding: var(--space-2);
   min-height: 36px;
   width: 36px;
+  border-radius: var(--radius-full); /* Daire — Vercel icon-button-circular */
+  border-color: var(--color-border-default);
 }
 
 .btn-icon-sm {
   padding: var(--space-1);
   min-height: 28px;
   width: 28px;
+  border-radius: var(--radius-full);
 }
 
 .btn-icon-lg {
   padding: var(--space-3);
   min-height: 44px;
   width: 44px;
+  border-radius: var(--radius-full);
 }
 
 /* Tam genişlik */
@@ -1230,7 +1281,7 @@
 .dashboard-block:hover {
   background: #0f0f12;
   border-color: rgba(255, 255, 255, 0.09);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-level-3); /* Vercel stacked Level 3 */
   transform: translateY(-1px);
 }
 
@@ -1256,6 +1307,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
+  font-family: var(--font-family-mono); /* Vercel: teknik blok başlıkları = mono */
   font-size: var(--text-xs);
   font-weight: var(--font-weight-semibold);
   color: var(--color-text-muted);

@@ -15,9 +15,9 @@
   <title>Dashboard — Dark Space</title>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="css/design-system.css?v=7">
-  <link rel="stylesheet" href="css/components.css?v=7">
-  <link rel="stylesheet" href="css/pages.css?v=7">
+  <link rel="stylesheet" href="css/design-system.css?v=10">
+  <link rel="stylesheet" href="css/components.css?v=10">
+  <link rel="stylesheet" href="css/pages.css?v=10">
 </head>
 <body class="dashboard-page">
 
@@ -156,8 +156,8 @@
          YÜZEN KAPSÜL NAVBAR — FAZ 2
          Sticky — sayfa kaydırılsa da üstte asılı kalır
          ============================================================ -->
-    <div class="navbar-wrap">
-      <nav class="navbar-capsule" aria-label="Ana navigasyon">
+    <header class="navbar-wrap anim-fade-up anim-d0">
+      <nav class="navbar-capsule" aria-label="Ana sayfa navigasyonu">
 
         <!-- Sol: Logo -->
         <a href="index.html" class="navbar-logo">
@@ -189,14 +189,14 @@
         </div>
 
       </nav>
-    </div>
+    </header>
 
     <div class="content-inner">
 
       <!-- ============================================================
            HERO SECTION — FAZ 2: Agresif Tipografi
            ============================================================ -->
-      <section class="dashboard-hero">
+      <section class="dashboard-hero anim-fade-up anim-d100" aria-label="Giriş ve özet bilgisi">
 
         <!-- Üst etiket -->
         <p class="hero-eyebrow">Dijital Ajans Paneli</p>
@@ -216,10 +216,10 @@
             </svg>
             Haberlere Git
           </a>
-          <button class="hero-btn-secondary" onclick="document.querySelector('.dashboard-blocks')?.scrollIntoView({behavior:'smooth'})">
+          <button class="hero-btn-secondary" aria-label="Günün özet paneline kaydır" onclick="document.querySelector('.dashboard-blocks')?.scrollIntoView({behavior:'smooth'})">
             Günün Özeti ↓
           </button>
-          <div class="dashboard-greeting-date" id="currentDate">3 Haziran 2026, Çarşamba</div>
+          <div class="dashboard-greeting-date skeleton" id="currentDate" aria-live="polite">3 Haziran 2026, Çarşamba</div>
         </div>
 
       </section>
@@ -229,10 +229,10 @@
            Satır 1: [Günün Özeti — 2 kol] [Hatırlatmalar — 1 kol]
            Satır 2: [Öne Çıkan — 1 kol] [Günlük Hedef — 2 kol]
            ============================================================ -->
-      <div class="dashboard-blocks">
+      <section class="dashboard-blocks" aria-label="Özet paneller">
 
         <!-- BENTO 1 — Günün Özeti (2 sütun) -->
-        <div class="bento-card bento-span-2">
+        <article class="bento-card bento-span-2 anim-fade-up anim-d200" aria-label="Günün Özeti">
 
           <div style="display:flex;align-items:center;justify-content:space-between;">
             <p class="bento-label" style="margin:0;">Günün Özeti</p>
@@ -272,10 +272,10 @@
             </span>
           </div>
 
-        </div><!-- /BENTO 1 -->
+        </article><!-- /BENTO 1 -->
 
         <!-- BENTO 2 — Hatırlatmalar (1 sütun) -->
-        <div class="bento-card">
+        <article class="bento-card anim-fade-up anim-d300" aria-label="Hatırlatmalar">
 
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
             <p class="bento-label" style="margin:0;">Hatırlatmalar</p>
@@ -304,10 +304,10 @@
             </span>
           </div>
 
-        </div><!-- /BENTO 2 -->
+        </article><!-- /BENTO 2 -->
 
         <!-- BENTO 3 — Öne Çıkan Haber (1 sütun) -->
-        <div class="bento-card" id="featuredNews" tabindex="0" role="button" aria-label="Öne çıkan habere git">
+        <article class="bento-card anim-fade-up anim-d400" id="featuredNews" tabindex="0" role="button" aria-label="Öne çıkan habere git">
 
           <!-- Kaynak etiketi -->
           <div class="bento-news-source">
@@ -330,10 +330,10 @@
             <a href="haberler.html" class="bento-news-link">Özeti Gör →</a>
           </div>
 
-        </div><!-- /BENTO 3 -->
+        </article><!-- /BENTO 3 -->
 
         <!-- BENTO 4 — Günlük Hedef (2 sütun) -->
-        <div class="bento-card bento-span-2">
+        <article class="bento-card bento-span-2 anim-fade-up anim-d500" aria-label="Günlük Hedef">
 
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;">
             <p class="bento-label" style="margin:0;">Günlük Hedef</p>
@@ -370,12 +370,12 @@
             <span class="bento-goal-text">Bilgi ağacı — Hook türleri oku</span>
           </div>
 
-        </div><!-- /BENTO 4 -->
+        </article><!-- /BENTO 4 -->
 
-      </div><!-- /dashboard-blocks -->
+      </section><!-- /dashboard-blocks -->
 
       <!-- Son Haberler -->
-      <section>
+      <section aria-label="Son Haberler" class="anim-fade-up anim-d600">
         <div class="page-header" style="margin-bottom: var(--space-4);">
           <div>
             <h2 class="page-title" style="font-size: var(--text-xl);">Son Haberler</h2>
@@ -458,6 +458,37 @@
       </section>
 
     </div><!-- /content-inner -->
+
+    <!-- ============================================================
+         FAZ 5: FOOTER — Premium Minimalist Kapanış
+         ============================================================ -->
+    <footer class="site-footer anim-fade-up anim-d700" aria-label="Site altbilgisi">
+      <div class="footer-inner">
+
+        <!-- Sol: Logo + Telif -->
+        <div class="footer-brand">
+          <div class="footer-logo-wrap">
+            <div class="footer-logo-mark" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+              </svg>
+            </div>
+            <span class="footer-logo-name">Dark Space</span>
+          </div>
+          <p class="footer-copy">&copy; 2026 Dark Space. Tüm hakları saklıdır.</p>
+          <p class="footer-tagline">Bilgi. Takip. Gelişim.</p>
+        </div>
+
+        <!-- Sağ: 3 minimalist link -->
+        <nav class="footer-links" aria-label="Alt navigasyon">
+          <a href="#" class="footer-link">Gizlilik</a>
+          <a href="#" class="footer-link">Kullanım Koşulları</a>
+          <a href="mailto:info@darkspace.app" class="footer-link">İletişim</a>
+        </nav>
+
+      </div>
+    </footer>
+
   </main>
 
   <!-- ============================================================
@@ -971,6 +1002,31 @@
           card.style.transition = '';
         }, { passive: true });
       });
+
+      // ── 4. Date pill skeleton ──────────────────────────────────────────
+      // Sayfa yüklenirken shimmer göster, JS hazır olunca gerçek içeriği aç
+      const datePill = document.getElementById('currentDate');
+      if (datePill) {
+        // MutationObserver: app.js tarihi güncelleyince skeleton'u kaldır
+        const dateObs = new MutationObserver(() => {
+          datePill.classList.remove('skeleton');
+          dateObs.disconnect();
+        });
+        dateObs.observe(datePill, { childList: true, subtree: true, characterData: true });
+        // Fallback: en fazla 1.5 saniye shimmer
+        setTimeout(() => datePill.classList.remove('skeleton'), 1500);
+      }
+
+      // ── 5. Greeting title skeleton ──────────────────────────────────────
+      // Firebase kullanıcı adını güncellediğinde skeleton temiz kalkar
+      const greetEl = document.getElementById('greetingTitle');
+      if (greetEl) {
+        const greetObs = new MutationObserver(() => {
+          greetEl.style.removeProperty('--skeleton-active');
+          greetObs.disconnect();
+        });
+        greetObs.observe(greetEl, { childList: true, subtree: true, characterData: true });
+      }
 
     })();
   </script>

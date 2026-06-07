@@ -6,9 +6,11 @@
  */
 
 /* ============================================================
-   GOOGLE FONTS — Inter (güçlü, karakter sahibi, premium)
+   FONTS — Geist (Vercel'in özel fontu) + JetBrains Mono
+   Inter, Geist'ın en yakın açık-kaynak alternatifidir.
+   font-feature-settings ss01+ss02 geometrik alternatifleri aktif eder.
    ============================================================ */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
 
 /* ============================================================
    CSS CUSTOM PROPERTIES (DESIGN TOKENS)
@@ -113,30 +115,54 @@
   --color-instagram-subtle: rgba(225, 48, 108, 0.12);
 
   /* ----------------------------------------------------------
-     TİPOGRAFİ — Inter Type Scale
+     TİPOGRAFİ — Vercel Geist-inspired System
+     Geist = Inter + font-feature-settings geometrik alternatifleri
+     Mono = JetBrains Mono (teknik etiketler için)
      ---------------------------------------------------------- */
-  --font-family-base:     'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-family-mono:     'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+  --font-family-base:     'Inter', 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-family-mono:     'JetBrains Mono', 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  /* Font ağırlıkları */
+  /* Font ağırlıkları — Vercel sistemi: 400/500/600 çalışma seti (700 max display ceiling) */
   --font-weight-light:    300;
   --font-weight-regular:  400;
   --font-weight-medium:   500;
-  --font-weight-semibold: 600;
+  --font-weight-semibold: 600;  /* Display max — Vercel "600 is the ceiling" kuralı */
   --font-weight-bold:     700;
   --font-weight-extrabold:800;
   --font-weight-black:    900;
 
-  /* Font boyutları — 4px adımlı scale */
+  /* Font boyutları — Vercel type scale (px→rem) */
   --text-xs:    0.6875rem;   /* 11px */
-  --text-sm:    0.8125rem;   /* 13px */
-  --text-base:  0.9375rem;   /* 15px */
-  --text-lg:    1.0625rem;   /* 17px */
-  --text-xl:    1.1875rem;   /* 19px */
-  --text-2xl:   1.375rem;    /* 22px */
-  --text-3xl:   1.75rem;     /* 28px */
-  --text-4xl:   2.25rem;     /* 36px */
-  --text-5xl:   2.875rem;    /* 46px */
+  --text-sm:    0.875rem;    /* 14px  — Vercel body-sm */
+  --text-base:  1rem;        /* 16px  — Vercel body-md */
+  --text-lg:    1.125rem;    /* 18px  — Vercel body-lg */
+  --text-xl:    1.25rem;     /* 20px  — Vercel display-sm */
+  --text-2xl:   1.5rem;      /* 24px  — Vercel display-md */
+  --text-3xl:   2rem;        /* 32px  — Vercel display-lg */
+  --text-4xl:   2.5rem;      /* 40px  — Vercel display-xl alt */
+  --text-5xl:   3rem;        /* 48px  — Vercel display-xl */
+
+  /* ---- Vercel Display Tokens (semantik) ---- */
+  /* Tüm display boyutları negatif letter-spacing ile gelir — marka sesi budur */
+  --display-xl-size:       3rem;        /* 48px */
+  --display-xl-weight:     600;
+  --display-xl-line:       1;
+  --display-xl-tracking:  -0.05em;     /* Vercel: -2.4px at 48px */
+
+  --display-lg-size:       2rem;        /* 32px */
+  --display-lg-weight:     600;
+  --display-lg-line:       1.25;
+  --display-lg-tracking:  -0.04em;     /* Vercel: -1.28px at 32px */
+
+  --display-md-size:       1.5rem;      /* 24px */
+  --display-md-weight:     600;
+  --display-md-line:       1.33;
+  --display-md-tracking:  -0.04em;     /* Vercel: -0.96px at 24px */
+
+  --display-sm-size:       1.25rem;     /* 20px */
+  --display-sm-weight:     600;
+  --display-sm-line:       1.4;
+  --display-sm-tracking:  -0.03em;     /* Vercel: -0.6px at 20px */
 
   /* Satır yüksekliği */
   --leading-tight:    1.25;
@@ -145,13 +171,17 @@
   --leading-relaxed:  1.625;
   --leading-loose:    1.8;
 
-  /* Harf aralığı */
-  --tracking-tighter: -0.04em;
-  --tracking-tight:   -0.02em;
-  --tracking-normal:   0;
-  --tracking-wide:     0.04em;
-  --tracking-wider:    0.08em;
-  --tracking-widest:   0.14em;
+  /* Harf aralığı — Vercel'den adapte */
+  --tracking-display-xl: -0.05em;   /* Hero başlıklar — en agresif */
+  --tracking-display-lg: -0.04em;   /* Bölüm başlıkları */
+  --tracking-display-md: -0.04em;   /* Kart başlıkları */
+  --tracking-display-sm: -0.03em;   /* Alt başlıklar */
+  --tracking-tighter:    -0.04em;
+  --tracking-tight:      -0.02em;
+  --tracking-normal:      0;
+  --tracking-wide:        0.04em;
+  --tracking-wider:       0.08em;
+  --tracking-widest:      0.14em;
 
   /* ----------------------------------------------------------
      SPACING SİSTEMİ — 4px tabanlı
@@ -188,32 +218,98 @@
   --content-max-width:      1200px;
 
   /* ----------------------------------------------------------
-     BORDER RADIUS
+     BORDER RADIUS — Vercel Scale
+     pill-sm (64px) + pill (100px) marketing CTA şekilleri eklendi
      ---------------------------------------------------------- */
-  --radius-none:    0;
-  --radius-xs:      2px;
-  --radius-sm:      4px;
-  --radius-md:      8px;
-  --radius-lg:      12px;
-  --radius-xl:      16px;
-  --radius-2xl:     20px;
-  --radius-3xl:     24px;
-  --radius-full:    9999px;
+  --radius-none:     0;
+  --radius-xs:       4px;    /* Vercel xs */
+  --radius-sm:       6px;    /* Vercel sm — geist-radius, nav butonlar */
+  --radius-md:       8px;    /* Vercel md — geist-marketing-radius, kartlar */
+  --radius-lg:       12px;   /* Vercel lg — pricing kartlar */
+  --radius-xl:       16px;   /* Vercel xl — büyük kart chrome */
+  --radius-2xl:      20px;
+  --radius-3xl:      24px;
+  --radius-pill-sm:  64px;   /* Vercel pill-sm — tab ghost pill */
+  --radius-pill:     100px;  /* Vercel pill — marketing CTA ana şekil */
+  --radius-full:     9999px; /* İkon buton daireleri, nav link ghost */
 
   /* ----------------------------------------------------------
-     GÖLGELER (SHADOWS)
-     Koyu temada gölge yerine parlaklık kullanılır.
+     GÖLGELER — Vercel Stacked Shadow System
+     Tek ağır drop-shadow YOK. Çok katmanlı küçük offset'ler + inset hairline.
+     "The brand uses STACKED shadows — never a single 8-px-blur generic drop."
      ---------------------------------------------------------- */
-  --shadow-xs:    0 1px 2px rgba(0, 0, 0, 0.4);
-  --shadow-sm:    0 1px 4px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.03);
-  --shadow-md:    0 4px 12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255,255,255,0.04);
-  --shadow-lg:    0 8px 24px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255,255,255,0.05);
-  --shadow-xl:    0 16px 48px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255,255,255,0.06);
-  --shadow-2xl:   0 24px 64px rgba(0, 0, 0, 0.85);
+
+  /* Level 0 — Flat: tam yüzey bantlar için */
+  --shadow-level-0: none;
+
+  /* Level 1 — Inset Hairline: default kart chrome */
+  --shadow-level-1:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+
+  /* Level 2 — Subtle Drop: hafif yükseltilmiş kartlar */
+  --shadow-level-2:
+    0px 1px 1px rgba(0, 0, 0, 0.25),
+    0px 2px 2px rgba(0, 0, 0, 0.20),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+
+  /* Level 3 — Soft Stack: özellik kartları */
+  --shadow-level-3:
+    0px 2px 2px rgba(0, 0, 0, 0.25),
+    0px 8px 8px -8px rgba(0, 0, 0, 0.35),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+
+  /* Level 4 — Float Stack: pricing kartlar, büyük callout */
+  --shadow-level-4:
+    0px 2px 2px rgba(0, 0, 0, 0.30),
+    0px 8px 16px -4px rgba(0, 0, 0, 0.40),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+
+  /* Level 5 — Modal: dialog, dropdown */
+  --shadow-level-5:
+    0px 1px 1px rgba(0, 0, 0, 0.25),
+    0px 8px 16px -4px rgba(0, 0, 0, 0.45),
+    0px 24px 32px -8px rgba(0, 0, 0, 0.55),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.09);
+
+  /* Eski token'lar — geriye dönük uyumluluk */
+  --shadow-xs:    var(--shadow-level-1);
+  --shadow-sm:    var(--shadow-level-2);
+  --shadow-md:    var(--shadow-level-3);
+  --shadow-lg:    var(--shadow-level-4);
+  --shadow-xl:    var(--shadow-level-5);
+  --shadow-2xl:   0 24px 64px rgba(0, 0, 0, 0.85), inset 0 0 0 1px rgba(255,255,255,0.05);
 
   /* Parlak gölgeler — accent ile */
-  --shadow-accent: 0 0 20px rgba(99, 102, 241, 0.3);
-  --shadow-accent-strong: 0 0 32px rgba(99, 102, 241, 0.5);
+  --shadow-accent:        0 0 20px rgba(99, 102, 241, 0.30), inset 0 0 0 1px rgba(99,102,241,0.20);
+  --shadow-accent-strong: 0 0 32px rgba(99, 102, 241, 0.50), inset 0 0 0 1px rgba(99,102,241,0.30);
+
+  /* ----------------------------------------------------------
+     VERCEL GRADIENT SİSTEMİ — Develop / Preview / Ship
+     "The gradient is the entire decoration system."
+     Dark tema üzerinde atmosferik arka plan için kullanılır.
+     ---------------------------------------------------------- */
+  --gradient-develop-start: #007cf0;
+  --gradient-develop-end:   #00dfd8;
+  --gradient-preview-start: #7928ca;
+  --gradient-preview-end:   #ff0080;
+  --gradient-ship-start:    #ff4d4d;
+  --gradient-ship-end:      #f9cb28;
+
+  /* Hazır gradient shorthand'lar */
+  --gradient-develop:  linear-gradient(135deg, var(--gradient-develop-start) 0%, var(--gradient-develop-end) 100%);
+  --gradient-preview:  linear-gradient(135deg, var(--gradient-preview-start) 0%, var(--gradient-preview-end) 100%);
+  --gradient-ship:     linear-gradient(135deg, var(--gradient-ship-start)    0%, var(--gradient-ship-end)   100%);
+
+  /* Vercel multi-stop mesh gradient — hero atmospheric (koyu temaya uyarlanmış) */
+  --gradient-mesh:
+    linear-gradient(
+      135deg,
+      rgba(0, 124, 240, 0.15)  0%,
+      rgba(0, 223, 216, 0.10)  25%,
+      rgba(121, 40, 202, 0.12) 50%,
+      rgba(255, 0, 128, 0.08)  75%,
+      rgba(255, 77, 77, 0.06)  100%
+    );
 
   /* ----------------------------------------------------------
      ANİMASYON / GEÇİŞLER
@@ -257,7 +353,9 @@ html {
 }
 
 body {
+  /* Vercel: geometrik alternatifler — Inter'ı Geist'a yaklaştırır */
   font-family: var(--font-family-base);
+  font-feature-settings: "ss01", "ss02", "cv01", "cv03";
   font-size: var(--text-base);
   font-weight: var(--font-weight-regular);
   line-height: var(--leading-normal);
@@ -291,10 +389,10 @@ body {
   color: var(--color-accent-300);
 }
 
-/* Focus görünürlüğü */
+/* Focus görünürlüğü — premium minimal halka, tasarımı bozmaz */
 :focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
+  outline: 1px solid rgba(255, 255, 255, 0.22);
+  outline-offset: 3px;
 }
 
 /* Link sıfırlama */
@@ -308,10 +406,20 @@ ul, ol {
   list-style: none;
 }
 
-/* Görsel sıfırlama */
+/* Görsel sıfırlama — layout stability (CLS önleme) */
 img, svg {
   display: block;
   max-width: 100%;
+}
+
+img {
+  height: auto;               /* Aspect-ratio korunur — layout shift önlenir */
+  object-fit: cover;          /* Kırpılmayı tercih et — boşluk bırakma */
+}
+
+/* width/height attribute'u olan görseller için aspect-ratio otomatik */
+img[width][height] {
+  aspect-ratio: attr(width) / attr(height);
 }
 
 /* Buton sıfırlama */
@@ -334,6 +442,52 @@ input, textarea, select {
 /* ============================================================
    TİPOGRAFİ YARDIMCI SINIFLARI
    ============================================================ */
+
+/* ---- Vercel Display Typography — negatif tracking zorunlu ---- */
+/* "Negative tracking is part of the voice." */
+.display-xl {
+  font-size: var(--display-xl-size);
+  font-weight: var(--display-xl-weight);
+  line-height: var(--display-xl-line);
+  letter-spacing: var(--display-xl-tracking);
+}
+.display-lg {
+  font-size: var(--display-lg-size);
+  font-weight: var(--display-lg-weight);
+  line-height: var(--display-lg-line);
+  letter-spacing: var(--display-lg-tracking);
+}
+.display-md {
+  font-size: var(--display-md-size);
+  font-weight: var(--display-md-weight);
+  line-height: var(--display-md-line);
+  letter-spacing: var(--display-md-tracking);
+}
+.display-sm {
+  font-size: var(--display-sm-size);
+  font-weight: var(--display-sm-weight);
+  line-height: var(--display-sm-line);
+  letter-spacing: var(--display-sm-tracking);
+}
+
+/* ---- Vercel Caption Mono — teknik etiketler ---- */
+/* "Every section eyebrow and small label uses the monospace face." */
+.caption-mono {
+  font-family: var(--font-family-mono);
+  font-size: 0.75rem;   /* 12px */
+  font-weight: 400;
+  line-height: 1.33;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+/* ---- Vercel Code ---- */
+.code-inline {
+  font-family: var(--font-family-mono);
+  font-size: 0.8125rem; /* 13px */
+  font-weight: 400;
+  line-height: 1.54;
+}
 
 /* Başlıklar */
 .text-xs     { font-size: var(--text-xs); }
@@ -505,24 +659,34 @@ input, textarea, select {
   border-radius: 50%;
 }
 
-/* Sol üst — mor ambient ışık */
+/* Sol üst — Vercel Preview gradient (violet→pink) ambient ışık */
 .ambient-orb--purple {
   width: 900px;
   height: 900px;
-  background: rgba(147, 51, 234, 0.10);
-  filter: blur(140px);
+  background: radial-gradient(circle, rgba(121, 40, 202, 0.12) 0%, rgba(255, 0, 128, 0.06) 60%, transparent 100%);
+  filter: blur(120px);
   top: -250px;
   left: -200px;
 }
 
-/* Sağ orta/alt — mavi ambient ışık */
+/* Sağ orta/alt — Vercel Develop gradient (blue→teal) ambient ışık */
 .ambient-orb--blue {
   width: 1000px;
   height: 1000px;
-  background: rgba(59, 130, 246, 0.08);
-  filter: blur(160px);
+  background: radial-gradient(circle, rgba(0, 124, 240, 0.10) 0%, rgba(0, 223, 216, 0.05) 60%, transparent 100%);
+  filter: blur(140px);
   top: 30%;
   right: -250px;
+}
+
+/* Üçüncü orb — Vercel Ship gradient (coral→amber) — opsiyonel */
+.ambient-orb--ship {
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(255, 77, 77, 0.07) 0%, rgba(249, 203, 40, 0.04) 60%, transparent 100%);
+  filter: blur(120px);
+  bottom: -150px;
+  left: 30%;
 }
 
 /* ============================================================
@@ -542,4 +706,86 @@ input, textarea, select {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* ============================================================
+   FAZ 6: PAGE ENTRY ANIMATIONS — Staggered Fade-in-up
+   Spring cubic-bezier: elemanlar yukarıdan süzülür, doğal hissettiren entry
+   ============================================================ */
+
+/* Ana giriş hareketi */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Shimmer — yükleme anı ışık tarama efekti */
+@keyframes shimmer {
+  from { background-position: -200% 0; }
+  to   { background-position:  200% 0; }
+}
+
+/* ---- Animasyon utility sınıfı ---- */
+/* animation-fill-mode: both → bekleme süresinde opacity:0 kalır,
+   bitince opacity:1 sabitlenir. Stagger için kritik. */
+.anim-fade-up {
+  animation: fade-in-up 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Gecikme seviyeleri — kademeli giriş (stagger) */
+.anim-d0   { animation-delay:   0ms; }
+.anim-d100 { animation-delay: 100ms; }
+.anim-d200 { animation-delay: 200ms; }
+.anim-d300 { animation-delay: 300ms; }
+.anim-d400 { animation-delay: 400ms; }
+.anim-d500 { animation-delay: 500ms; }
+.anim-d600 { animation-delay: 600ms; }
+.anim-d700 { animation-delay: 700ms; }
+
+/* Hareket hassasiyeti tercihine saygı — accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .anim-fade-up {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+/* ============================================================
+   FAZ 6: SKELETON / SHIMMER — Yükleme Durumu
+   Framer tarzı: arkadan ışık geçiyormuş hissi
+   ============================================================ */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(255, 255, 255, 0.04) !important;
+  pointer-events: none;
+  user-select: none;
+  transition: opacity 0.35s ease;
+}
+
+/* Işık tarama efekti — pseudo element */
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent            0%,
+    rgba(255,255,255,0.07) 50%,
+    transparent           100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+  border-radius: inherit;  /* Ebeveynin yuvarlak köşelerini devral */
+  z-index: 1;
+  pointer-events: none;
 }
