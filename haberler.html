@@ -66,6 +66,12 @@
 </head>
 <body>
 
+  <!-- Mesh Gradient Ambient Arka Plan -->
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="ambient-orb ambient-orb--purple"></div>
+    <div class="ambient-orb ambient-orb--blue"></div>
+  </div>
+
   <!-- MOBİL TOP BAR -->
   <header class="top-bar">
     <div class="top-bar-left">
@@ -99,7 +105,7 @@
       </div>
       <div class="sidebar-logo-text">
         <span class="sidebar-logo-name">Dark Space</span>
-        <span class="sidebar-logo-sub">v2.0</span>
+        <span class="sidebar-logo-sub">v2.5</span>
       </div>
     </div>
 
@@ -182,6 +188,31 @@
 
   <!-- ANA İÇERİK -->
   <main class="main-content" id="mainContent">
+
+    <!-- Yüzen Kapsül Navbar -->
+    <header class="navbar-wrap anim-fade-up anim-d0">
+      <nav class="navbar-capsule" aria-label="Ana sayfa navigasyonu">
+        <a href="index.html" class="navbar-logo">
+          <div class="navbar-logo-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+          </div>
+          <span class="navbar-logo-name">Dark Space</span>
+        </a>
+        <div class="navbar-links">
+          <a href="index.html" class="navbar-link">Dashboard</a>
+          <a href="haberler.html" class="navbar-link is-active">Haberler</a>
+          <a href="bilgi/index.html" class="navbar-link">Bilgi Ağacı</a>
+        </div>
+        <div class="navbar-actions">
+          <button class="hamburger-btn navbar-hamburger" id="navbar-sidebar-toggle" aria-label="Menüyü aç" aria-expanded="false">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </nav>
+    </header>
+
     <div class="content-inner">
 
       <div class="page-header">
