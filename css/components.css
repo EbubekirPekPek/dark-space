@@ -14,8 +14,10 @@
   left: 0;
   width: var(--sidebar-width);
   height: 100vh;
-  background-color: var(--color-bg-elevated);
-  border-right: 1px solid var(--color-border-subtle);
+  background: rgba(8, 8, 8, 0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
   display: flex;
   flex-direction: column;
   z-index: var(--z-fixed);
@@ -43,7 +45,7 @@
   align-items: center;
   gap: var(--space-3);
   padding: var(--space-5) var(--space-5) var(--space-4);
-  border-bottom: 1px solid var(--color-border-subtle);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   min-height: 64px;
 }
 
@@ -93,7 +95,7 @@
 /* ---- Sidebar Arama ---- */
 .sidebar-search {
   padding: var(--space-3) var(--space-4);
-  border-bottom: 1px solid var(--color-border-subtle);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .sidebar-search .search-input-wrap {
@@ -145,6 +147,7 @@
 }
 
 .sidebar-section-label {
+  font-family: var(--font-family-mono); /* Vercel caption-mono: teknik etiket = mono */
   font-size: var(--text-xs);
   font-weight: var(--font-weight-semibold);
   color: var(--color-text-muted);
@@ -218,7 +221,7 @@
 /* ---- Sidebar Alt Alan ---- */
 .sidebar-footer {
   padding: var(--space-4);
-  border-top: 1px solid var(--color-border-subtle);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .sidebar-user {
@@ -293,8 +296,10 @@
   justify-content: space-between;
   height: var(--top-bar-height);
   padding: 0 var(--space-4);
-  background: var(--color-bg-elevated);
-  border-bottom: 1px solid var(--color-border-subtle);
+  background: rgba(8, 8, 8, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   position: sticky;
   top: 0;
   z-index: var(--z-sticky);
@@ -363,7 +368,218 @@
 }
 
 /* ============================================================
-   3. MOBİL ALT BAR — Bottom Navigation
+   3. YÜZEN KAPSÜL NAVBAR — FAZ 2: Floating Pill
+   Masaüstünde içerik alanında yüzer; mobilde hamburger içerir
+   ============================================================ */
+
+/* Dış sarmalayıcı — content-inner ile hizalı, sticky */
+.navbar-wrap {
+  position: sticky;
+  top: 1rem;
+  z-index: 50;
+  padding: 1rem var(--space-5);
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .navbar-wrap {
+    padding: 1rem var(--space-8);
+  }
+}
+
+@media (min-width: 1280px) {
+  .navbar-wrap {
+    padding: 1rem var(--space-10);
+  }
+}
+
+/* Kapsülün kendisi — FAZ 4: Scroll ile güçlenen buzlu cam */
+.navbar-capsule {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 48px;
+  padding: 0 var(--space-4);
+  /* İlk konum: hafif şeffaf — scroll'da yoğunlaşır */
+  background: rgba(0, 0, 0, 0.30);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 9999px;
+  /* Vercel stacked Level 3 — navbar kapsülü orta yükseklik */
+  box-shadow:
+    0px 2px 2px rgba(0, 0, 0, 0.25),
+    0px 8px 8px -8px rgba(0, 0, 0, 0.35),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+  position: relative;
+  /* Spring geçiş — scroll state değişiminde yumuşak */
+  transition: background    0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow    0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color  0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Sayfa kaydırıldı — Vercel stacked Level 4 ile derinleşir */
+.navbar-capsule.is-scrolled {
+  background: rgba(0, 0, 0, 0.72);
+  box-shadow:
+    0px 2px 2px rgba(0, 0, 0, 0.30),
+    0px 8px 16px -4px rgba(0, 0, 0, 0.40),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Sol: Logo grubu */
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.navbar-logo-icon {
+  width: 26px;
+  height: 26px;
+  background: linear-gradient(135deg, var(--color-accent-500), var(--color-accent-700));
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-accent);
+}
+
+.navbar-logo-icon svg {
+  width: 13px;
+  height: 13px;
+  color: #fff;
+}
+
+.navbar-logo-name {
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  letter-spacing: var(--tracking-tight);
+}
+
+/* Orta: Nav linkleri — masaüstünde mutlak orta */
+.navbar-links {
+  display: none;
+  align-items: center;
+  gap: 2px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+@media (min-width: 768px) {
+  .navbar-links {
+    display: flex;
+  }
+}
+
+.navbar-link {
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  color: rgba(156, 163, 175, 1);
+  padding: 0.35rem 0.8rem;
+  border-radius: 9999px;
+  text-decoration: none;
+  white-space: nowrap;
+  display: inline-block;
+  /* Spring geçiş */
+  transition: color       0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              background  0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              transform   0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@media (hover: hover) {
+  .navbar-link:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.07);
+    transform: scale(1.06);
+  }
+}
+
+/* Squish — tıklanınca yaya basılmış hissi */
+.navbar-link:active {
+  transform: scale(0.92);
+  transition: transform 0.08s ease;
+}
+
+.navbar-link.is-active {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.09);
+}
+
+/* Aktif link hover'ı daha kısıtlı */
+@media (hover: hover) {
+  .navbar-link.is-active:hover {
+    transform: scale(1.03);
+  }
+}
+
+/* Sağ: Aksiyon grubu */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+/* Hamburger — sadece mobilde görünür */
+.navbar-hamburger {
+  display: flex;
+}
+
+@media (min-width: 768px) {
+  .navbar-hamburger {
+    display: none;
+  }
+}
+
+/* Masaüstü CTA butonu — Vercel nav-scale: 6px radius (not marketing pill) */
+.navbar-cta {
+  display: none;
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-semibold);
+  color: #000000;
+  background: #ffffff;
+  border: none;
+  border-radius: var(--radius-sm); /* Vercel nav-cta-signup = 6px */
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity    0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              transform  0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.40);
+}
+
+@media (min-width: 768px) {
+  .navbar-cta {
+    display: inline-flex;
+    align-items: center;
+  }
+}
+
+@media (hover: hover) {
+  .navbar-cta:hover {
+    opacity: 0.90;
+    /* Spring bounce: hafif yukarı + büyüme */
+    transform: translateY(-1px) scale(1.04);
+  }
+}
+
+/* Squish — en hızlı geri basma */
+.navbar-cta:active {
+  transform: scale(0.94);
+  opacity: 1;
+  transition: transform 0.07s ease;
+}
+
+/* ============================================================
+   4. MOBİL ALT BAR — Bottom Navigation
    ============================================================ */
 .bottom-bar {
   display: none;
@@ -372,8 +588,10 @@
   left: 0;
   right: 0;
   height: var(--bottom-bar-height);
-  background: var(--color-bg-elevated);
-  border-top: 1px solid var(--color-border-subtle);
+  background: rgba(8, 8, 8, 0.90);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
   z-index: var(--z-fixed);
 }
 
@@ -439,30 +657,31 @@
 .news-card {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
-  padding: var(--space-4);
+  gap: var(--space-3);
+  padding: var(--space-5);
   background: var(--color-bg-surface);
-  border: 1px solid var(--color-border-subtle);
-  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-2xl);
   cursor: pointer;
   transition:
-    background var(--transition-base),
+    background var(--transition-ease-out),
     border-color var(--transition-base),
-    transform var(--transition-bounce),
-    box-shadow var(--transition-base);
+    transform var(--transition-ease-out),
+    box-shadow var(--transition-ease-out);
   position: relative;
   overflow: hidden;
 }
 
 .news-card:hover {
-  background: var(--color-bg-overlay);
-  border-color: var(--color-border-default);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
+  background: #121212;
+  border-color: rgba(255, 255, 255, 0.10);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-level-4); /* Vercel stacked Level 4 */
 }
 
 .news-card:active {
-  transform: translateY(0);
+  transform: scale(0.98);
+  transition: transform 0.1s ease;
 }
 
 /* Sol platform renk şeridi */
@@ -603,15 +822,17 @@
 }
 
 .modal {
-  background: var(--color-bg-modal);
-  border: 1px solid var(--color-border-default);
+  background: rgba(10, 10, 14, 0.95);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
   transform: translateY(100%);
-  transition: transform var(--transition-smooth);
-  box-shadow: var(--shadow-2xl);
+  transition: transform var(--transition-ease-out);
+  box-shadow: var(--shadow-level-5); /* Vercel stacked Level 5 — en yüksek yükseklik */
   position: relative;
 }
 
@@ -623,8 +844,8 @@
   .modal {
     max-width: 640px;
     max-height: 80vh;
-    border-radius: var(--radius-2xl);
-    transform: translateY(16px) scale(0.97);
+    border-radius: var(--radius-3xl);
+    transform: translateY(20px) scale(0.96);
   }
 
   .modal-overlay.is-open .modal {
@@ -741,7 +962,10 @@
 }
 
 /* ============================================================
-   6. BUTONLAR
+   6. BUTONLAR — Vercel Button System
+   İki ölçek:
+   • Marketing CTA → pill (100px) — hero butonlar, ana CTA
+   • Nav / UI → sm (6px)         — navbar, small form butonlar
    ============================================================ */
 .btn {
   display: inline-flex;
@@ -749,19 +973,20 @@
   justify-content: center;
   gap: var(--space-2);
   padding: var(--space-2) var(--space-4);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-pill); /* Vercel marketing pill — 100px */
   font-size: var(--text-sm);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-medium); /* Vercel: button-md = 500 */
   line-height: 1;
   white-space: nowrap;
   cursor: pointer;
   border: 1px solid transparent;
+  letter-spacing: -0.01em; /* Vercel button tracking */
   transition:
     background var(--transition-base),
     border-color var(--transition-base),
     color var(--transition-base),
     box-shadow var(--transition-base),
-    transform var(--transition-bounce);
+    transform var(--transition-ease-out);
   text-decoration: none;
   min-height: 36px;
 }
@@ -776,30 +1001,39 @@
   flex-shrink: 0;
 }
 
-/* Primary */
+/* Primary — Vercel: siyah dolgu, beyaz metin, pill */
 .btn-primary {
   background: var(--color-accent);
   color: #fff;
   border-color: var(--color-accent);
-  box-shadow: 0 1px 3px rgba(99, 102, 241, 0.3);
+  font-weight: var(--font-weight-semibold);
+  /* Vercel stacked shadow — inset üst ışık + kademeli drop */
+  box-shadow:
+    0px 1px 1px rgba(99, 102, 241, 0.20),
+    0px 2px 4px rgba(99, 102, 241, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
 .btn-primary:hover {
   background: var(--color-accent-hover);
   border-color: var(--color-accent-hover);
-  box-shadow: var(--shadow-accent);
+  box-shadow:
+    0px 2px 2px rgba(99, 102, 241, 0.25),
+    0px 8px 16px -4px rgba(99, 102, 241, 0.30),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
-/* Secondary */
+/* Secondary — Vercel: şeffaf arka, ince border */
 .btn-secondary {
-  background: var(--color-bg-overlay);
+  background: rgba(255, 255, 255, 0.05);
   color: var(--color-text-primary);
-  border-color: var(--color-border-default);
+  border-color: rgba(255, 255, 255, 0.10);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
 }
 
 .btn-secondary:hover {
-  background: var(--color-bg-inset);
-  border-color: var(--color-border-strong);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
 }
 
 /* Ghost */
@@ -807,6 +1041,7 @@
   background: transparent;
   color: var(--color-text-secondary);
   border-color: transparent;
+  border-radius: var(--radius-sm); /* Nav-scale ghost butonlar küçük radius */
 }
 
 .btn-ghost:hover {
@@ -819,6 +1054,7 @@
   background: var(--color-error-subtle);
   color: var(--color-error);
   border-color: transparent;
+  border-radius: var(--radius-sm);
 }
 
 .btn-danger:hover {
@@ -832,6 +1068,7 @@
   color: var(--color-text-primary);
   border-color: var(--color-border-default);
   width: 100%;
+  box-shadow: var(--shadow-level-2);
 }
 
 .btn-google:hover {
@@ -839,17 +1076,39 @@
   border-color: var(--color-border-strong);
 }
 
-/* Boyutlar */
+/* Boyutlar
+   btn-sm: Vercel nav-scale — 6px radius (btn-sm = nav / in-app butonu)
+   btn-lg: Vercel marketing-scale — pill korunur
+*/
 .btn-sm {
   padding: var(--space-1) var(--space-3);
   font-size: var(--text-xs);
+  font-weight: var(--font-weight-medium);
   min-height: 28px;
+  border-radius: var(--radius-sm); /* Vercel nav-cta-signup: 6px */
 }
 
 .btn-lg {
   padding: var(--space-3) var(--space-6);
   font-size: var(--text-base);
-  min-height: 44px;
+  font-weight: var(--font-weight-semibold);
+  min-height: 48px; /* Vercel marketing CTA 48px yükseklik */
+  border-radius: var(--radius-pill);
+}
+
+/* Tab ghost pill — Vercel tab-ghost: 64px radius */
+.btn-tab {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-text-secondary);
+  border-color: rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-pill-sm); /* 64px */
+  padding: 0 var(--space-4);
+}
+
+.btn-tab.is-active {
+  background: rgba(255, 255, 255, 0.10);
+  color: var(--color-text-primary);
+  border-color: rgba(255, 255, 255, 0.14);
 }
 
 /* Icon-only */
@@ -857,18 +1116,22 @@
   padding: var(--space-2);
   min-height: 36px;
   width: 36px;
+  border-radius: var(--radius-full); /* Daire — Vercel icon-button-circular */
+  border-color: var(--color-border-default);
 }
 
 .btn-icon-sm {
   padding: var(--space-1);
   min-height: 28px;
   width: 28px;
+  border-radius: var(--radius-full);
 }
 
 .btn-icon-lg {
   padding: var(--space-3);
   min-height: 44px;
   width: 44px;
+  border-radius: var(--radius-full);
 }
 
 /* Tam genişlik */
@@ -1002,18 +1265,24 @@
 
 .dashboard-block {
   background: var(--color-bg-surface);
-  border: 1px solid var(--color-border-subtle);
-  border-radius: var(--radius-xl);
-  padding: var(--space-5);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-6);
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
-  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+  gap: var(--space-5);
+  transition:
+    background var(--transition-ease-out),
+    border-color var(--transition-base),
+    box-shadow var(--transition-ease-out),
+    transform var(--transition-ease-out);
 }
 
 .dashboard-block:hover {
-  border-color: var(--color-border-default);
-  box-shadow: var(--shadow-sm);
+  background: #0f0f12;
+  border-color: rgba(255, 255, 255, 0.09);
+  box-shadow: var(--shadow-level-3); /* Vercel stacked Level 3 */
+  transform: translateY(-1px);
 }
 
 /* Büyük blok — tam genişlik veya 2 kolon */
@@ -1038,6 +1307,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
+  font-family: var(--font-family-mono); /* Vercel: teknik blok başlıkları = mono */
   font-size: var(--text-xs);
   font-weight: var(--font-weight-semibold);
   color: var(--color-text-muted);
@@ -1211,20 +1481,20 @@
   gap: var(--space-3);
   padding: var(--space-3) var(--space-4);
   background: var(--color-bg-surface);
-  border: 1px solid var(--color-border-subtle);
-  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-xl);
   cursor: pointer;
   transition:
-    background var(--transition-base),
+    background var(--transition-ease-out),
     border-color var(--transition-base),
-    transform var(--transition-bounce);
+    transform var(--transition-ease-out);
   text-decoration: none;
   position: relative;
 }
 
 .knowledge-card:hover {
-  background: var(--color-bg-overlay);
-  border-color: var(--color-border-default);
+  background: #121212;
+  border-color: rgba(255, 255, 255, 0.10);
   transform: translateX(4px);
 }
 
@@ -1279,14 +1549,14 @@
   gap: var(--space-3);
   padding: var(--space-5);
   background: var(--color-bg-surface);
-  border: 1px solid var(--color-border-subtle);
-  border-radius: var(--radius-xl);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-2xl);
   cursor: pointer;
   transition:
-    background var(--transition-base),
+    background var(--transition-ease-out),
     border-color var(--transition-base),
-    box-shadow var(--transition-base),
-    transform var(--transition-bounce);
+    box-shadow var(--transition-ease-out),
+    transform var(--transition-ease-out);
   text-decoration: none;
   position: relative;
   overflow: hidden;
@@ -1310,10 +1580,10 @@
 }
 
 .knowledge-platform-card:hover {
-  background: var(--color-bg-overlay);
-  border-color: var(--color-border-default);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  background: #121212;
+  border-color: rgba(255, 255, 255, 0.10);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
 }
 
 .knowledge-platform-header {
@@ -1353,8 +1623,8 @@
    ============================================================ */
 .kpi-card {
   background: var(--color-bg-surface);
-  border: 1px solid var(--color-border-subtle);
-  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-xl);
   padding: var(--space-4);
   display: flex;
   flex-direction: column;
@@ -1548,7 +1818,10 @@
 .page-title {
   font-size: var(--text-2xl);
   font-weight: var(--font-weight-extrabold);
-  color: var(--color-text-primary);
+  background: linear-gradient(160deg, #ffffff 0%, rgba(240, 240, 248, 0.65) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   letter-spacing: var(--tracking-tighter);
   line-height: var(--leading-tight);
 }

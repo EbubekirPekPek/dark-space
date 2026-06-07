@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <!--
   musteri/index.html
-  Dark Space — Müşteri Alanı
-  Müşteri listesi + detay modal (sekmeli: Genel, KPI, Notlar, Yapılacaklar)
+  Dark Space — Müşteri Alanı  v9
+  Bento hub grid + design system upgrade
 -->
 <html lang="tr">
 <head>
@@ -12,19 +12,281 @@
   <meta name="theme-color" content="#08080d">
   <title>Müşteri Alanı — Dark Space</title>
 
-  <link rel="stylesheet" href="../css/design-system.css">
-  <link rel="stylesheet" href="../css/components.css">
-  <link rel="stylesheet" href="../css/pages.css">
+  <link rel="stylesheet" href="../css/design-system.css?v=10">
+  <link rel="stylesheet" href="../css/components.css?v=10">
+  <link rel="stylesheet" href="../css/pages.css?v=10">
 
   <style>
-    /* Müşteri Grid */
+    /* ── Hub Profil ─────────────────────────────────────────────────────────── */
+    .hub-avatar-wrap {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      margin-bottom: var(--space-4);
+    }
+    .hub-avatar {
+      width: 54px;
+      height: 54px;
+      border-radius: var(--radius-xl);
+      background: linear-gradient(135deg, rgba(139,92,246,0.85) 0%, rgba(99,102,241,0.65) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--text-xl);
+      font-weight: var(--font-weight-bold);
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .hub-member-name {
+      font-size: var(--text-lg);
+      font-weight: var(--font-weight-bold);
+      background: linear-gradient(135deg, #e5e7eb 0%, #9ca3af 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.2;
+    }
+    .hub-member-role {
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      margin-top: 2px;
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+    }
+    .hub-membership-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: linear-gradient(135deg, rgba(139,92,246,0.16) 0%, rgba(99,102,241,0.10) 100%);
+      border: 1px solid rgba(139,92,246,0.26);
+      border-radius: var(--radius-full);
+      padding: 3px 10px 3px 7px;
+      font-size: 0.6875rem;
+      font-weight: var(--font-weight-semibold);
+      color: rgba(167,139,250,1);
+      letter-spacing: var(--tracking-wide);
+      margin-top: var(--space-3);
+    }
+    .hub-membership-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(167,139,250,0.85);
+      flex-shrink: 0;
+    }
+    .hub-stat-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-3);
+      margin-top: var(--space-4);
+    }
+    .hub-stat {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--radius-lg);
+      padding: var(--space-3) var(--space-4);
+    }
+    .hub-stat-value {
+      font-size: var(--text-xl);
+      font-weight: var(--font-weight-bold);
+      color: var(--color-text-primary);
+      line-height: 1;
+    }
+    .hub-stat-label {
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      margin-top: 4px;
+    }
+
+    /* ── Hub Hizmetler ──────────────────────────────────────────────────────── */
+    .hub-services-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-4);
+    }
+    .hub-manage-btn {
+      font-size: 0.6875rem;
+      color: var(--color-text-muted);
+      background: none;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-sm);
+      padding: 3px 10px;
+      cursor: pointer;
+      transition: color var(--duration-fast), border-color var(--duration-fast);
+      font-family: var(--font-family-base);
+    }
+    @media (hover: hover) {
+      .hub-manage-btn:hover { color: var(--color-text-primary); border-color: rgba(255,255,255,0.16); }
+    }
+    .hub-service-list { display: flex; flex-direction: column; gap: var(--space-2); }
+    .hub-service-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-3) var(--space-4);
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--radius-lg);
+      transition: background var(--duration-fast), border-color var(--duration-fast);
+    }
+    @media (hover: hover) {
+      .hub-service-item:hover {
+        background: rgba(255,255,255,0.055);
+        border-color: rgba(255,255,255,0.10);
+      }
+    }
+    .hub-service-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .hub-service-dot--green  { background: rgba(34,197,94,0.85); }
+    .hub-service-dot--yellow { background: rgba(234,179,8,0.85); }
+    .hub-service-dot--blue   { background: rgba(99,102,241,0.85); }
+    .hub-service-name  { font-size: var(--text-sm); color: var(--color-text-primary); flex: 1; }
+    .hub-service-platform {
+      font-size: 0.6875rem;
+      color: var(--color-text-muted);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--radius-sm);
+      padding: 2px 7px;
+    }
+    .hub-service-budget {
+      font-size: var(--text-xs);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-secondary);
+      min-width: 70px;
+      text-align: right;
+    }
+
+    /* ── Hub Finans ─────────────────────────────────────────────────────────── */
+    .hub-invoice-table { display: flex; flex-direction: column; gap: var(--space-2); }
+    .hub-invoice-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-3) var(--space-4);
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--radius-lg);
+    }
+    .hub-invoice-date {
+      font-size: 0.6875rem;
+      color: var(--color-text-muted);
+      min-width: 56px;
+      flex-shrink: 0;
+    }
+    .hub-invoice-desc {
+      font-size: var(--text-xs);
+      color: var(--color-text-secondary);
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .hub-invoice-amount {
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-primary);
+      min-width: 72px;
+      text-align: right;
+    }
+    .hub-invoice-badge {
+      font-size: 0.625rem;
+      font-weight: var(--font-weight-semibold);
+      padding: 2px 7px;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-wider);
+      flex-shrink: 0;
+    }
+    .hub-invoice-badge--paid    { background: rgba(34,197,94,0.12); color: rgba(74,222,128,0.9); border: 1px solid rgba(34,197,94,0.20); }
+    .hub-invoice-badge--pending { background: rgba(234,179,8,0.12);  color: rgba(250,204,21,0.9); border: 1px solid rgba(234,179,8,0.20);  }
+
+    /* ── Hub Destek ─────────────────────────────────────────────────────────── */
+    .hub-support-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-5);
+    }
+    @media (max-width: 640px) { .hub-support-grid { grid-template-columns: 1fr; } }
+    .hub-support-label {
+      font-size: 0.6875rem;
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-wider);
+      margin-bottom: var(--space-3);
+    }
+    .hub-ticket-list { display: flex; flex-direction: column; gap: var(--space-2); }
+    .hub-ticket {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-3);
+      padding: var(--space-3);
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--radius-lg);
+    }
+    .hub-ticket-priority {
+      font-size: 0.5625rem;
+      font-weight: var(--font-weight-bold);
+      padding: 2px 5px;
+      border-radius: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .hub-ticket-priority--high   { background: rgba(239,68,68,0.15);   color: rgba(252,165,165,0.95); }
+    .hub-ticket-priority--medium { background: rgba(234,179,8,0.15);   color: rgba(253,224,71,0.95);  }
+    .hub-ticket-priority--low    { background: rgba(99,102,241,0.15);  color: rgba(165,180,252,0.95); }
+    .hub-ticket-info   { flex: 1; min-width: 0; }
+    .hub-ticket-title  { font-size: var(--text-xs); color: var(--color-text-secondary); line-height: 1.4; }
+    .hub-ticket-meta   { font-size: 0.625rem; color: var(--color-text-muted); margin-top: 2px; }
+    .hub-support-form  { display: flex; flex-direction: column; gap: var(--space-3); }
+    .hub-glass-input,
+    .hub-glass-select {
+      width: 100%;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-md);
+      padding: var(--space-2) var(--space-3);
+      font-size: var(--text-sm);
+      color: var(--color-text-primary);
+      font-family: var(--font-family-base);
+      box-sizing: border-box;
+      transition: border-color var(--duration-fast), background var(--duration-fast);
+    }
+    .hub-glass-input:focus,
+    .hub-glass-select:focus  { outline: none; border-color: rgba(255,255,255,0.20); background: rgba(255,255,255,0.05); }
+    .hub-glass-input::placeholder { color: var(--color-text-disabled); }
+    .hub-submit-btn {
+      width: 100%;
+      padding: var(--space-2) var(--space-4);
+      background: linear-gradient(135deg, rgba(139,92,246,0.22) 0%, rgba(99,102,241,0.16) 100%);
+      border: 1px solid rgba(139,92,246,0.28);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-semibold);
+      color: rgba(196,181,253,0.95);
+      cursor: pointer;
+      transition: background var(--duration-fast), border-color var(--duration-fast), transform var(--duration-fast);
+      font-family: var(--font-family-base);
+    }
+    @media (hover: hover) {
+      .hub-submit-btn:hover {
+        background: linear-gradient(135deg, rgba(139,92,246,0.34) 0%, rgba(99,102,241,0.26) 100%);
+        border-color: rgba(139,92,246,0.42);
+        transform: translateY(-1px);
+      }
+    }
+
+    /* ── Müşteri Grid ───────────────────────────────────────────────────────── */
     .customer-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: var(--space-4);
-      margin-top: var(--space-6);
+      margin-top: var(--space-4);
     }
-
     .customer-card {
       background: var(--color-bg-surface);
       border: 1px solid var(--color-border-default);
@@ -33,20 +295,19 @@
       cursor: pointer;
       transition: border-color var(--duration-fast), transform var(--duration-fast), background var(--duration-fast);
     }
-
-    .customer-card:hover {
-      border-color: var(--color-accent);
-      background: var(--color-bg-overlay);
-      transform: translateY(-2px);
+    @media (hover: hover) {
+      .customer-card:hover {
+        border-color: var(--color-accent);
+        background: var(--color-bg-overlay);
+        transform: translateY(-2px);
+      }
     }
-
     .customer-card-top {
       display: flex;
       align-items: center;
       gap: var(--space-3);
       margin-bottom: var(--space-3);
     }
-
     .customer-avatar {
       width: 44px;
       height: 44px;
@@ -60,38 +321,16 @@
       color: #fff;
       flex-shrink: 0;
     }
+    .customer-info  { flex: 1; min-width: 0; }
+    .customer-name  { font-size: var(--text-base); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .customer-sector { font-size: var(--text-xs); color: var(--color-text-muted); margin-top: 2px; }
+    .customer-card-footer { display: flex; align-items: center; justify-content: space-between; }
 
-    .customer-info {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .customer-name {
-      font-size: var(--text-base);
-      font-weight: var(--font-weight-semibold);
-      color: var(--color-text-primary);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .customer-sector {
-      font-size: var(--text-xs);
-      color: var(--color-text-muted);
-      margin-top: 2px;
-    }
-
-    .customer-card-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    /* Müşteri Detay Modal */
+    /* ── Müşteri Detay Modal ────────────────────────────────────────────────── */
     .customer-modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0,0,0,0.72);
       z-index: var(--z-modal);
       display: flex;
       align-items: center;
@@ -101,12 +340,7 @@
       pointer-events: none;
       transition: opacity var(--duration-normal);
     }
-
-    .customer-modal-overlay.is-open {
-      opacity: 1;
-      pointer-events: all;
-    }
-
+    .customer-modal-overlay.is-open { opacity: 1; pointer-events: all; }
     .customer-modal {
       background: var(--color-bg-modal);
       border: 1px solid var(--color-border-default);
@@ -119,11 +353,7 @@
       transform: translateY(12px);
       transition: transform var(--duration-normal);
     }
-
-    .customer-modal-overlay.is-open .customer-modal {
-      transform: translateY(0);
-    }
-
+    .customer-modal-overlay.is-open .customer-modal { transform: translateY(0); }
     .customer-modal-header {
       display: flex;
       align-items: center;
@@ -131,14 +361,7 @@
       padding: var(--space-5) var(--space-6);
       border-bottom: 1px solid var(--color-border-subtle);
     }
-
-    .customer-modal-title {
-      font-size: var(--text-lg);
-      font-weight: var(--font-weight-semibold);
-      color: var(--color-text-primary);
-    }
-
-    /* Sekmeler */
+    .customer-modal-title { font-size: var(--text-lg); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); }
     .customer-tabs {
       display: flex;
       gap: 0;
@@ -147,7 +370,6 @@
       overflow-x: auto;
       scrollbar-width: none;
     }
-
     .customer-tab {
       padding: var(--space-3) var(--space-4);
       font-size: var(--text-sm);
@@ -162,150 +384,37 @@
       border-left: none;
       border-right: none;
     }
-
-    .customer-tab:hover { color: var(--color-text-primary); }
+    @media (hover: hover) { .customer-tab:hover { color: var(--color-text-primary); } }
     .customer-tab.is-active { color: var(--color-accent); border-bottom-color: var(--color-accent); }
-
-    .customer-modal-body {
-      flex: 1;
-      overflow-y: auto;
-      padding: var(--space-6);
-    }
-
+    .customer-modal-body { flex: 1; overflow-y: auto; padding: var(--space-6); }
     .tab-panel { display: none; }
     .tab-panel.is-active { display: block; }
 
-    /* KPI Alanı */
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-3);
-    }
-
-    @media (max-width: 500px) {
-      .kpi-grid { grid-template-columns: 1fr; }
-    }
-
-    .kpi-field {
-      background: var(--color-bg-inset);
-      border: 1px solid var(--color-border-default);
-      border-radius: var(--radius-lg);
-      padding: var(--space-3);
-    }
-
-    .kpi-field-label {
-      font-size: var(--text-xs);
-      color: var(--color-text-muted);
-      text-transform: uppercase;
-      letter-spacing: var(--tracking-widest);
-      margin-bottom: var(--space-2);
-    }
-
-    .kpi-field input {
-      width: 100%;
-      background: transparent;
-      border: none;
-      color: var(--color-text-primary);
-      font-size: var(--text-base);
-      font-weight: var(--font-weight-semibold);
-      font-family: var(--font-family-base);
-      outline: none;
-      box-sizing: border-box;
-    }
-
+    /* KPI */
+    .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); }
+    @media (max-width: 500px) { .kpi-grid { grid-template-columns: 1fr; } }
+    .kpi-field { background: var(--color-bg-inset); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); padding: var(--space-3); }
+    .kpi-field-label { font-size: var(--text-xs); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: var(--tracking-widest); margin-bottom: var(--space-2); }
+    .kpi-field input { width: 100%; background: transparent; border: none; color: var(--color-text-primary); font-size: var(--text-base); font-weight: var(--font-weight-semibold); font-family: var(--font-family-base); outline: none; box-sizing: border-box; }
     .kpi-field input::placeholder { color: var(--color-text-disabled); font-weight: var(--font-weight-normal); }
 
-    /* Yapılacaklar */
-    .todo-list {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-2);
-      margin-bottom: var(--space-4);
-    }
-
-    .todo-item {
-      display: flex;
-      align-items: center;
-      gap: var(--space-3);
-      padding: var(--space-3) var(--space-4);
-      background: var(--color-bg-inset);
-      border: 1px solid var(--color-border-subtle);
-      border-radius: var(--radius-md);
-    }
-
-    .todo-checkbox {
-      width: 16px;
-      height: 16px;
-      border: 2px solid var(--color-border-strong);
-      border-radius: 4px;
-      cursor: pointer;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background var(--duration-fast), border-color var(--duration-fast);
-    }
-
-    .todo-checkbox.is-done {
-      background: var(--color-success);
-      border-color: var(--color-success);
-    }
-
-    .todo-text {
-      font-size: var(--text-sm);
-      color: var(--color-text-secondary);
-      flex: 1;
-    }
-
-    .todo-text.is-done {
-      text-decoration: line-through;
-      color: var(--color-text-muted);
-    }
-
-    .todo-add-row {
-      display: flex;
-      gap: var(--space-2);
-    }
-
-    .todo-add-row input {
-      flex: 1;
-      background: var(--color-bg-inset);
-      border: 1px solid var(--color-border-default);
-      border-radius: var(--radius-md);
-      padding: var(--space-2) var(--space-3);
-      font-size: var(--text-sm);
-      color: var(--color-text-primary);
-      font-family: var(--font-family-base);
-    }
-
+    /* Todo */
+    .todo-list { display: flex; flex-direction: column; gap: var(--space-2); margin-bottom: var(--space-4); }
+    .todo-item { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); background: var(--color-bg-inset); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); }
+    .todo-checkbox { width: 16px; height: 16px; border: 2px solid var(--color-border-strong); border-radius: 4px; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: background var(--duration-fast), border-color var(--duration-fast); }
+    .todo-checkbox.is-done { background: var(--color-success); border-color: var(--color-success); }
+    .todo-text { font-size: var(--text-sm); color: var(--color-text-secondary); flex: 1; }
+    .todo-text.is-done { text-decoration: line-through; color: var(--color-text-muted); }
+    .todo-add-row { display: flex; gap: var(--space-2); }
+    .todo-add-row input { flex: 1; background: var(--color-bg-inset); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); padding: var(--space-2) var(--space-3); font-size: var(--text-sm); color: var(--color-text-primary); font-family: var(--font-family-base); }
     .todo-add-row input:focus { outline: none; border-color: var(--color-border-focus); }
 
-    /* Bilgi satırları */
-    .info-row {
-      display: flex;
-      gap: var(--space-3);
-      margin-bottom: var(--space-3);
-      align-items: flex-start;
-    }
+    /* Info rows */
+    .info-row { display: flex; gap: var(--space-3); margin-bottom: var(--space-3); align-items: flex-start; }
+    .info-label { font-size: var(--text-xs); font-weight: var(--font-weight-semibold); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: var(--tracking-wider); width: 100px; flex-shrink: 0; padding-top: 2px; }
+    .info-value { font-size: var(--text-sm); color: var(--color-text-primary); flex: 1; }
 
-    .info-label {
-      font-size: var(--text-xs);
-      font-weight: var(--font-weight-semibold);
-      color: var(--color-text-muted);
-      text-transform: uppercase;
-      letter-spacing: var(--tracking-wider);
-      width: 100px;
-      flex-shrink: 0;
-      padding-top: 2px;
-    }
-
-    .info-value {
-      font-size: var(--text-sm);
-      color: var(--color-text-primary);
-      flex: 1;
-    }
-
-    /* Yeni müşteri ekle butonu */
+    /* Add customer placeholder */
     .add-customer-placeholder {
       border: 2px dashed var(--color-border-default);
       border-radius: var(--radius-xl);
@@ -316,30 +425,48 @@
       gap: var(--space-2);
       padding: var(--space-8);
       cursor: pointer;
-      transition: border-color var(--duration-fast), background var(--duration-fast);
+      transition: border-color var(--duration-fast), background var(--duration-fast), color var(--duration-fast);
       color: var(--color-text-muted);
     }
+    @media (hover: hover) {
+      .add-customer-placeholder:hover {
+        border-color: var(--color-accent);
+        background: var(--color-accent-subtle);
+        color: var(--color-accent);
+      }
+    }
 
-    .add-customer-placeholder:hover {
-      border-color: var(--color-accent);
-      background: var(--color-accent-subtle);
-      color: var(--color-accent);
+    /* Section divider */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-6) 0 0;
+      margin-bottom: var(--space-1);
+    }
+    .section-divider-title {
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-widest);
     }
   </style>
 </head>
 <body>
 
-  <header class="top-bar">
-    <div class="top-bar-left">
-      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Menüyü aç" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-      <span class="top-bar-title">Müşteri Alanı</span>
-    </div>
-  </header>
+  <!-- Mesh Gradient Ambient Arka Plan -->
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="ambient-orb ambient-orb--purple"></div>
+    <div class="ambient-orb ambient-orb--blue"></div>
+  </div>
 
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <!-- Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
+  <!-- ================================================================
+       SIDEBAR
+       ================================================================ -->
   <aside class="sidebar" id="sidebar" role="navigation" aria-label="Ana navigasyon">
     <div class="sidebar-logo">
       <div class="sidebar-logo-icon">
@@ -372,47 +499,6 @@
         </a>
       </div>
       <div class="sidebar-section">
-        <div class="sidebar-section-label">Haber Akışları</div>
-        <a href="../reklam.html" class="nav-link">
-          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M15 12h.01"/><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M2 10h20"/>
-          </svg>
-          <span class="nav-link-label">Reklam</span>
-        </a>
-        <a href="../pazarlama.html" class="nav-link">
-          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/>
-          </svg>
-          <span class="nav-link-label">Pazarlama</span>
-        </a>
-        <a href="../sosyal-medya.html" class="nav-link">
-          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
-            <line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/>
-          </svg>
-          <span class="nav-link-label">Sosyal Medya</span>
-        </a>
-        <a href="../yapay-zeka.html" class="nav-link">
-          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2a8 8 0 0 1 8 8v1a4 4 0 0 1-4 4h-1"/>
-            <path d="M9 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3"/><path d="M12 22v-4"/><path d="M8 22h8"/>
-          </svg>
-          <span class="nav-link-label">Yapay Zeka</span>
-        </a>
-        <a href="../turkce.html" class="nav-link">
-          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
-          </svg>
-          <span class="nav-link-label">Türkçe Kaynaklar</span>
-        </a>
-        <a href="../resmi.html" class="nav-link">
-          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-          </svg>
-          <span class="nav-link-label">Resmi Kaynaklar</span>
-        </a>
-      </div>
-      <div class="sidebar-section">
         <div class="sidebar-section-label">Çalışma Alanı</div>
         <a href="../bilgi/index.html" class="nav-link">
           <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -434,6 +520,16 @@
           <span class="nav-link-label">Gelişim</span>
         </a>
       </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Haber Akışları</div>
+        <a href="../haberler.html" class="nav-link">
+          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2Z"/>
+            <path d="M9 12h6"/><path d="M9 16h4"/><path d="M9 8h1"/>
+          </svg>
+          <span class="nav-link-label">Haberler</span>
+        </a>
+      </div>
     </nav>
     <div class="sidebar-footer">
       <div class="sidebar-user">
@@ -442,7 +538,7 @@
           <div class="sidebar-user-name" id="userName">Ajans Kullanıcısı</div>
           <div class="sidebar-user-role">Dijital Pazarlama</div>
         </div>
-        <button class="btn btn-icon btn-ghost btn-icon-sm" id="logoutBtn" aria-label="Çıkış yap" title="Çıkış Yap">
+        <button class="btn btn-icon btn-ghost btn-icon-sm" id="logout-btn" aria-label="Çıkış yap" title="Çıkış Yap">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
             <polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/>
@@ -452,57 +548,229 @@
     </div>
   </aside>
 
+  <!-- ================================================================
+       MAIN
+       ================================================================ -->
   <main class="main-content" id="mainContent">
     <div class="content-inner">
 
-      <div class="page-header">
-        <div>
-          <h1 class="page-title">Müşteri Alanı</h1>
-          <p class="page-subtitle">Aktif müşterilerinizin kampanya ve hedef takibi</p>
+      <!-- ── Hero ──────────────────────────────────────────────────── -->
+      <section class="dashboard-hero anim-fade-up anim-d100" aria-label="Müşteri Alanı başlığı">
+        <div class="hero-greeting">
+          <div class="hero-greeting-label">Çalışma Alanı</div>
+          <h1 class="hero-title">Müşteri Alanı</h1>
+          <p class="hero-subtitle">Ajans müşterilerinizi yönetin, kampanya KPI ve görevleri takip edin.</p>
         </div>
-        <div class="page-header-actions">
-          <button class="btn btn-primary btn-sm" id="addCustomerBtn">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
+        <div class="hero-actions">
+          <button class="hero-btn-primary" id="addCustomerBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;">
               <path d="M5 12h14"/><path d="M12 5v14"/>
             </svg>
             Yeni Müşteri Ekle
           </button>
         </div>
-      </div>
+      </section>
 
-      <div class="customer-grid" id="customerGrid">
+      <!-- ── Hub Bento Grid ─────────────────────────────────────────── -->
+      <section class="dashboard-blocks" aria-label="Ajans özet paneller">
 
-        <!-- Örnek Kart: Diş Hekimi -->
-        <div class="customer-card" data-customer="dis-hekimi" tabindex="0" role="button">
-          <div class="customer-card-top">
-            <div class="customer-avatar">D</div>
-            <div class="customer-info">
-              <div class="customer-name">Diş Hekimi Klinik</div>
-              <div class="customer-sector">Sağlık / Klinik</div>
+        <!-- BENTO 1 — Ajans Profili -->
+        <article class="bento-card anim-fade-up anim-d200" aria-label="Ajans profil kartı">
+          <div class="bento-card-label">Ajans Profili</div>
+          <div class="hub-avatar-wrap">
+            <div class="hub-avatar">DS</div>
+            <div>
+              <div class="hub-member-name">Dark Space Dijital</div>
+              <div class="hub-member-role">Dijital Pazarlama Ajansı</div>
             </div>
           </div>
-          <div class="customer-card-footer">
-            <span class="badge badge-success">Aktif</span>
-            <span class="text-xs text-muted">Son güncelleme: bugün</span>
+          <div class="hub-membership-badge">
+            <span class="hub-membership-badge-dot"></span>
+            Elite Üye
           </div>
-        </div>
+          <div class="hub-stat-row">
+            <div class="hub-stat">
+              <div class="hub-stat-value" id="hubActiveCount">7</div>
+              <div class="hub-stat-label">Aktif Müşteri</div>
+            </div>
+            <div class="hub-stat">
+              <div class="hub-stat-value">18</div>
+              <div class="hub-stat-label">Ay Üyelik</div>
+            </div>
+          </div>
+        </article>
 
-        <!-- Yeni Müşteri Ekle Placeholder -->
-        <div class="add-customer-placeholder" id="addCustomerPlaceholder" tabindex="0" role="button">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:32px;height:32px;">
-            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-            <circle cx="9" cy="7" r="4"/>
-            <path d="M19 8v6"/><path d="M22 11h-6"/>
-          </svg>
-          <span style="font-size:var(--text-sm);font-weight:var(--font-weight-medium);">Yeni Müşteri Ekle</span>
-        </div>
+        <!-- BENTO 2 — Aktif Hizmetler (span 2) -->
+        <article class="bento-card bento-span-2 anim-fade-up anim-d300" aria-label="Aktif hizmetler">
+          <div class="hub-services-header">
+            <div class="bento-card-label" style="margin-bottom:0;">Aktif Hizmetler</div>
+            <button class="hub-manage-btn">Yönet</button>
+          </div>
+          <div class="hub-service-list">
+            <div class="hub-service-item">
+              <span class="hub-service-dot hub-service-dot--green"></span>
+              <span class="hub-service-name">Meta Ads</span>
+              <span class="hub-service-platform">Facebook / Instagram</span>
+              <span class="hub-service-budget">₺18.500</span>
+            </div>
+            <div class="hub-service-item">
+              <span class="hub-service-dot hub-service-dot--blue"></span>
+              <span class="hub-service-name">Google Ads</span>
+              <span class="hub-service-platform">Search / Display</span>
+              <span class="hub-service-budget">₺12.000</span>
+            </div>
+            <div class="hub-service-item">
+              <span class="hub-service-dot hub-service-dot--green"></span>
+              <span class="hub-service-name">TikTok Ads</span>
+              <span class="hub-service-platform">TikTok For Business</span>
+              <span class="hub-service-budget">₺8.000</span>
+            </div>
+            <div class="hub-service-item">
+              <span class="hub-service-dot hub-service-dot--yellow"></span>
+              <span class="hub-service-name">SEO</span>
+              <span class="hub-service-platform">Organik / İçerik</span>
+              <span class="hub-service-budget">₺5.500</span>
+            </div>
+          </div>
+        </article>
 
+        <!-- BENTO 3 — Finansal Geçmiş -->
+        <article class="bento-card anim-fade-up anim-d400" aria-label="Finansal geçmiş">
+          <div class="bento-card-label">Son Faturalar</div>
+          <div class="hub-invoice-table">
+            <div class="hub-invoice-row">
+              <span class="hub-invoice-date">Haz 2026</span>
+              <span class="hub-invoice-desc">Meta Ads — Haziran</span>
+              <span class="hub-invoice-amount">₺18.500</span>
+              <span class="hub-invoice-badge hub-invoice-badge--paid">Ödendi</span>
+            </div>
+            <div class="hub-invoice-row">
+              <span class="hub-invoice-date">Haz 2026</span>
+              <span class="hub-invoice-desc">Google Ads + SEO</span>
+              <span class="hub-invoice-amount">₺17.500</span>
+              <span class="hub-invoice-badge hub-invoice-badge--pending">Bekliyor</span>
+            </div>
+            <div class="hub-invoice-row">
+              <span class="hub-invoice-date">May 2026</span>
+              <span class="hub-invoice-desc">TikTok Ads — Mayıs</span>
+              <span class="hub-invoice-amount">₺8.000</span>
+              <span class="hub-invoice-badge hub-invoice-badge--paid">Ödendi</span>
+            </div>
+            <div class="hub-invoice-row">
+              <span class="hub-invoice-date">May 2026</span>
+              <span class="hub-invoice-desc">Strateji Danışmanlık</span>
+              <span class="hub-invoice-amount">₺4.200</span>
+              <span class="hub-invoice-badge hub-invoice-badge--paid">Ödendi</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- BENTO 4 — Hızlı Destek (span 2) -->
+        <article class="bento-card bento-span-2 anim-fade-up anim-d500" aria-label="Destek ve talepler">
+          <div class="bento-card-label" style="margin-bottom: var(--space-4);">Destek Merkezi</div>
+          <div class="hub-support-grid">
+
+            <!-- Açık Talepler -->
+            <div>
+              <div class="hub-support-label">Açık Talepler</div>
+              <div class="hub-ticket-list">
+                <div class="hub-ticket">
+                  <span class="hub-ticket-priority hub-ticket-priority--high">HIGH</span>
+                  <div class="hub-ticket-info">
+                    <div class="hub-ticket-title">Meta Ads CPM artışı — acil aksiyon</div>
+                    <div class="hub-ticket-meta">Açıldı: 5 Haz &nbsp;·&nbsp; Meta Ads</div>
+                  </div>
+                </div>
+                <div class="hub-ticket">
+                  <span class="hub-ticket-priority hub-ticket-priority--medium">MED</span>
+                  <div class="hub-ticket-info">
+                    <div class="hub-ticket-title">Google Ads reklam metni güncelleme talebi</div>
+                    <div class="hub-ticket-meta">Açıldı: 3 Haz &nbsp;·&nbsp; Google Ads</div>
+                  </div>
+                </div>
+                <div class="hub-ticket">
+                  <span class="hub-ticket-priority hub-ticket-priority--low">LOW</span>
+                  <div class="hub-ticket-info">
+                    <div class="hub-ticket-title">Aylık rapor tarihi değişikliği</div>
+                    <div class="hub-ticket-meta">Açıldı: 1 Haz &nbsp;·&nbsp; Genel</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Yeni Talep Formu -->
+            <div>
+              <div class="hub-support-label">Yeni Talep Oluştur</div>
+              <div class="hub-support-form">
+                <input class="hub-glass-input" type="text" placeholder="Konu başlığı..." aria-label="Talep başlığı">
+                <select class="hub-glass-select" aria-label="Hizmet seç">
+                  <option value="">Hizmet seç...</option>
+                  <option>Meta Ads</option>
+                  <option>Google Ads</option>
+                  <option>TikTok Ads</option>
+                  <option>SEO</option>
+                  <option>Genel</option>
+                </select>
+                <textarea class="hub-glass-input" rows="3" placeholder="Detaylar, ekran görüntüsü linki..." style="resize:vertical;" aria-label="Talep detayı"></textarea>
+                <button class="hub-submit-btn" type="button">Talep Gönder</button>
+              </div>
+            </div>
+
+          </div>
+        </article>
+
+      </section>
+
+      <!-- ── Müşteri Listesi Başlığı ─────────────────────────────── -->
+      <div class="section-divider anim-fade-up anim-d600">
+        <span class="section-divider-title">Müşteri Listesi</span>
       </div>
+
+      <!-- ── Bugünkü Takipler Paneli ─────────────────────────────── -->
+      <div id="bugunPanel" style="display:none;margin-bottom:var(--space-5);">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-3);">
+          <div style="display:flex;align-items:center;gap:var(--space-2);">
+            <span style="font-size:16px;">⏰</span>
+            <span style="font-size:var(--text-sm);font-weight:var(--font-weight-semibold);color:var(--color-text-primary);">Bugünkü Takipler</span>
+            <span id="bugunOzet" style="font-size:var(--text-xs);color:var(--color-text-muted);background:var(--color-bg-inset);padding:2px 8px;border-radius:var(--radius-full);"></span>
+          </div>
+          <button id="bugunPanelToggle" style="background:none;border:none;color:var(--color-text-muted);cursor:pointer;font-size:var(--text-xs);padding:4px 8px;border-radius:var(--radius-sm);border:1px solid var(--color-border-subtle);font-family:var(--font-family-base);">Gizle</button>
+        </div>
+        <div id="bugunGorevler" style="display:flex;flex-direction:column;gap:var(--space-2);"></div>
+      </div>
+
+      <!-- ── Müşteri Grid (JS fills this) ──────────────────────── -->
+      <div class="customer-grid" id="customerGrid"></div>
+
+      <!-- ── Footer ─────────────────────────────────────────────── -->
+      <footer class="site-footer anim-fade-up anim-d700" aria-label="Site altbilgisi">
+        <div class="footer-inner">
+          <div class="footer-brand">
+            <div class="footer-logo-wrap">
+              <div class="footer-logo-mark" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                </svg>
+              </div>
+              <span class="footer-logo-name">Dark Space</span>
+            </div>
+            <p class="footer-copy">&copy; 2026 Dark Space. Tüm hakları saklıdır.</p>
+            <p class="footer-tagline">Bilgi. Takip. Gelişim.</p>
+          </div>
+          <nav class="footer-links" aria-label="Alt navigasyon">
+            <a href="#" class="footer-link">Gizlilik</a>
+            <a href="#" class="footer-link">Kullanım Koşulları</a>
+            <a href="mailto:info@darkspace.app" class="footer-link">İletişim</a>
+          </nav>
+        </div>
+      </footer>
 
     </div>
   </main>
 
-  <!-- MOBİL ALT BAR -->
+  <!-- ================================================================
+       MOBİL ALT BAR
+       ================================================================ -->
   <nav class="bottom-bar" aria-label="Mobil navigasyon">
     <div class="bottom-bar-nav">
       <a href="../index.html" class="bottom-bar-item">
@@ -512,7 +780,7 @@
         </svg>
         <span class="bottom-bar-item-label">Ana</span>
       </a>
-      <a href="../reklam.html" class="bottom-bar-item">
+      <a href="../haberler.html" class="bottom-bar-item">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2Z"/>
           <path d="M9 12h6"/><path d="M9 16h4"/><path d="M9 8h1"/>
@@ -541,7 +809,9 @@
     </div>
   </nav>
 
-  <!-- MÜŞTERİ DETAY MODAL -->
+  <!-- ================================================================
+       MÜŞTERİ DETAY MODAL
+       ================================================================ -->
   <div class="customer-modal-overlay" id="customerModal" role="dialog" aria-modal="true">
     <div class="customer-modal">
 
@@ -560,160 +830,349 @@
         </div>
       </div>
 
+      <!-- Brief Bölümü -->
+      <div id="briefSection" style="padding:var(--space-3) var(--space-5);border-bottom:1px solid var(--color-border-subtle);background:var(--color-bg-inset);">
+        <div id="briefView" style="display:flex;align-items:flex-start;gap:var(--space-3);">
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:var(--text-xs);font-weight:var(--font-weight-semibold);color:var(--color-accent);text-transform:uppercase;letter-spacing:var(--tracking-wider);margin-bottom:var(--space-1);">Brief / Hedef</div>
+            <p id="briefDisplay" style="font-size:var(--text-sm);color:var(--color-text-secondary);margin:0;line-height:1.6;white-space:pre-wrap;"></p>
+          </div>
+          <button id="editBriefBtn" style="flex-shrink:0;background:none;border:1px solid var(--color-border-default);border-radius:var(--radius-sm);padding:3px 10px;font-size:var(--text-xs);color:var(--color-text-muted);cursor:pointer;white-space:nowrap;margin-top:var(--space-5);font-family:var(--font-family-base);">✏ Düzenle</button>
+        </div>
+        <div id="briefEditSection" style="display:none;">
+          <textarea id="briefTextarea" rows="3" placeholder="Müşteri briefinği, hedefler, kısıtlar, önemli notlar..." style="width:100%;background:var(--color-bg-surface);border:1px solid var(--color-accent);border-radius:var(--radius-md);padding:var(--space-2) var(--space-3);font-size:var(--text-sm);color:var(--color-text-primary);font-family:var(--font-family-base);resize:vertical;box-sizing:border-box;"></textarea>
+          <div style="display:flex;gap:var(--space-2);margin-top:var(--space-2);">
+            <button id="saveBriefBtn" class="btn btn-primary btn-sm">Kaydet</button>
+            <button id="cancelBriefBtn" class="btn btn-ghost btn-sm">İptal</button>
+          </div>
+        </div>
+      </div>
+
       <!-- Sekmeler -->
       <div class="customer-tabs">
-        <button class="customer-tab is-active" data-tab="genel">Genel Bilgiler</button>
-        <button class="customer-tab" data-tab="kpi">KPI Hedefleri</button>
+        <button class="customer-tab is-active" data-tab="genel">Genel</button>
+        <button class="customer-tab" data-tab="kpi">KPI</button>
         <button class="customer-tab" data-tab="notlar">Notlar</button>
         <button class="customer-tab" data-tab="todo">Yapılacaklar</button>
+        <button class="customer-tab" data-tab="gunluk" style="position:relative;">
+          Günlük
+          <span id="gunlukBadge" style="display:none;position:absolute;top:4px;right:4px;width:7px;height:7px;background:var(--color-error);border-radius:50%;"></span>
+        </button>
       </div>
 
       <div class="customer-modal-body">
-
-        <!-- Sekme: Genel -->
-        <div class="tab-panel is-active" id="tab-genel">
-          <div class="info-row">
-            <div class="info-label">Müşteri Adı</div>
-            <div class="info-value">Diş Hekimi Klinik</div>
-          </div>
-          <div class="info-row">
-            <div class="info-label">Sektör</div>
-            <div class="info-value">Sağlık / Diş Hekimliği</div>
-          </div>
-          <div class="info-row">
-            <div class="info-label">Hedef Kitle</div>
-            <div class="info-value">25-55 yaş arası, orta-üst gelir grubu, yerel</div>
-          </div>
-          <div class="info-row">
-            <div class="info-label">Aylık Bütçe</div>
-            <div class="info-value">₺15.000</div>
-          </div>
-          <div class="info-row">
-            <div class="info-label">Aktif Kanal</div>
-            <div class="info-value">
-              <span class="badge badge-meta" style="margin-right:4px;">Meta</span>
-              <span class="badge badge-google">Google</span>
-            </div>
-          </div>
-          <div class="info-row">
-            <div class="info-label">Durum</div>
-            <div class="info-value"><span class="badge badge-success">Aktif</span></div>
-          </div>
-          <div class="info-row">
-            <div class="info-label">Notlar</div>
-            <div class="info-value" style="color:var(--color-text-secondary);">Ağustos ayında implant sezonu başlıyor — kreatifler hazır olmalı.</div>
-          </div>
-        </div>
-
-        <!-- Sekme: KPI -->
-        <div class="tab-panel" id="tab-kpi">
-          <p style="font-size:var(--text-sm);color:var(--color-text-secondary);margin-bottom:var(--space-4);">Hedef KPI değerlerini girin. Dashboard'da gerçek değerlerle karşılaştırılacak.</p>
-          <div class="kpi-grid">
-            <div class="kpi-field">
-              <div class="kpi-field-label">CPA Hedefi</div>
-              <input type="text" placeholder="₺250" value="₺250">
-            </div>
-            <div class="kpi-field">
-              <div class="kpi-field-label">ROAS Hedefi</div>
-              <input type="text" placeholder="4.0x" value="4.0x">
-            </div>
-            <div class="kpi-field">
-              <div class="kpi-field-label">CTR Hedefi</div>
-              <input type="text" placeholder="%2.5" value="%2.5">
-            </div>
-            <div class="kpi-field">
-              <div class="kpi-field-label">Aylık Lead</div>
-              <input type="text" placeholder="60" value="60">
-            </div>
-            <div class="kpi-field">
-              <div class="kpi-field-label">CPL Hedefi</div>
-              <input type="text" placeholder="₺200" value="₺200">
-            </div>
-            <div class="kpi-field">
-              <div class="kpi-field-label">Conv. Rate</div>
-              <input type="text" placeholder="%3" value="%3">
-            </div>
-          </div>
-          <div style="margin-top:var(--space-4);">
-            <button class="btn btn-primary btn-sm">Kaydet</button>
-            <span style="font-size:var(--text-xs);color:var(--color-text-muted);margin-left:var(--space-3);">Firebase entegrasyonu yakında</span>
-          </div>
-        </div>
-
-        <!-- Sekme: Notlar -->
-        <div class="tab-panel" id="tab-notlar">
-          <div style="margin-bottom:var(--space-4);">
-            <textarea style="width:100%;min-height:150px;background:var(--color-bg-inset);border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:var(--space-3);font-size:var(--text-sm);color:var(--color-text-primary);font-family:var(--font-family-base);resize:vertical;box-sizing:border-box;" placeholder="Bu müşteriye dair notlar, gözlemler, stratejiler..."></textarea>
-            <button class="btn btn-primary btn-sm" style="margin-top:var(--space-2);">Kaydet</button>
-          </div>
-          <hr class="divider">
-          <div style="margin-top:var(--space-4);">
-            <div style="font-size:var(--text-xs);color:var(--color-text-muted);text-transform:uppercase;letter-spacing:var(--tracking-widest);margin-bottom:var(--space-3);">Geçmiş Notlar</div>
-            <div style="background:var(--color-bg-inset);border:1px solid var(--color-border-subtle);border-radius:var(--radius-md);padding:var(--space-3);margin-bottom:var(--space-2);">
-              <div style="font-size:var(--text-xs);color:var(--color-text-muted);margin-bottom:var(--space-1);">1 Haziran 2026</div>
-              <div style="font-size:var(--text-sm);color:var(--color-text-secondary);">Carousel formatı tek görselden %40 daha iyi CTR sağladı. Gelecek ayda carousel ağırlıklı devam.</div>
-            </div>
-            <div style="background:var(--color-bg-inset);border:1px solid var(--color-border-subtle);border-radius:var(--radius-md);padding:var(--space-3);">
-              <div style="font-size:var(--text-xs);color:var(--color-text-muted);margin-bottom:var(--space-1);">22 Mayıs 2026</div>
-              <div style="font-size:var(--text-sm);color:var(--color-text-secondary);">Hedef kitleyi 35-50 yaş olarak daralttık. CPA %28 düştü.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Sekme: Yapılacaklar -->
-        <div class="tab-panel" id="tab-todo">
-          <div class="todo-list" id="todoList">
-            <div class="todo-item">
-              <div class="todo-checkbox is-done" tabindex="0" role="checkbox" aria-checked="true">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;">
-                  <polyline points="20 6 9 17 4 12"/>
-                </svg>
-              </div>
-              <span class="todo-text is-done">Mayıs ayı performans raporu hazırla</span>
-            </div>
-            <div class="todo-item">
-              <div class="todo-checkbox" tabindex="0" role="checkbox" aria-checked="false"></div>
-              <span class="todo-text">Ağustos implant kampanyası kreatifleri tasarla</span>
-            </div>
-            <div class="todo-item">
-              <div class="todo-checkbox" tabindex="0" role="checkbox" aria-checked="false"></div>
-              <span class="todo-text">Google Ads'de negatif anahtar kelime listesi güncelle</span>
-            </div>
-            <div class="todo-item">
-              <div class="todo-checkbox" tabindex="0" role="checkbox" aria-checked="false"></div>
-              <span class="todo-text">Retargeting kitlesi oluştur (web ziyaretçileri)</span>
-            </div>
-          </div>
-
-          <div class="todo-add-row">
-            <input type="text" id="newTodoInput" placeholder="Yeni yapılacak ekle..." maxlength="120">
-            <button class="btn btn-primary btn-sm" id="addTodoBtn">Ekle</button>
-          </div>
-        </div>
-
+        <div class="tab-panel is-active" id="tab-genel"></div>
+        <div class="tab-panel" id="tab-kpi"></div>
+        <div class="tab-panel" id="tab-notlar"></div>
+        <div class="tab-panel" id="tab-todo"></div>
+        <div class="tab-panel" id="tab-gunluk"></div>
       </div>
     </div>
   </div>
 
-  <script type="module">
-    import { initApp } from '../js/app.js';
+  <!-- ================================================================
+       YENİ MÜŞTERİ MODAL
+       ================================================================ -->
+  <div class="customer-modal-overlay" id="addCustomerModal" role="dialog" aria-modal="true" aria-labelledby="addModalTitle">
+    <div class="customer-modal">
+      <div class="customer-modal-header">
+        <div class="customer-modal-title" id="addModalTitle">Yeni Müşteri Ekle</div>
+        <button class="modal-close-btn" id="addModalClose" aria-label="Kapat">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
+            <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="customer-modal-body">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3);margin-bottom:var(--space-3);">
+          <div>
+            <label style="display:block;font-size:var(--text-xs);font-weight:var(--font-weight-semibold);color:var(--color-text-muted);text-transform:uppercase;letter-spacing:var(--tracking-wider);margin-bottom:var(--space-1);">Müşteri Adı *</label>
+            <input type="text" id="newClientName" placeholder="Örn: Diş Hekimi Klinik" style="width:100%;background:var(--color-bg-inset);border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:var(--space-2) var(--space-3);font-size:var(--text-sm);color:var(--color-text-primary);font-family:var(--font-family-base);box-sizing:border-box;">
+          </div>
+          <div>
+            <label style="display:block;font-size:var(--text-xs);font-weight:var(--font-weight-semibold);color:var(--color-text-muted);text-transform:uppercase;letter-spacing:var(--tracking-wider);margin-bottom:var(--space-1);">Sektör</label>
+            <input type="text" id="newClientSector" placeholder="Örn: Sağlık / Klinik" style="width:100%;background:var(--color-bg-inset);border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:var(--space-2) var(--space-3);font-size:var(--text-sm);color:var(--color-text-primary);font-family:var(--font-family-base);box-sizing:border-box;">
+          </div>
+        </div>
+        <div style="margin-bottom:var(--space-3);">
+          <label style="display:block;font-size:var(--text-xs);font-weight:var(--font-weight-semibold);color:var(--color-text-muted);text-transform:uppercase;letter-spacing:var(--tracking-wider);margin-bottom:var(--space-1);">Hedef Kitle</label>
+          <input type="text" id="newClientAudience" placeholder="Örn: 25-55 yaş arası, orta-üst gelir, yerel" style="width:100%;background:var(--color-bg-inset);border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:var(--space-2) var(--space-3);font-size:var(--text-sm);color:var(--color-text-primary);font-family:var(--font-family-base);box-sizing:border-box;">
+        </div>
+        <div style="margin-bottom:var(--space-3);">
+          <label style="display:block;font-size:var(--text-xs);font-weight:var(--font-weight-semibold);color:var(--color-text-muted);text-transform:uppercase;letter-spacing:var(--tracking-wider);margin-bottom:var(--space-1);">Aylık Bütçe</label>
+          <input type="text" id="newClientBudget" placeholder="Örn: ₺15.000" style="width:100%;background:var(--color-bg-inset);border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:var(--space-2) var(--space-3);font-size:var(--text-sm);color:var(--color-text-primary);font-family:var(--font-family-base);box-sizing:border-box;">
+        </div>
+        <div style="margin-bottom:var(--space-5);">
+          <label style="display:block;font-size:var(--text-xs);font-weight:var(--font-weight-semibold);color:var(--color-text-muted);text-transform:uppercase;letter-spacing:var(--tracking-wider);margin-bottom:var(--space-1);">Brief / Hedef <span style="font-weight:400;text-transform:none;letter-spacing:0;">(opsiyonel)</span></label>
+          <textarea id="newClientBrief" rows="3" placeholder="Müşteri hedefleri, marka tonu, kısıtlar, önemli notlar..." style="width:100%;background:var(--color-bg-inset);border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:var(--space-2) var(--space-3);font-size:var(--text-sm);color:var(--color-text-primary);font-family:var(--font-family-base);resize:vertical;box-sizing:border-box;"></textarea>
+        </div>
+        <div style="display:flex;gap:var(--space-2);">
+          <button class="btn btn-primary btn-sm" id="saveNewClientBtn">Kaydet</button>
+          <button class="btn btn-ghost btn-sm" id="cancelNewClientBtn">İptal</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    initApp((user) => {
+  <!-- ================================================================
+       KPI EKLE MODAL
+       ================================================================ -->
+  <div class="customer-modal-overlay" id="addKpiModal" role="dialog" aria-modal="true" aria-labelledby="addKpiTitle">
+    <div class="customer-modal" style="max-width:480px;">
+      <div class="customer-modal-header">
+        <div class="customer-modal-title" id="addKpiTitle">Yeni KPI Ekle</div>
+        <button class="modal-close-btn" id="addKpiModalClose" aria-label="Kapat">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
+            <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="customer-modal-body">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3);margin-bottom:var(--space-3);">
+          <div>
+            <label style="display:block;font-size:var(--text-xs);font-weight:var(--font-weight-semibold);color:var(--color-text-muted);text-transform:uppercase;letter-spacing:var(--tracking-wider);margin-bottom:var(--space-1);">KPI Adı *</label>
+            <input type="text" id="kpiName" placeholder="Örn: CPA" style="width:100%;background:var(--color-bg-inset);border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:var(--space-2) var(--space-3);font-size:var(--text-sm);color:var(--color-text-primary);font-family:var(--font-family-base);box-sizing:border-box;">
+          </div>
+          <div>
+            <label style="display:block;font-size:var(--text-xs);font-weight:var(--font-weight-semibold);color:var(--color-text-muted);text-transform:uppercase;letter-spacing:var(--tracking-wider);margin-bottom:var(--space-1);">Hedef Değer *</label>
+            <input type="number" id="kpiTarget" placeholder="250" style="width:100%;background:var(--color-bg-inset);border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:var(--space-2) var(--space-3);font-size:var(--text-sm);color:var(--color-text-primary);font-family:var(--font-family-base);box-sizing:border-box;">
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3);margin-bottom:var(--space-5);">
+          <div>
+            <label style="display:block;font-size:var(--text-xs);font-weight:var(--font-weight-semibold);color:var(--color-text-muted);text-transform:uppercase;letter-spacing:var(--tracking-wider);margin-bottom:var(--space-1);">Birim</label>
+            <input type="text" id="kpiUnit" placeholder="Örn: TL, %, adet" style="width:100%;background:var(--color-bg-inset);border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:var(--space-2) var(--space-3);font-size:var(--text-sm);color:var(--color-text-primary);font-family:var(--font-family-base);box-sizing:border-box;">
+          </div>
+          <div>
+            <label style="display:block;font-size:var(--text-xs);font-weight:var(--font-weight-semibold);color:var(--color-text-muted);text-transform:uppercase;letter-spacing:var(--tracking-wider);margin-bottom:var(--space-1);">Periyot</label>
+            <select id="kpiPeriod" style="width:100%;background:var(--color-bg-inset);border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:var(--space-2) var(--space-3);font-size:var(--text-sm);color:var(--color-text-primary);font-family:var(--font-family-base);box-sizing:border-box;">
+              <option value="haftalık">Haftalık</option>
+              <option value="aylık" selected>Aylık</option>
+              <option value="çeyreklik">Çeyreklik</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:flex;gap:var(--space-2);">
+          <button class="btn btn-primary btn-sm" id="saveKpiBtn">KPI Ekle</button>
+          <button class="btn btn-ghost btn-sm" id="cancelKpiBtn">İptal</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================
+       FIREBASE + JS (UNCHANGED)
+       ================================================================ -->
+  <script type="module">
+    import { initApp, showToast } from '../js/app.js?v=5';
+    import {
+      saveClient, getClients, saveClientNote, getClientNotes,
+      saveKPI, updateKPIActual, getKPIs,
+      saveTodo, updateTodoStatus, getTodos,
+      saveDailyTask, getDailyTasks, toggleDailyTask, deleteDailyTask,
+    } from '../js/firestore.js?v=5';
+
+    // ─── Durum ──────────────────────────────────────────────────────────────────
+    let aktifMusteri = null; // Şu an açık müşteri objesi
+
+    // ─── Başlatma ───────────────────────────────────────────────────────────────
+    initApp(async (user) => {
       if (user) {
         const avatar = document.getElementById('userAvatar');
-        const name = document.getElementById('userName');
-        if (user.displayName) { name.textContent = user.displayName; avatar.textContent = user.displayName[0].toUpperCase(); }
-        else if (user.email) { name.textContent = user.email.split('@')[0]; avatar.textContent = user.email[0].toUpperCase(); }
+        const name   = document.getElementById('userName');
+        if (user.displayName) {
+          name.textContent   = user.displayName;
+          avatar.textContent = user.displayName[0].toUpperCase();
+        } else if (user.email) {
+          name.textContent   = user.email.split('@')[0];
+          avatar.textContent = user.email[0].toUpperCase();
+        }
+      }
+      await musteriListesiYukle();
+      await bugunPanelGuncelle();
+      hatirlaticiIzniAl();   // bildirim izni iste (sessizce, reddetse de devam et)
+    });
+
+    // ─── Müşteri Listesi ─────────────────────────────────────────────────────────
+    async function musteriListesiYukle() {
+      const grid = document.getElementById('customerGrid');
+      grid.innerHTML = '<div style="color:var(--color-text-muted);font-size:var(--text-sm);padding:var(--space-4);">Yükleniyor...</div>';
+      try {
+        const musteriler = await getClients();
+        if (musteriler.hata) throw new Error(musteriler.hata);
+        renderMusteriler(musteriler);
+        // Hub sayacını güncelle
+        const cnt = document.getElementById('hubActiveCount');
+        if (cnt) cnt.textContent = musteriler.filter(m => m.status === 'aktif').length || musteriler.length;
+      } catch (err) {
+        showToast('Müşteriler yüklenemedi: ' + err.message, 'error');
+        document.getElementById('customerGrid').innerHTML = '<div class="empty-state">Müşteriler yüklenemedi. Sayfayı yenileyin.</div>';
+      }
+    }
+
+    function renderMusteriler(musteriler) {
+      const grid = document.getElementById('customerGrid');
+      grid.innerHTML = '';
+
+      if (!musteriler.length) {
+        grid.innerHTML = '<div class="empty-state" style="padding:var(--space-8);color:var(--color-text-muted);font-size:var(--text-sm);">Henüz müşteri eklenmedi. Yeni müşteri ekle →</div>';
+        const placeholder = document.createElement('div');
+        placeholder.className = 'add-customer-placeholder';
+        placeholder.id = 'addCustomerPlaceholder';
+        placeholder.tabIndex = 0;
+        placeholder.setAttribute('role', 'button');
+        placeholder.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:32px;height:32px;">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M19 8v6"/><path d="M22 11h-6"/>
+          </svg>
+          <span style="font-size:var(--text-sm);font-weight:var(--font-weight-medium);">Yeni Müşteri Ekle</span>
+        `;
+        placeholder.addEventListener('click', addCustomerModalAc);
+        grid.appendChild(placeholder);
+        return;
+      }
+
+      musteriler.forEach(m => {
+        const card = document.createElement('div');
+        card.className = 'customer-card';
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('role', 'button');
+        card.innerHTML = `
+          <div class="customer-card-top">
+            <div class="customer-avatar">${(m.name || '?')[0].toUpperCase()}</div>
+            <div class="customer-info">
+              <div class="customer-name">${escHtml(m.name)}</div>
+              <div class="customer-sector">${escHtml(m.sector || '')}</div>
+            </div>
+            <span class="badge ${m.status === 'aktif' ? 'badge-success' : ''}">
+              ${m.status === 'aktif' ? 'Aktif' : 'Pasif'}
+            </span>
+          </div>
+          ${m.brief ? `<div style="font-size:var(--text-xs);color:var(--color-text-muted);margin:var(--space-1) 0 var(--space-2);line-height:1.4;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">${escHtml(m.brief)}</div>` : ''}
+          <div class="customer-card-footer">
+            <span class="text-xs text-muted">Bütçe: ${escHtml(m.budget || '—')}</span>
+          </div>
+        `;
+        card.addEventListener('click',   () => musteriDetay(m));
+        card.addEventListener('keydown', e => { if (e.key === 'Enter') musteriDetay(m); });
+        grid.appendChild(card);
+      });
+
+      // Placeholder her zaman sona ekle
+      const placeholder = document.createElement('div');
+      placeholder.className = 'add-customer-placeholder';
+      placeholder.tabIndex = 0;
+      placeholder.setAttribute('role', 'button');
+      placeholder.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:32px;height:32px;">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M19 8v6"/><path d="M22 11h-6"/>
+        </svg>
+        <span style="font-size:var(--text-sm);font-weight:var(--font-weight-medium);">Yeni Müşteri Ekle</span>
+      `;
+      placeholder.addEventListener('click',   addCustomerModalAc);
+      placeholder.addEventListener('keydown', e => { if (e.key === 'Enter') addCustomerModalAc(); });
+      grid.appendChild(placeholder);
+    }
+
+    // ─── Yeni Müşteri Modal ──────────────────────────────────────────────────────
+    function addCustomerModalAc() {
+      document.getElementById('addCustomerModal').classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      document.getElementById('newClientName').focus();
+    }
+
+    function addCustomerModalKapat() {
+      document.getElementById('addCustomerModal').classList.remove('is-open');
+      document.body.style.overflow = '';
+      document.getElementById('newClientName').value      = '';
+      document.getElementById('newClientSector').value    = '';
+      document.getElementById('newClientAudience').value  = '';
+      document.getElementById('newClientBudget').value    = '';
+      document.getElementById('newClientBrief').value     = '';
+    }
+
+    document.getElementById('addCustomerBtn').addEventListener('click', addCustomerModalAc);
+    document.getElementById('addModalClose').addEventListener('click', addCustomerModalKapat);
+    document.getElementById('cancelNewClientBtn').addEventListener('click', addCustomerModalKapat);
+    document.getElementById('addCustomerModal').addEventListener('click', e => {
+      if (e.target === document.getElementById('addCustomerModal')) addCustomerModalKapat();
+    });
+
+    document.getElementById('saveNewClientBtn').addEventListener('click', async () => {
+      const ad = document.getElementById('newClientName').value.trim();
+      if (!ad) { showToast('Müşteri adı zorunludur', 'error'); return; }
+      const btn = document.getElementById('saveNewClientBtn');
+      btn.disabled = true;
+      try {
+        const sonuc = await saveClient({
+          name:           ad,
+          sector:         document.getElementById('newClientSector').value.trim(),
+          targetAudience: document.getElementById('newClientAudience').value.trim(),
+          budget:         document.getElementById('newClientBudget').value.trim(),
+          brief:          document.getElementById('newClientBrief').value.trim(),
+          status:         'aktif',
+        });
+        if (sonuc.hata) throw new Error(sonuc.hata);
+        showToast('Müşteri eklendi', 'success');
+        addCustomerModalKapat();
+        await musteriListesiYukle();
+      } catch (err) {
+        showToast('Müşteri kaydedilemedi: ' + err.message, 'error');
+      } finally {
+        btn.disabled = false;
       }
     });
 
-    // Müşteri kartı tıklama → modal aç
-    document.querySelectorAll('.customer-card').forEach(card => {
-      card.addEventListener('click', openCustomerModal);
-      card.addEventListener('keydown', e => { if (e.key === 'Enter') openCustomerModal(); });
-    });
+    // ─── Müşteri Detay Modal ─────────────────────────────────────────────────────
+    async function musteriDetay(musteri) {
+      aktifMusteri = musteri;
 
-    function openCustomerModal() {
+      document.getElementById('modalCustomerName').textContent   = musteri.name;
+      document.getElementById('modalCustomerSector').textContent = musteri.sector || '';
+      const statusBadge = document.getElementById('modalCustomerStatus');
+      statusBadge.textContent  = musteri.status === 'aktif' ? 'Aktif' : 'Pasif';
+      statusBadge.className    = 'badge ' + (musteri.status === 'aktif' ? 'badge-success' : '');
+
+      // Genel sekme doldur
+      document.getElementById('tab-genel').innerHTML = `
+        <div class="info-row">
+          <div class="info-label">Müşteri Adı</div>
+          <div class="info-value">${escHtml(musteri.name)}</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">Sektör</div>
+          <div class="info-value">${escHtml(musteri.sector || '—')}</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">Hedef Kitle</div>
+          <div class="info-value">${escHtml(musteri.targetAudience || '—')}</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">Aylık Bütçe</div>
+          <div class="info-value">${escHtml(musteri.budget || '—')}</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">Durum</div>
+          <div class="info-value">
+            <span class="badge ${musteri.status === 'aktif' ? 'badge-success' : ''}">
+              ${musteri.status === 'aktif' ? 'Aktif' : 'Pasif'}
+            </span>
+          </div>
+        </div>
+      `;
+
+      // Brief göster
+      const briefEl = document.getElementById('briefDisplay');
+      briefEl.textContent = musteri.brief || '';
+      briefEl.style.color = musteri.brief ? 'var(--color-text-secondary)' : 'var(--color-text-muted)';
+      if (!musteri.brief) briefEl.textContent = 'Brief eklenmedi — Düzenle tuşuna bas.';
+      document.getElementById('briefEditSection').style.display = 'none';
+      document.getElementById('briefView').style.display = 'flex';
+
       document.getElementById('customerModal').classList.add('is-open');
       document.body.style.overflow = 'hidden';
       switchTab('genel');
@@ -722,96 +1181,617 @@
     function closeCustomerModal() {
       document.getElementById('customerModal').classList.remove('is-open');
       document.body.style.overflow = '';
+      aktifMusteri = null;
     }
 
     document.getElementById('customerModalClose').addEventListener('click', closeCustomerModal);
     document.getElementById('customerModal').addEventListener('click', e => {
       if (e.target === document.getElementById('customerModal')) closeCustomerModal();
     });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCustomerModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeCustomerModal(); addCustomerModalKapat(); kpiModalKapat(); } });
 
-    // Sekmeler
+    // ─── Brief Düzenleme ─────────────────────────────────────────────────────────
+    document.getElementById('editBriefBtn').addEventListener('click', () => {
+      document.getElementById('briefView').style.display = 'none';
+      document.getElementById('briefEditSection').style.display = 'block';
+      document.getElementById('briefTextarea').value = aktifMusteri?.brief || '';
+      document.getElementById('briefTextarea').focus();
+    });
+
+    document.getElementById('cancelBriefBtn').addEventListener('click', () => {
+      document.getElementById('briefEditSection').style.display = 'none';
+      document.getElementById('briefView').style.display = 'flex';
+    });
+
+    document.getElementById('saveBriefBtn').addEventListener('click', async () => {
+      if (!aktifMusteri) return;
+      const yeniBrief = document.getElementById('briefTextarea').value.trim();
+      const btn = document.getElementById('saveBriefBtn');
+      btn.disabled = true;
+      try {
+        const sonuc = await saveClient({
+          name:           aktifMusteri.name,
+          sector:         aktifMusteri.sector,
+          targetAudience: aktifMusteri.targetAudience,
+          budget:         aktifMusteri.budget,
+          status:         aktifMusteri.status,
+          brief:          yeniBrief,
+          socialLinks:    aktifMusteri.socialLinks,
+        }, aktifMusteri.id);
+        if (sonuc.hata) throw new Error(sonuc.hata);
+        aktifMusteri.brief = yeniBrief;
+        const briefEl = document.getElementById('briefDisplay');
+        briefEl.textContent = yeniBrief || 'Brief eklenmedi — Düzenle tuşuna bas.';
+        briefEl.style.color = yeniBrief ? 'var(--color-text-secondary)' : 'var(--color-text-muted)';
+        document.getElementById('briefEditSection').style.display = 'none';
+        document.getElementById('briefView').style.display = 'flex';
+        showToast('Brief kaydedildi', 'success');
+        await musteriListesiYukle();
+      } catch (err) {
+        showToast('Brief kaydedilemedi: ' + err.message, 'error');
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    document.getElementById('briefTextarea').addEventListener('keydown', e => {
+      if (e.key === 'Enter' && e.ctrlKey) document.getElementById('saveBriefBtn').click();
+    });
+
+    // ─── Sekmeler ────────────────────────────────────────────────────────────────
     function switchTab(tabId) {
       document.querySelectorAll('.customer-tab').forEach(t => t.classList.remove('is-active'));
-      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('is-active'));
+      document.querySelectorAll('.tab-panel').forEach(p  => p.classList.remove('is-active'));
       document.querySelector(`.customer-tab[data-tab="${tabId}"]`)?.classList.add('is-active');
       document.getElementById(`tab-${tabId}`)?.classList.add('is-active');
+
+      if (tabId === 'kpi')    kpiSekmeYukle();
+      if (tabId === 'notlar') notlarSekmeYukle();
+      if (tabId === 'todo')   todoSekmeYukle();
+      if (tabId === 'gunluk') gunlukSekmeYukle();
     }
 
     document.querySelectorAll('.customer-tab').forEach(tab => {
       tab.addEventListener('click', () => switchTab(tab.dataset.tab));
     });
 
-    // Yapılacaklar checkbox toggle
-    document.querySelectorAll('.todo-checkbox').forEach(checkbox => {
-      checkbox.addEventListener('click', toggleTodo);
-      checkbox.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') toggleTodo.call(checkbox); });
-    });
-
-    function toggleTodo() {
-      const isDone = this.classList.contains('is-done');
-      const text = this.closest('.todo-item').querySelector('.todo-text');
-      if (isDone) {
-        this.classList.remove('is-done');
-        this.innerHTML = '';
-        this.setAttribute('aria-checked', 'false');
-        text.classList.remove('is-done');
-      } else {
-        this.classList.add('is-done');
-        this.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;"><polyline points="20 6 9 17 4 12"/></svg>';
-        this.setAttribute('aria-checked', 'true');
-        text.classList.add('is-done');
+    // ─── KPI Sekmesi ─────────────────────────────────────────────────────────────
+    async function kpiSekmeYukle() {
+      if (!aktifMusteri) return;
+      const panel = document.getElementById('tab-kpi');
+      panel.innerHTML = '<div style="color:var(--color-text-muted);font-size:var(--text-sm);">Yükleniyor...</div>';
+      try {
+        const kpiler = await getKPIs(aktifMusteri.id);
+        if (kpiler.hata) throw new Error(kpiler.hata);
+        renderKpiler(kpiler, panel);
+      } catch (err) {
+        showToast('KPI\'lar yüklenemedi: ' + err.message, 'error');
+        panel.innerHTML = '<div style="color:var(--color-error);font-size:var(--text-sm);">KPI\'lar yüklenemedi.</div>';
       }
     }
 
-    // Yapılacak ekleme
-    document.getElementById('addTodoBtn').addEventListener('click', addTodo);
-    document.getElementById('newTodoInput').addEventListener('keydown', e => { if (e.key === 'Enter') addTodo(); });
+    function renderKpiler(kpiler, panel) {
+      panel.innerHTML = '';
 
-    function addTodo() {
-      const input = document.getElementById('newTodoInput');
-      const text = input.value.trim();
-      if (!text) return;
-      const list = document.getElementById('todoList');
-      const item = document.createElement('div');
-      item.className = 'todo-item';
-      item.innerHTML = `
-        <div class="todo-checkbox" tabindex="0" role="checkbox" aria-checked="false"></div>
-        <span class="todo-text">${text}</span>
-      `;
-      item.querySelector('.todo-checkbox').addEventListener('click', toggleTodo);
-      list.appendChild(item);
-      input.value = '';
+      if (!kpiler.length) {
+        panel.innerHTML = '<p style="font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-4);">Henüz KPI eklenmedi.</p>';
+      } else {
+        const liste = document.createElement('div');
+        liste.style.cssText = 'display:flex;flex-direction:column;gap:var(--space-3);margin-bottom:var(--space-5);';
+        kpiler.forEach(kpi => {
+          const sapmaHtml = kpiSapmaBadge(kpi);
+          const kart = document.createElement('div');
+          kart.style.cssText = 'background:var(--color-bg-inset);border:1px solid var(--color-border-default);border-radius:var(--radius-lg);padding:var(--space-4);display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);flex-wrap:wrap;';
+          kart.innerHTML = `
+            <div>
+              <div style="font-size:var(--text-sm);font-weight:var(--font-weight-semibold);color:var(--color-text-primary);">${escHtml(kpi.name)}</div>
+              <div style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:2px;">Hedef: ${kpi.target} ${escHtml(kpi.unit || '')} / ${escHtml(kpi.period || 'aylık')}</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:var(--space-3);">
+              ${sapmaHtml}
+              <input
+                type="number"
+                placeholder="Gerçekleşen"
+                value="${kpi.actual !== null && kpi.actual !== undefined ? kpi.actual : ''}"
+                data-kpi-id="${kpi.id}"
+                style="width:110px;background:var(--color-bg-surface);border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:var(--space-1) var(--space-2);font-size:var(--text-sm);color:var(--color-text-primary);font-family:var(--font-family-base);"
+              >
+              <button class="btn btn-primary btn-sm kpi-guncelle-btn" data-kpi-id="${kpi.id}">Güncelle</button>
+            </div>
+          `;
+          liste.appendChild(kart);
+        });
+        panel.appendChild(liste);
+
+        panel.querySelectorAll('.kpi-guncelle-btn').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            const kpiId = btn.dataset.kpiId;
+            const inp   = panel.querySelector(`input[data-kpi-id="${kpiId}"]`);
+            const val   = parseFloat(inp.value);
+            if (isNaN(val)) { showToast('Geçerli bir değer girin', 'error'); return; }
+            btn.disabled = true;
+            try {
+              const sonuc = await updateKPIActual(aktifMusteri.id, kpiId, val);
+              if (sonuc.hata) throw new Error(sonuc.hata);
+              showToast('KPI güncellendi', 'success');
+              await kpiSekmeYukle();
+            } catch (err) {
+              showToast('KPI güncellenemedi: ' + err.message, 'error');
+            } finally {
+              btn.disabled = false;
+            }
+          });
+        });
+      }
+
+      const ekleBtn = document.createElement('button');
+      ekleBtn.className = 'btn btn-primary btn-sm';
+      ekleBtn.textContent = '+ Yeni KPI Ekle';
+      ekleBtn.addEventListener('click', kpiModalAc);
+      panel.appendChild(ekleBtn);
     }
 
-    // Yeni müşteri ekle (placeholder)
-    document.getElementById('addCustomerPlaceholder').addEventListener('click', () => {
-      alert('Yeni müşteri ekleme Firebase entegrasyonuyla aktif edilecek.');
-    });
-    document.getElementById('addCustomerBtn').addEventListener('click', () => {
-      alert('Yeni müşteri ekleme Firebase entegrasyonuyla aktif edilecek.');
+    function kpiSapmaBadge(kpi) {
+      if (kpi.actual === null || kpi.actual === undefined || !kpi.target) return '';
+      const sapma = ((kpi.actual - kpi.target) / kpi.target) * 100;
+      const renk  = sapma <= 0 ? 'var(--color-success)' : 'var(--color-error)';
+      const isaret = sapma > 0 ? '+' : '';
+      return `<span style="font-size:var(--text-xs);font-weight:var(--font-weight-semibold);color:${renk};background:${renk}22;padding:2px 8px;border-radius:4px;">${isaret}${sapma.toFixed(1)}%</span>`;
+    }
+
+    // ─── KPI Modal ───────────────────────────────────────────────────────────────
+    function kpiModalAc() {
+      document.getElementById('addKpiModal').classList.add('is-open');
+      document.getElementById('kpiName').focus();
+    }
+
+    function kpiModalKapat() {
+      document.getElementById('addKpiModal').classList.remove('is-open');
+      ['kpiName','kpiTarget','kpiUnit'].forEach(id => { document.getElementById(id).value = ''; });
+      document.getElementById('kpiPeriod').value = 'aylık';
+    }
+
+    document.getElementById('addKpiModalClose').addEventListener('click', kpiModalKapat);
+    document.getElementById('cancelKpiBtn').addEventListener('click', kpiModalKapat);
+    document.getElementById('addKpiModal').addEventListener('click', e => {
+      if (e.target === document.getElementById('addKpiModal')) kpiModalKapat();
     });
 
-    // Hamburger
-    const hamburgerBtn = document.getElementById('hamburgerBtn');
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebarOverlay');
-    hamburgerBtn.addEventListener('click', () => {
-      sidebar.classList.toggle('is-open');
-      overlay.classList.toggle('is-visible');
-      hamburgerBtn.setAttribute('aria-expanded', sidebar.classList.contains('is-open'));
-    });
-    overlay.addEventListener('click', () => {
-      sidebar.classList.remove('is-open');
-      overlay.classList.remove('is-visible');
-      hamburgerBtn.setAttribute('aria-expanded', 'false');
+    document.getElementById('saveKpiBtn').addEventListener('click', async () => {
+      if (!aktifMusteri) return;
+      const ad = document.getElementById('kpiName').value.trim();
+      const hedef = parseFloat(document.getElementById('kpiTarget').value);
+      if (!ad)          { showToast('KPI adı zorunludur', 'error');   return; }
+      if (isNaN(hedef)) { showToast('Hedef değer zorunludur', 'error'); return; }
+      const btn = document.getElementById('saveKpiBtn');
+      btn.disabled = true;
+      try {
+        const sonuc = await saveKPI(aktifMusteri.id, {
+          name:   ad,
+          target: hedef,
+          unit:   document.getElementById('kpiUnit').value.trim(),
+          period: document.getElementById('kpiPeriod').value,
+        });
+        if (sonuc.hata) throw new Error(sonuc.hata);
+        showToast('KPI eklendi', 'success');
+        kpiModalKapat();
+        await kpiSekmeYukle();
+      } catch (err) {
+        showToast('KPI kaydedilemedi: ' + err.message, 'error');
+      } finally {
+        btn.disabled = false;
+      }
     });
 
-    document.getElementById('logoutBtn').addEventListener('click', async () => {
-      const { getAuth, signOut } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
-      await signOut(getAuth());
-      window.location.href = '../login.html';
+    // ─── Notlar Sekmesi ──────────────────────────────────────────────────────────
+    async function notlarSekmeYukle() {
+      if (!aktifMusteri) return;
+      const panel = document.getElementById('tab-notlar');
+      panel.innerHTML = `
+        <div style="margin-bottom:var(--space-4);">
+          <textarea id="yeniNotTextarea" style="width:100%;min-height:120px;background:var(--color-bg-inset);border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:var(--space-3);font-size:var(--text-sm);color:var(--color-text-primary);font-family:var(--font-family-base);resize:vertical;box-sizing:border-box;" placeholder="Bu müşteriye dair notlar, gözlemler, stratejiler..."></textarea>
+          <button class="btn btn-primary btn-sm" id="saveNotBtn" style="margin-top:var(--space-2);">Not Kaydet</button>
+        </div>
+        <hr class="divider">
+        <div style="margin-top:var(--space-4);">
+          <div style="font-size:var(--text-xs);color:var(--color-text-muted);text-transform:uppercase;letter-spacing:var(--tracking-widest);margin-bottom:var(--space-3);">Geçmiş Notlar</div>
+          <div id="notListesi" style="display:flex;flex-direction:column;gap:var(--space-2);">
+            <div style="color:var(--color-text-muted);font-size:var(--text-sm);">Yükleniyor...</div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('saveNotBtn').addEventListener('click', async () => {
+        const metin = document.getElementById('yeniNotTextarea').value.trim();
+        if (!metin) { showToast('Not boş olamaz', 'error'); return; }
+        const btn = document.getElementById('saveNotBtn');
+        btn.disabled = true;
+        try {
+          const sonuc = await saveClientNote(aktifMusteri.id, { text: metin });
+          if (sonuc.hata) throw new Error(sonuc.hata);
+          showToast('Not kaydedildi', 'success');
+          document.getElementById('yeniNotTextarea').value = '';
+          await notlariRenderEt();
+        } catch (err) {
+          showToast('Not kaydedilemedi: ' + err.message, 'error');
+        } finally {
+          btn.disabled = false;
+        }
+      });
+
+      await notlariRenderEt();
+    }
+
+    async function notlariRenderEt() {
+      const liste = document.getElementById('notListesi');
+      if (!liste) return;
+      try {
+        const notlar = await getClientNotes(aktifMusteri.id);
+        if (notlar.hata) throw new Error(notlar.hata);
+        if (!notlar.length) {
+          liste.innerHTML = '<div style="color:var(--color-text-muted);font-size:var(--text-sm);">Henüz not eklenmedi.</div>';
+          return;
+        }
+        liste.innerHTML = '';
+        notlar.forEach(not => {
+          const tarih = not.createdAt?.toDate ? not.createdAt.toDate().toLocaleDateString('tr-TR', { year:'numeric', month:'long', day:'numeric' }) : '—';
+          const el = document.createElement('div');
+          el.style.cssText = 'background:var(--color-bg-inset);border:1px solid var(--color-border-subtle);border-radius:var(--radius-md);padding:var(--space-3);';
+          el.innerHTML = `
+            <div style="font-size:var(--text-xs);color:var(--color-text-muted);margin-bottom:var(--space-1);">${tarih}</div>
+            <div style="font-size:var(--text-sm);color:var(--color-text-secondary);">${escHtml(not.text)}</div>
+          `;
+          liste.appendChild(el);
+        });
+      } catch (err) {
+        liste.innerHTML = '<div style="color:var(--color-error);font-size:var(--text-sm);">Notlar yüklenemedi.</div>';
+      }
+    }
+
+    // ─── Todo Sekmesi ─────────────────────────────────────────────────────────────
+    async function todoSekmeYukle() {
+      if (!aktifMusteri) return;
+      const panel = document.getElementById('tab-todo');
+      panel.innerHTML = `
+        <div class="todo-list" id="todoList">
+          <div style="color:var(--color-text-muted);font-size:var(--text-sm);">Yükleniyor...</div>
+        </div>
+        <div class="todo-add-row" style="margin-top:var(--space-3);">
+          <input type="text" id="newTodoInput" placeholder="Yeni yapılacak ekle..." maxlength="120">
+          <button class="btn btn-primary btn-sm" id="addTodoBtn">Ekle</button>
+        </div>
+      `;
+
+      document.getElementById('addTodoBtn').addEventListener('click', todoEkle);
+      document.getElementById('newTodoInput').addEventListener('keydown', e => { if (e.key === 'Enter') todoEkle(); });
+
+      await todolariRenderEt();
+    }
+
+    async function todolariRenderEt() {
+      const liste = document.getElementById('todoList');
+      if (!liste) return;
+      try {
+        const todolar = await getTodos({ clientId: aktifMusteri.id });
+        if (todolar.hata) throw new Error(todolar.hata);
+        liste.innerHTML = '';
+        if (!todolar.length) {
+          liste.innerHTML = '<div style="color:var(--color-text-muted);font-size:var(--text-sm);">Henüz yapılacak eklenmedi.</div>';
+          return;
+        }
+        todolar.forEach(todo => {
+          const el = document.createElement('div');
+          el.className = 'todo-item';
+          el.innerHTML = `
+            <div class="todo-checkbox ${todo.done ? 'is-done' : ''}" data-todo-id="${todo.id}" tabindex="0" role="checkbox" aria-checked="${todo.done}">
+              ${todo.done ? checkSvg() : ''}
+            </div>
+            <span class="todo-text ${todo.done ? 'is-done' : ''}">${escHtml(todo.title)}</span>
+          `;
+          const checkbox = el.querySelector('.todo-checkbox');
+          checkbox.addEventListener('click',   () => todoToggle(todo.id, !todo.done));
+          checkbox.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') todoToggle(todo.id, !todo.done); });
+          liste.appendChild(el);
+        });
+      } catch (err) {
+        console.error('[todolariRenderEt]', err);
+        showToast('Yapılacaklar yüklenemedi: ' + err.message, 'error');
+        liste.innerHTML = '<div style="color:var(--color-error);font-size:var(--text-sm);">Yapılacaklar yüklenemedi.</div>';
+      }
+    }
+
+    async function todoEkle() {
+      const input = document.getElementById('newTodoInput');
+      const metin = input.value.trim();
+      if (!metin) return;
+      if (!aktifMusteri) { showToast('Müşteri seçili değil', 'error'); return; }
+      const btn = document.getElementById('addTodoBtn');
+      btn.disabled = true;
+      try {
+        const sonuc = await saveTodo({ title: metin, clientId: aktifMusteri.id });
+        if (sonuc.hata) throw new Error(sonuc.hata);
+        showToast('Yapılacak eklendi', 'success');
+        input.value = '';
+        await todolariRenderEt();
+      } catch (err) {
+        console.error('[todoEkle]', err);
+        showToast('Yapılacak eklenemedi: ' + err.message, 'error');
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    async function todoToggle(todoId, yeniDurum) {
+      try {
+        const sonuc = await updateTodoStatus(todoId, yeniDurum);
+        if (sonuc.hata) throw new Error(sonuc.hata);
+        await todolariRenderEt();
+      } catch (err) {
+        showToast('Durum güncellenemedi: ' + err.message, 'error');
+      }
+    }
+
+    // ─── Günlük Sekmesi ──────────────────────────────────────────────────────────
+    const BUGUN = () => new Date().toISOString().split('T')[0];
+
+    async function gunlukSekmeYukle() {
+      if (!aktifMusteri) return;
+      const panel = document.getElementById('tab-gunluk');
+      panel.innerHTML = '<div style="color:var(--color-text-muted);font-size:var(--text-sm);">Yükleniyor...</div>';
+      try {
+        const gorevler = await getDailyTasks(aktifMusteri.id);
+        if (gorevler.hata) throw new Error(gorevler.hata);
+        renderGunlukGorevler(gorevler, panel);
+        gunlukBadgeGuncelle(gorevler);
+      } catch (err) {
+        console.error('[gunlukSekme]', err);
+        showToast('Günlük görevler yüklenemedi: ' + err.message, 'error');
+        panel.innerHTML = '<div style="color:var(--color-error);font-size:var(--text-sm);">Yüklenemedi.</div>';
+      }
+    }
+
+    function renderGunlukGorevler(gorevler, panel) {
+      const bugun = BUGUN();
+      const tamamlanan = gorevler.filter(g => g.lastCompletedDate === bugun).length;
+      const toplam = gorevler.length;
+
+      panel.innerHTML = '';
+
+      const progressDiv = document.createElement('div');
+      progressDiv.style.cssText = 'margin-bottom:var(--space-4);';
+      const yuzde = toplam ? Math.round((tamamlanan / toplam) * 100) : 0;
+      const renkClass = yuzde === 100 ? 'var(--color-success)' : yuzde >= 50 ? 'var(--color-accent)' : 'var(--color-warning, #f59e0b)';
+      progressDiv.innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-1);">
+          <span style="font-size:var(--text-xs);font-weight:var(--font-weight-semibold);color:var(--color-text-muted);text-transform:uppercase;letter-spacing:var(--tracking-wider);">Bugün</span>
+          <span style="font-size:var(--text-xs);color:var(--color-text-muted);">${tamamlanan}/${toplam} tamamlandı</span>
+        </div>
+        <div style="height:4px;background:var(--color-bg-inset);border-radius:2px;overflow:hidden;">
+          <div style="height:100%;width:${yuzde}%;background:${renkClass};border-radius:2px;transition:width 0.3s ease;"></div>
+        </div>
+      `;
+      panel.appendChild(progressDiv);
+
+      if (!gorevler.length) {
+        const bos = document.createElement('div');
+        bos.style.cssText = 'color:var(--color-text-muted);font-size:var(--text-sm);padding:var(--space-4) 0;';
+        bos.textContent = 'Henüz günlük görev eklenmedi.';
+        panel.appendChild(bos);
+      } else {
+        const liste = document.createElement('div');
+        liste.style.cssText = 'display:flex;flex-direction:column;gap:var(--space-2);margin-bottom:var(--space-4);';
+        gorevler.forEach(g => {
+          const tamamli = g.lastCompletedDate === bugun;
+          const el = document.createElement('div');
+          el.style.cssText = `display:flex;align-items:center;gap:var(--space-3);padding:var(--space-2) var(--space-3);background:var(--color-bg-inset);border:1px solid ${tamamli ? 'var(--color-success)22' : 'var(--color-border-subtle)'};border-radius:var(--radius-md);transition:opacity 0.2s;${tamamli ? 'opacity:0.65;' : ''}`;
+          el.innerHTML = `
+            <div class="todo-checkbox ${tamamli ? 'is-done' : ''}" data-id="${g.id}" tabindex="0" role="checkbox" aria-checked="${tamamli}" style="flex-shrink:0;">
+              ${tamamli ? checkSvg() : ''}
+            </div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:var(--text-sm);color:var(--color-text-${tamamli ? 'muted' : 'primary'});${tamamli ? 'text-decoration:line-through;' : ''}">${escHtml(g.title)}</div>
+              ${g.time ? `<div style="font-size:var(--text-xs);color:var(--color-accent);margin-top:1px;">⏰ ${g.time}</div>` : ''}
+            </div>
+            <button class="gunluk-sil-btn" data-id="${g.id}" style="background:none;border:none;color:var(--color-text-muted);cursor:pointer;padding:4px;border-radius:var(--radius-sm);font-size:12px;opacity:0;transition:opacity 0.15s;" title="Sil">✕</button>
+          `;
+          el.addEventListener('mouseenter', () => el.querySelector('.gunluk-sil-btn').style.opacity = '1');
+          el.addEventListener('mouseleave', () => el.querySelector('.gunluk-sil-btn').style.opacity = '0');
+          const cb = el.querySelector('.todo-checkbox');
+          const toggle = async () => {
+            cb.style.pointerEvents = 'none';
+            const sonuc = await toggleDailyTask(aktifMusteri.id, g.id, !tamamli);
+            cb.style.pointerEvents = '';
+            if (sonuc.hata) { showToast('Güncellenemedi: ' + sonuc.hata, 'error'); return; }
+            await gunlukSekmeYukle();
+            await bugunPanelGuncelle();
+          };
+          cb.addEventListener('click', toggle);
+          cb.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') toggle(); });
+          el.querySelector('.gunluk-sil-btn').addEventListener('click', async (e) => {
+            e.stopPropagation();
+            if (!confirm(`"${g.title}" silinsin mi?`)) return;
+            const sonuc = await deleteDailyTask(aktifMusteri.id, g.id);
+            if (sonuc.hata) { showToast('Silinemedi: ' + sonuc.hata, 'error'); return; }
+            await gunlukSekmeYukle();
+            await bugunPanelGuncelle();
+          });
+          liste.appendChild(el);
+        });
+        panel.appendChild(liste);
+      }
+
+      const form = document.createElement('div');
+      form.style.cssText = 'border-top:1px solid var(--color-border-subtle);padding-top:var(--space-4);';
+      form.innerHTML = `
+        <div style="font-size:var(--text-xs);font-weight:var(--font-weight-semibold);color:var(--color-text-muted);text-transform:uppercase;letter-spacing:var(--tracking-wider);margin-bottom:var(--space-2);">Yeni Günlük Görev</div>
+        <div style="display:flex;gap:var(--space-2);">
+          <input type="text" id="gunlukGorevAdi" placeholder="Görev adı..." maxlength="100"
+            style="flex:1;background:var(--color-bg-inset);border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:var(--space-2) var(--space-3);font-size:var(--text-sm);color:var(--color-text-primary);font-family:var(--font-family-base);">
+          <input type="time" id="gunlukGorevSaat"
+            style="width:90px;background:var(--color-bg-inset);border:1px solid var(--color-border-default);border-radius:var(--radius-md);padding:var(--space-2) var(--space-3);font-size:var(--text-sm);color:var(--color-text-primary);font-family:var(--font-family-base);">
+          <button class="btn btn-primary btn-sm" id="gunlukGorevEkleBtn">Ekle</button>
+        </div>
+        <div style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:var(--space-1);">Saat seçersen hatırlatıcı kurulur (bildirim izni gerekli).</div>
+      `;
+      panel.appendChild(form);
+
+      const ekleBtn = panel.querySelector('#gunlukGorevEkleBtn');
+      const adInp   = panel.querySelector('#gunlukGorevAdi');
+      const saatInp = panel.querySelector('#gunlukGorevSaat');
+      const gunlukEkle = async () => {
+        const baslik = adInp.value.trim();
+        if (!baslik) { showToast('Görev adı zorunludur', 'error'); return; }
+        ekleBtn.disabled = true;
+        const sonuc = await saveDailyTask(aktifMusteri.id, { title: baslik, time: saatInp.value });
+        ekleBtn.disabled = false;
+        if (sonuc.hata) { showToast('Eklenemedi: ' + sonuc.hata, 'error'); return; }
+        adInp.value = ''; saatInp.value = '';
+        showToast('Günlük görev eklendi', 'success');
+        await gunlukSekmeYukle();
+        await bugunPanelGuncelle();
+      };
+      ekleBtn.addEventListener('click', gunlukEkle);
+      adInp.addEventListener('keydown', e => { if (e.key === 'Enter') gunlukEkle(); });
+    }
+
+    function gunlukBadgeGuncelle(gorevler) {
+      const bugun = BUGUN();
+      const bekleyen = gorevler.filter(g => g.lastCompletedDate !== bugun).length;
+      const badge = document.getElementById('gunlukBadge');
+      if (badge) badge.style.display = bekleyen > 0 ? 'block' : 'none';
+    }
+
+    // ─── Bugünkü Takipler Paneli ─────────────────────────────────────────────────
+    async function bugunPanelGuncelle() {
+      const panel  = document.getElementById('bugunPanel');
+      const liste  = document.getElementById('bugunGorevler');
+      const ozet   = document.getElementById('bugunOzet');
+      if (!panel || !liste) return;
+
+      try {
+        const musteriler = await getClients();
+        if (musteriler.hata || !musteriler.length) { panel.style.display = 'none'; return; }
+
+        const bugun = BUGUN();
+        const satirlar = [];
+        let toplamBekleyen = 0;
+        let toplamToplam = 0;
+
+        for (const m of musteriler) {
+          const gorevler = await getDailyTasks(m.id);
+          if (gorevler.hata || !gorevler.length) continue;
+          const bekleyen = gorevler.filter(g => g.lastCompletedDate !== bugun);
+          toplamToplam += gorevler.length;
+          toplamBekleyen += bekleyen.length;
+          if (gorevler.length > 0) {
+            satirlar.push({ musteri: m, gorevler, bekleyen: bekleyen.length });
+          }
+        }
+
+        if (toplamToplam === 0) { panel.style.display = 'none'; return; }
+
+        panel.style.display = 'block';
+        ozet.textContent = `${toplamBekleyen} bekliyor / ${toplamToplam} toplam`;
+        ozet.style.color = toplamBekleyen > 0 ? 'var(--color-warning, #f59e0b)' : 'var(--color-success)';
+
+        liste.innerHTML = '';
+        satirlar.forEach(({ musteri: m, gorevler, bekleyen }) => {
+          const satir = document.createElement('div');
+          satir.style.cssText = 'background:var(--color-bg-surface);border:1px solid var(--color-border-subtle);border-radius:var(--radius-md);padding:var(--space-3) var(--space-4);';
+          const tamamlanan = gorevler.length - bekleyen;
+          satir.innerHTML = `
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-2);">
+              <div style="display:flex;align-items:center;gap:var(--space-2);">
+                <div style="width:24px;height:24px;background:var(--color-accent);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;">${(m.name||'?')[0].toUpperCase()}</div>
+                <span style="font-size:var(--text-sm);font-weight:var(--font-weight-semibold);color:var(--color-text-primary);">${escHtml(m.name)}</span>
+              </div>
+              <span style="font-size:var(--text-xs);color:${bekleyen > 0 ? 'var(--color-warning,#f59e0b)' : 'var(--color-success)'};">${tamamlanan}/${gorevler.length}</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              ${gorevler.map(g => {
+                const tam = g.lastCompletedDate === bugun;
+                return `<div style="display:flex;align-items:center;gap:var(--space-2);${tam ? 'opacity:0.5;' : ''}">
+                  <div style="width:14px;height:14px;border:2px solid ${tam ? 'var(--color-success)' : 'var(--color-border-strong)'};border-radius:3px;background:${tam ? 'var(--color-success)' : 'transparent'};flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+                    ${tam ? '<svg viewBox="0 0 10 10" style="width:8px;height:8px;"><polyline points="1.5,5 4,7.5 8.5,2.5" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' : ''}
+                  </div>
+                  <span style="font-size:var(--text-xs);color:var(--color-text-secondary);${tam ? 'text-decoration:line-through;' : ''}">${escHtml(g.title)}</span>
+                  ${g.time ? `<span style="font-size:10px;color:var(--color-accent);margin-left:auto;">${g.time}</span>` : ''}
+                </div>`;
+              }).join('')}
+            </div>
+          `;
+          satir.style.cursor = 'pointer';
+          satir.addEventListener('click', () => musteriDetay(m));
+          liste.appendChild(satir);
+        });
+
+        hatirlaticiKur();
+      } catch (err) {
+        console.error('[bugunPanel]', err);
+      }
+    }
+
+    // ─── Bildirimler ─────────────────────────────────────────────────────────────
+    const _hatirlaticiTimers = [];
+
+    async function hatirlaticiIzniAl() {
+      if (!('Notification' in window)) return false;
+      if (Notification.permission === 'granted') return true;
+      if (Notification.permission === 'denied') return false;
+      const izin = await Notification.requestPermission();
+      return izin === 'granted';
+    }
+
+    async function hatirlaticiKur() {
+      _hatirlaticiTimers.forEach(t => clearTimeout(t));
+      _hatirlaticiTimers.length = 0;
+
+      if (!('Notification' in window) || Notification.permission !== 'granted') return;
+
+      const musteriler = await getClients();
+      if (musteriler.hata) return;
+      const bugun = BUGUN();
+      const simdi = new Date();
+
+      for (const m of musteriler) {
+        const gorevler = await getDailyTasks(m.id);
+        if (gorevler.hata) continue;
+        gorevler.forEach(g => {
+          if (!g.time || g.lastCompletedDate === bugun) return;
+          const [saat, dakika] = g.time.split(':').map(Number);
+          const hedef = new Date();
+          hedef.setHours(saat, dakika, 0, 0);
+          const fark = hedef - simdi;
+          if (fark > 0 && fark < 12 * 3600 * 1000) {
+            const t = setTimeout(() => {
+              new Notification(`⏰ ${m.name}`, {
+                body: g.title,
+                tag:  `daily-${m.id}-${g.id}`,
+              });
+            }, fark);
+            _hatirlaticiTimers.push(t);
+          }
+        });
+      }
+    }
+
+    document.getElementById('bugunPanelToggle').addEventListener('click', () => {
+      const liste = document.getElementById('bugunGorevler');
+      const btn   = document.getElementById('bugunPanelToggle');
+      const gizli = liste.style.display === 'none';
+      liste.style.display = gizli ? 'flex' : 'none';
+      if (gizli) liste.style.flexDirection = 'column';
+      btn.textContent = gizli ? 'Gizle' : 'Göster';
     });
+
+    function checkSvg() {
+      return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;"><polyline points="20 6 9 17 4 12"/></svg>';
+    }
+
+    function escHtml(str) {
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
   </script>
 </body>
 </html>

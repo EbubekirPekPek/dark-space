@@ -15,38 +15,27 @@
   <title>Dashboard — Dark Space</title>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="css/design-system.css">
-  <link rel="stylesheet" href="css/components.css">
-  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/design-system.css?v=10">
+  <link rel="stylesheet" href="css/components.css?v=10">
+  <link rel="stylesheet" href="css/pages.css?v=10">
 </head>
 <body class="dashboard-page">
 
   <!-- ============================================================
-       MOBİL: ÜSTTE HAMBURGERLİ TOP BAR
+       FAZ 1: MESH GRADIENT AMBIENT ARKA PLAN
+       Sayfa aşağı kaydırılsa bile sabit kalır — sayfanın ruhu
        ============================================================ -->
-  <header class="top-bar">
-    <div class="top-bar-left">
-      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Menüyü aç" aria-expanded="false">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      <span class="top-bar-title">Dark Space</span>
-    </div>
-    <div class="top-bar-actions">
-      <button class="btn btn-icon btn-ghost" aria-label="Arama">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;">
-          <circle cx="11" cy="11" r="8"/>
-          <path d="m21 21-4.3-4.3"/>
-        </svg>
-      </button>
-    </div>
-  </header>
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="ambient-orb ambient-orb--purple"></div>
+    <div class="ambient-orb ambient-orb--blue"></div>
+  </div>
+
+  <!-- Top-bar kaldırıldı: Kapsül navbar main-content içine taşındı -->
 
   <!-- ============================================================
        SİDEBAR OVERLAY (mobil — karartma)
        ============================================================ -->
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
   <!-- ============================================================
        SOL SİDEBAR
@@ -62,7 +51,7 @@
       </div>
       <div class="sidebar-logo-text">
         <span class="sidebar-logo-name">Dark Space</span>
-        <span class="sidebar-logo-sub">v2.0</span>
+        <span class="sidebar-logo-sub">v2.5</span>
       </div>
     </div>
 
@@ -95,63 +84,6 @@
         </a>
       </div>
 
-      <!-- Haber Akışları -->
-      <div class="sidebar-section">
-        <div class="sidebar-section-label">Haber Akışları</div>
-
-        <a href="reklam.html" class="nav-link">
-          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M15 12h.01"/>
-            <rect width="20" height="14" x="2" y="5" rx="2"/>
-            <path d="M2 10h20"/>
-          </svg>
-          <span class="nav-link-label">Reklam</span>
-        </a>
-
-        <a href="pazarlama.html" class="nav-link">
-          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 3v18h18"/>
-            <path d="m19 9-5 5-4-4-3 3"/>
-          </svg>
-          <span class="nav-link-label">Pazarlama</span>
-        </a>
-
-        <a href="sosyal-medya.html" class="nav-link">
-          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="18" cy="5" r="3"/>
-            <circle cx="6" cy="12" r="3"/>
-            <circle cx="18" cy="19" r="3"/>
-            <line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/>
-            <line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/>
-          </svg>
-          <span class="nav-link-label">Sosyal Medya</span>
-        </a>
-
-        <a href="yapay-zeka.html" class="nav-link">
-          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2a8 8 0 0 1 8 8v1a4 4 0 0 1-4 4h-1"/>
-            <path d="M9 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3"/>
-            <path d="M12 22v-4"/>
-            <path d="M8 22h8"/>
-          </svg>
-          <span class="nav-link-label">Yapay Zeka</span>
-        </a>
-
-        <a href="turkce.html" class="nav-link">
-          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
-          </svg>
-          <span class="nav-link-label">Türkçe Kaynaklar</span>
-        </a>
-
-        <a href="resmi.html" class="nav-link">
-          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-          </svg>
-          <span class="nav-link-label">Resmi Kaynaklar</span>
-        </a>
-      </div>
-
       <!-- Çalışma Alanı -->
       <div class="sidebar-section">
         <div class="sidebar-section-label">Çalışma Alanı</div>
@@ -181,6 +113,18 @@
         </a>
       </div>
 
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Haber Akışları</div>
+
+        <a href="haberler.html" class="nav-link">
+          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2Z"/>
+            <path d="M9 12h6"/><path d="M9 16h4"/><path d="M9 8h1"/>
+          </svg>
+          <span class="nav-link-label">Haberler</span>
+        </a>
+      </div>
+
     </nav>
 
     <!-- Kullanıcı Alanı -->
@@ -191,7 +135,7 @@
           <div class="sidebar-user-name" id="userName">Ajans Kullanıcısı</div>
           <div class="sidebar-user-role">Dijital Pazarlama</div>
         </div>
-        <button class="btn btn-icon btn-ghost btn-icon-sm" id="logoutBtn" aria-label="Çıkış yap" title="Çıkış Yap">
+        <button class="btn btn-icon btn-ghost btn-icon-sm" id="logout-btn" aria-label="Çıkış yap" title="Çıkış Yap">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
             <polyline points="16 17 21 12 16 7"/>
@@ -207,178 +151,231 @@
        ANA İÇERİK — DASHBOARD
        ============================================================ -->
   <main class="main-content" id="mainContent">
+
+    <!-- ============================================================
+         YÜZEN KAPSÜL NAVBAR — FAZ 2
+         Sticky — sayfa kaydırılsa da üstte asılı kalır
+         ============================================================ -->
+    <header class="navbar-wrap anim-fade-up anim-d0">
+      <nav class="navbar-capsule" aria-label="Ana sayfa navigasyonu">
+
+        <!-- Sol: Logo -->
+        <a href="index.html" class="navbar-logo">
+          <div class="navbar-logo-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+          </div>
+          <span class="navbar-logo-name">Dark Space</span>
+        </a>
+
+        <!-- Orta: Nav linkleri (masaüstü) -->
+        <div class="navbar-links">
+          <a href="index.html" class="navbar-link is-active">Dashboard</a>
+          <a href="haberler.html" class="navbar-link">Haberler</a>
+          <a href="bilgi/index.html" class="navbar-link">Bilgi Ağacı</a>
+        </div>
+
+        <!-- Sağ: Aksiyon -->
+        <div class="navbar-actions">
+          <!-- Hamburger — sadece mobilde -->
+          <button class="hamburger-btn navbar-hamburger" id="sidebar-toggle" aria-label="Menüyü aç" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <!-- CTA — sadece masaüstünde -->
+          <button class="navbar-cta" onclick="alert('Hızlı not yakında!')">+ Hızlı Not</button>
+        </div>
+
+      </nav>
+    </header>
+
     <div class="content-inner">
 
-      <!-- Selamlama Satırı -->
-      <div class="dashboard-greeting">
-        <div>
-          <h1 class="dashboard-greeting-title" id="greetingTitle">Günaydın</h1>
-          <p class="dashboard-greeting-sub">Bugün sektörde neler döndüğüne bakalım.</p>
-        </div>
-        <div class="dashboard-greeting-date" id="currentDate">3 Haziran 2026, Çarşamba</div>
-      </div>
+      <!-- ============================================================
+           HERO SECTION — FAZ 2: Agresif Tipografi
+           ============================================================ -->
+      <section class="dashboard-hero anim-fade-up anim-d100" aria-label="Giriş ve özet bilgisi">
 
-      <!-- 4 Dashboard Bloğu -->
-      <div class="dashboard-blocks">
+        <!-- Üst etiket -->
+        <p class="hero-eyebrow">Dijital Ajans Paneli</p>
 
-        <!-- BLOK 1 — Günün Özeti -->
-        <div class="dashboard-block block-daily-summary">
-          <div class="block-header">
-            <div class="block-title">
-              <svg class="block-title-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 20h9"/>
-                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
-              </svg>
-              Günün Özeti
-            </div>
-            <span class="text-xs text-muted">Son güncelleme: 08:30</span>
-          </div>
+        <!-- Ana başlık — JS greetingTitle ile dinamik güncellenir -->
+        <h1 class="hero-title" id="greetingTitle">Günaydın</h1>
 
-          <div class="block-value">12</div>
-          <div class="block-value-sub">bugün yeni haber</div>
+        <!-- Açıklama -->
+        <p class="hero-sub">Bugün sektörde neler döndüğüne bakalım.</p>
 
-          <div class="block-stats">
-            <span class="block-stat-badge">
-              <span class="block-stat-dot" style="background: var(--color-meta);"></span>
-              Meta &nbsp;<strong>3</strong>
-            </span>
-            <span class="block-stat-badge">
-              <span class="block-stat-dot" style="background: var(--color-google);"></span>
-              Google &nbsp;<strong>2</strong>
-            </span>
-            <span class="block-stat-badge">
-              <span class="block-stat-dot" style="background: var(--color-tiktok);"></span>
-              TikTok &nbsp;<strong>4</strong>
-            </span>
-            <span class="block-stat-badge">
-              <span class="block-stat-dot" style="background: var(--color-shopify);"></span>
-              Shopify &nbsp;<strong>1</strong>
-            </span>
-            <span class="block-stat-badge">
-              <span class="block-stat-dot" style="background: var(--color-accent);"></span>
-              Diger &nbsp;<strong>2</strong>
-            </span>
-          </div>
+        <!-- Buton + Tarih satırı -->
+        <div class="hero-actions">
+          <a href="haberler.html" class="hero-btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;flex-shrink:0;">
+              <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2Z"/>
+              <path d="M9 12h6"/><path d="M9 16h4"/><path d="M9 8h1"/>
+            </svg>
+            Haberlere Git
+          </a>
+          <button class="hero-btn-secondary" aria-label="Günün özet paneline kaydır" onclick="document.querySelector('.dashboard-blocks')?.scrollIntoView({behavior:'smooth'})">
+            Günün Özeti ↓
+          </button>
+          <div class="dashboard-greeting-date skeleton" id="currentDate" aria-live="polite">3 Haziran 2026, Çarşamba</div>
         </div>
 
-        <!-- BLOK 2 — Öne Çıkan Haber -->
-        <div class="dashboard-block block-featured">
-          <div class="block-header">
-            <div class="block-title">
-              <svg class="block-title-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-              </svg>
-              One Cikan Haber
-            </div>
-            <span class="badge badge-meta">META</span>
+      </section>
+
+      <!-- ============================================================
+           BENTO GRID — FAZ 3: Asimetrik 3 Sütun Izgara
+           Satır 1: [Günün Özeti — 2 kol] [Hatırlatmalar — 1 kol]
+           Satır 2: [Öne Çıkan — 1 kol] [Günlük Hedef — 2 kol]
+           ============================================================ -->
+      <section class="dashboard-blocks" aria-label="Özet paneller">
+
+        <!-- BENTO 1 — Günün Özeti (2 sütun) -->
+        <article class="bento-card bento-span-2 anim-fade-up anim-d200" aria-label="Günün Özeti">
+
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <p class="bento-label" style="margin:0;">Günün Özeti</p>
+            <span style="font-size:0.6875rem;color:rgba(75,85,99,1);">Son güncelleme: 08:30</span>
           </div>
 
-          <div class="news-card news-card--featured" id="featuredNews" tabindex="0" role="button">
-            <div class="news-card-header">
-              <h3 class="news-card-title">
-                Meta, Advantage+ alisveris kampanyalarina yeni AI ozellikler ekliyor: Otomatik reklam yerlesimi ve butce optimizasyonu genisletildi
-              </h3>
-            </div>
-            <p class="news-card-summary">
-              Meta'nin Advantage+ sistemi artik daha fazla reklam bicimini otomatik olarak optimize ediyor. AI destekli yaratici secimi, capraz platform butce dagilimi ve gercek zamanli teklif ayarlamasi one cikiyor.
-            </p>
-            <div class="news-card-footer">
-              <div class="news-card-source">
-                <span class="news-card-source-dot" style="background: var(--color-meta);"></span>
-                Meta Newsroom
-              </div>
-              <div class="news-card-actions">
-                <span class="news-card-date">3 Haz 2026</span>
-                <button class="btn btn-sm btn-ghost">Ozeti Gor</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- BLOK 3 — Müşteri Hatırlatmaları -->
-        <div class="dashboard-block">
-          <div class="block-header">
-            <div class="block-title">
-              <svg class="block-title-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
-                <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
-              </svg>
-              Hatirlatmalar
-            </div>
-            <a href="musteri/index.html" class="btn btn-sm btn-ghost" style="font-size:var(--text-xs);">Tumu</a>
+          <!-- Büyük sayı -->
+          <div style="display:flex;align-items:flex-end;gap:0.625rem;margin:1.25rem 0 0.25rem;">
+            <span class="bento-stat-big">12</span>
+            <span class="bento-stat-meta" style="margin-bottom:0.65rem;">bugün yeni haber</span>
           </div>
 
-          <div class="reminder-list">
-            <div class="reminder-item">
-              <span class="reminder-dot reminder-dot--urgent"></span>
-              <span class="reminder-text">
-                <span class="reminder-client">Dis Hekimi Klinik —</span>
-                Bu hafta kreatif yenilenmeli
-              </span>
-            </div>
-            <div class="reminder-item">
-              <span class="reminder-dot"></span>
-              <span class="reminder-text">
-                <span class="reminder-client">Restoran Zinciri —</span>
-                Aylik raporlama hazirlanacak
-              </span>
-            </div>
-            <div class="reminder-item">
-              <span class="reminder-dot reminder-dot--ok"></span>
-              <span class="reminder-text">
-                <span class="reminder-client">E-ticaret Magaza —</span>
-                Kampanya butcesi incelendi
-              </span>
-            </div>
-          </div>
-        </div>
+          <div class="bento-divider"></div>
 
-        <!-- BLOK 4 — Günlük Hedef -->
-        <div class="dashboard-block">
-          <div class="block-header">
-            <div class="block-title">
-              <svg class="block-title-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
-                <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"/>
-                <path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
-              </svg>
-              Gunluk Hedef
-            </div>
-            <a href="gelisim/index.html" class="btn btn-sm btn-ghost" style="font-size:var(--text-xs);">Tumu</a>
+          <!-- Platform dağılımı -->
+          <p class="bento-label" style="margin-bottom:0.75rem;">Platform dağılımı</p>
+          <div class="bento-badges-row">
+            <span class="bento-badge">
+              <span class="bento-badge-dot" style="background:var(--color-meta);"></span>
+              Meta <strong>3</strong>
+            </span>
+            <span class="bento-badge">
+              <span class="bento-badge-dot" style="background:var(--color-google);"></span>
+              Google <strong>2</strong>
+            </span>
+            <span class="bento-badge">
+              <span class="bento-badge-dot" style="background:var(--color-tiktok);"></span>
+              TikTok <strong>4</strong>
+            </span>
+            <span class="bento-badge">
+              <span class="bento-badge-dot" style="background:var(--color-shopify);"></span>
+              Shopify <strong>1</strong>
+            </span>
+            <span class="bento-badge">
+              <span class="bento-badge-dot" style="background:var(--color-accent);"></span>
+              Diğer <strong>2</strong>
+            </span>
           </div>
 
-          <div style="padding: var(--space-2) 0;">
-            <div style="font-size: var(--text-xs); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: var(--tracking-widest); margin-bottom: var(--space-2);">Bu Ay</div>
-            <div style="font-size: var(--text-sm); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); margin-bottom: var(--space-3);">Meta Blueprint sertifikasini tamamla</div>
-            <div class="kpi-progress">
-              <div class="kpi-progress-bar kpi-progress-bar--good" style="width: 65%;"></div>
-            </div>
-            <div style="font-size: var(--text-xs); color: var(--color-text-muted); margin-top: var(--space-1);">%65 tamamlandi</div>
+        </article><!-- /BENTO 1 -->
+
+        <!-- BENTO 2 — Hatırlatmalar (1 sütun) -->
+        <article class="bento-card anim-fade-up anim-d300" aria-label="Hatırlatmalar">
+
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
+            <p class="bento-label" style="margin:0;">Hatırlatmalar</p>
+            <a href="musteri/index.html" style="font-size:0.6875rem;color:rgba(107,114,128,1);text-decoration:none;transition:color .2s;">Tümü →</a>
           </div>
 
-          <hr class="divider">
+          <div class="bento-reminder">
+            <span class="bento-reminder-dot bento-reminder-dot--urgent"></span>
+            <span class="bento-reminder-text">
+              <span class="bento-reminder-client">Diş Hekimi Klinik —</span>
+              Bu hafta kreatif yenilenmeli
+            </span>
+          </div>
+          <div class="bento-reminder">
+            <span class="bento-reminder-dot"></span>
+            <span class="bento-reminder-text">
+              <span class="bento-reminder-client">Restoran Zinciri —</span>
+              Aylık raporlama hazırlanacak
+            </span>
+          </div>
+          <div class="bento-reminder">
+            <span class="bento-reminder-dot bento-reminder-dot--ok"></span>
+            <span class="bento-reminder-text">
+              <span class="bento-reminder-client">E-ticaret Mağaza —</span>
+              Kampanya bütçesi incelendi
+            </span>
+          </div>
 
+        </article><!-- /BENTO 2 -->
+
+        <!-- BENTO 3 — Öne Çıkan Haber (1 sütun) -->
+        <article class="bento-card anim-fade-up anim-d400" id="featuredNews" tabindex="0" role="button" aria-label="Öne çıkan habere git">
+
+          <!-- Kaynak etiketi -->
+          <div class="bento-news-source">
+            <span class="bento-news-source-dot" style="background:var(--color-meta);"></span>
+            Meta Newsroom
+          </div>
+
+          <!-- Haber başlığı -->
+          <h3 class="bento-news-title">
+            Meta, Advantage+ alışveriş kampanyalarına yeni AI özellikleri ekliyor
+          </h3>
+
+          <!-- Özet -->
+          <p class="bento-news-summary">
+            AI destekli yaratici seçimi, çapraz platform bütçe dağılımı ve gerçek zamanlı teklif ayarlaması öne çıkıyor.
+          </p>
+
+          <div class="bento-news-footer">
+            <span class="bento-news-date">3 Haz 2026</span>
+            <a href="haberler.html" class="bento-news-link">Özeti Gör →</a>
+          </div>
+
+        </article><!-- /BENTO 3 -->
+
+        <!-- BENTO 4 — Günlük Hedef (2 sütun) -->
+        <article class="bento-card bento-span-2 anim-fade-up anim-d500" aria-label="Günlük Hedef">
+
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;">
+            <p class="bento-label" style="margin:0;">Günlük Hedef</p>
+            <a href="gelisim/index.html" style="font-size:0.6875rem;color:rgba(107,114,128,1);text-decoration:none;">Tümü →</a>
+          </div>
+
+          <!-- Bu Ay: İlerleme -->
           <div>
-            <div style="font-size: var(--text-xs); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: var(--tracking-widest); margin-bottom: var(--space-2);">Bugun</div>
-            <div class="goal-item" style="margin-bottom: var(--space-2);">
-              <div class="goal-checkbox is-done"></div>
-              <span class="goal-text is-done">Reklam haberlerini tara</span>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.375rem;">
+              <p class="bento-label" style="margin:0;">Bu Ay</p>
+              <span style="font-size:0.6875rem;color:rgba(107,114,128,1);">%65 tamamlandı</span>
             </div>
-            <div class="goal-item" style="margin-bottom: var(--space-2);">
-              <div class="goal-checkbox"></div>
-              <span class="goal-text">Dis klinik kreatifleri hazirla</span>
-            </div>
-            <div class="goal-item">
-              <div class="goal-checkbox"></div>
-              <span class="goal-text">Bilgi agaci — Hook turleri oku</span>
+            <p class="bento-title">Meta Blueprint sertifikasını tamamla</p>
+            <div class="bento-progress">
+              <div class="bento-progress-fill" style="width:65%;"></div>
             </div>
           </div>
-        </div>
 
-      </div><!-- /dashboard-blocks -->
+          <div class="bento-divider"></div>
+
+          <!-- Bugün: Checklist -->
+          <p class="bento-label" style="margin-bottom:0.5rem;">Bugün</p>
+
+          <div class="bento-goal">
+            <div class="bento-goal-check is-done"></div>
+            <span class="bento-goal-text is-done">Reklam haberlerini tara</span>
+          </div>
+          <div class="bento-goal">
+            <div class="bento-goal-check"></div>
+            <span class="bento-goal-text">Diş klinik kreatifleri hazırla</span>
+          </div>
+          <div class="bento-goal">
+            <div class="bento-goal-check"></div>
+            <span class="bento-goal-text">Bilgi ağacı — Hook türleri oku</span>
+          </div>
+
+        </article><!-- /BENTO 4 -->
+
+      </section><!-- /dashboard-blocks -->
 
       <!-- Son Haberler -->
-      <section>
+      <section aria-label="Son Haberler" class="anim-fade-up anim-d600">
         <div class="page-header" style="margin-bottom: var(--space-4);">
           <div>
             <h2 class="page-title" style="font-size: var(--text-xl);">Son Haberler</h2>
@@ -461,6 +458,37 @@
       </section>
 
     </div><!-- /content-inner -->
+
+    <!-- ============================================================
+         FAZ 5: FOOTER — Premium Minimalist Kapanış
+         ============================================================ -->
+    <footer class="site-footer anim-fade-up anim-d700" aria-label="Site altbilgisi">
+      <div class="footer-inner">
+
+        <!-- Sol: Logo + Telif -->
+        <div class="footer-brand">
+          <div class="footer-logo-wrap">
+            <div class="footer-logo-mark" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+              </svg>
+            </div>
+            <span class="footer-logo-name">Dark Space</span>
+          </div>
+          <p class="footer-copy">&copy; 2026 Dark Space. Tüm hakları saklıdır.</p>
+          <p class="footer-tagline">Bilgi. Takip. Gelişim.</p>
+        </div>
+
+        <!-- Sağ: 3 minimalist link -->
+        <nav class="footer-links" aria-label="Alt navigasyon">
+          <a href="#" class="footer-link">Gizlilik</a>
+          <a href="#" class="footer-link">Kullanım Koşulları</a>
+          <a href="mailto:info@darkspace.app" class="footer-link">İletişim</a>
+        </nav>
+
+      </div>
+    </footer>
+
   </main>
 
   <!-- ============================================================
@@ -568,14 +596,440 @@
   <!-- ============================================================
        FIREBASE + JS DOSYALARI
        ============================================================ -->
-  <script type="module" src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
-  <script type="module" src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
-  <script type="module" src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
+  <script type="module">
+    import { initApp, formatDate, formatDateFull, showToast } from './js/app.js';
+    import { getGoals, getClients, getTodos }                  from './js/firestore.js';
+    import { fetchAllFeeds, sortByDate }                       from './js/feeds.js';
 
-  <script type="module" src="js/firebase-config.js"></script>
-  <script type="module" src="js/auth.js"></script>
-  <script type="module" src="js/firestore.js"></script>
-  <script type="module" src="js/app.js"></script>
+    // ─── RSS Kaynakları ──────────────────────────────────────────────────────
+    const TUM_FEEDLER = [
+      { name: 'Adweek',        url: 'https://www.adweek.com/feed/' },
+      { name: 'Digiday',       url: 'https://digiday.com/feed/' },
+      { name: 'Meta Newsroom', url: 'https://about.fb.com/news/feed/' },
+      { name: 'The Verge AI',  url: 'https://www.theverge.com/rss/ai-artificial-intelligence/index.xml' },
+      { name: 'TechCrunch AI', url: 'https://techcrunch.com/category/artificial-intelligence/feed/' },
+      { name: 'Webrazzi',      url: 'https://webrazzi.com/feed/' },
+    ];
+
+    // ─── Saat bazlı selamlama ────────────────────────────────────────────────
+    function selamlama() {
+      const saat = new Date().getHours();
+      if (saat >= 6  && saat < 12) return 'Günaydın';
+      if (saat >= 12 && saat < 18) return 'İyi günler';
+      if (saat >= 18 && saat < 24) return 'İyi akşamlar';
+      return 'İyi geceler';
+    }
+
+    // ─── Platform tespiti (haber başlığı/kaynağı üzerinden) ─────────────────
+    function platformTespit(item) {
+      const metin = ((item.title || '') + ' ' + (item._src || '')).toLowerCase();
+      if (metin.includes('meta') || metin.includes('facebook') || metin.includes('instagram')) return 'meta';
+      if (metin.includes('google'))  return 'google';
+      if (metin.includes('tiktok'))  return 'tiktok';
+      if (metin.includes('yapay zeka') || metin.includes('artificial intelligence') ||
+          metin.includes(' ai ') || metin.includes('openai') || metin.includes('verge ai') ||
+          metin.includes('techcrunch ai')) return 'ai';
+      return 'diger';
+    }
+
+    // ─── Blok 1: Günün Özeti ─────────────────────────────────────────────────
+    async function yukleGununOzeti() {
+      try {
+        const haberler = await fetchAllFeeds(TUM_FEEDLER);
+        const toplam   = haberler.length;
+
+        // Toplam sayı
+        const blockValueEl = document.querySelector('.block-value');
+        if (blockValueEl) blockValueEl.textContent = toplam;
+
+        // Platform bazında say
+        const sayilar = { meta: 0, google: 0, tiktok: 0, ai: 0, diger: 0 };
+        haberler.forEach(item => {
+          const p = platformTespit(item);
+          sayilar[p] = (sayilar[p] || 0) + 1;
+        });
+
+        // Badge'leri güncelle
+        const badges = document.querySelectorAll('.block-stat-badge');
+        const platformSirasi = ['meta', 'google', 'tiktok', 'ai', 'diger'];
+        const platformEtiketleri = {
+          meta: 'Meta', google: 'Google', tiktok: 'TikTok', ai: 'Yapay Zeka', diger: 'Diğer'
+        };
+        badges.forEach((badge, i) => {
+          const platform = platformSirasi[i];
+          if (!platform) return;
+          const strong = badge.querySelector('strong');
+          // Etiket metnini de güncelle (dot'tan sonraki metin düğümü)
+          const textNodes = [...badge.childNodes].filter(n => n.nodeType === Node.TEXT_NODE);
+          textNodes.forEach(n => { n.textContent = ' ' + platformEtiketleri[platform] + ' '; });
+          if (strong) strong.textContent = sayilar[platform] || 0;
+        });
+
+        // Son güncelleme saati
+        const simdi    = new Date();
+        const saatStr  = simdi.getHours().toString().padStart(2, '0') + ':' +
+                         simdi.getMinutes().toString().padStart(2, '0');
+        const guncellemeEl = document.querySelector('.block-header .text-muted');
+        if (guncellemeEl) guncellemeEl.textContent = 'Son güncelleme: ' + saatStr;
+
+        return haberler; // Blok 2 için döndür
+      } catch (err) {
+        console.warn('Günün özeti yüklenemedi:', err);
+        return [];
+      }
+    }
+
+    // ─── Blok 2: Öne Çıkan Haber ────────────────────────────────────────────
+    function yukleOneCikanHaber(haberler) {
+      try {
+        if (!haberler.length) return;
+
+        const sirali  = sortByDate(haberler);
+        const en_yeni = sirali[0];
+        if (!en_yeni) return;
+
+        const platform = platformTespit(en_yeni);
+        const renkMap  = {
+          meta:   'var(--color-meta)',
+          google: 'var(--color-google)',
+          tiktok: 'var(--color-tiktok)',
+          ai:     'var(--color-accent)',
+          diger:  'var(--color-text-muted)',
+        };
+        const etiketMap = {
+          meta:   'META', google: 'GOOGLE', tiktok: 'TIKTOK', ai: 'YAPAY ZEKA', diger: 'HABER'
+        };
+        const badgeSinifMap = {
+          meta:   'badge-meta', google: 'badge-google', tiktok: 'badge-tiktok',
+          ai:     'badge-ai',   diger:  'badge-secondary'
+        };
+
+        // Üst badge
+        const ustBadge = document.querySelector('.block-featured .block-header .badge');
+        if (ustBadge) {
+          ustBadge.className = 'badge ' + (badgeSinifMap[platform] || 'badge-secondary');
+          ustBadge.textContent = etiketMap[platform] || 'HABER';
+        }
+
+        // Kart içeriği
+        const featuredEl = document.getElementById('featuredNews');
+        if (!featuredEl) return;
+
+        const tarihStr = en_yeni.pubDate ? formatDate(en_yeni.pubDate) : '';
+
+        featuredEl.innerHTML = `
+          <div class="news-card-header">
+            <h3 class="news-card-title">${en_yeni.title || 'Başlık yükleniyor...'}</h3>
+          </div>
+          ${en_yeni.description
+            ? `<p class="news-card-summary">${en_yeni.description}</p>`
+            : ''}
+          <div class="news-card-footer">
+            <div class="news-card-source">
+              <span class="news-card-source-dot" style="background: ${renkMap[platform]};"></span>
+              ${en_yeni._src || 'Kaynak'}
+            </div>
+            <div class="news-card-actions">
+              <span class="news-card-date">${tarihStr}</span>
+            </div>
+          </div>
+        `;
+
+        // Tıklayınca habere git
+        featuredEl.style.cursor = 'pointer';
+        featuredEl.addEventListener('click', () => {
+          if (en_yeni.link) window.open(en_yeni.link, '_blank', 'noopener,noreferrer');
+        });
+        featuredEl.addEventListener('keydown', (e) => {
+          if ((e.key === 'Enter' || e.key === ' ') && en_yeni.link) {
+            window.open(en_yeni.link, '_blank', 'noopener,noreferrer');
+          }
+        });
+
+      } catch (err) {
+        console.warn('Öne çıkan haber yüklenemedi:', err);
+      }
+    }
+
+    // ─── Blok 3: Müşteri Hatırlatmaları ─────────────────────────────────────
+    async function yukleHatirlatmalar() {
+      try {
+        const [todos, clients] = await Promise.all([
+          getTodos({ done: false }),
+          getClients(),
+        ]);
+
+        // Hata kontrolü
+        if (todos?.hata || clients?.hata) {
+          console.warn('Hatırlatmalar yüklenemedi:', todos?.hata || clients?.hata);
+          return;
+        }
+
+        // Müşteri ID → ad haritası
+        const musteriMap = {};
+        if (Array.isArray(clients)) {
+          clients.forEach(c => { musteriMap[c.id] = c.name; });
+        }
+
+        // Sadece müşteriye bağlı todo'lar
+        const musteriTodolari = Array.isArray(todos)
+          ? todos.filter(t => t.clientId).slice(0, 3)
+          : [];
+
+        const reminderList = document.querySelector('.reminder-list');
+        if (!reminderList) return;
+
+        if (!musteriTodolari.length) {
+          reminderList.innerHTML = `
+            <div class="reminder-item">
+              <span class="reminder-dot reminder-dot--ok"></span>
+              <span class="reminder-text">Bekleyen müşteri görevi yok</span>
+            </div>
+          `;
+          return;
+        }
+
+        reminderList.innerHTML = musteriTodolari.map(todo => {
+          const musteriAdi  = musteriMap[todo.clientId] || 'Müşteri';
+          const oncelikDot  = todo.priority === 'yuksek'
+            ? 'reminder-dot--urgent'
+            : todo.priority === 'orta'
+              ? ''
+              : 'reminder-dot--ok';
+          return `
+            <div class="reminder-item">
+              <span class="reminder-dot ${oncelikDot}"></span>
+              <span class="reminder-text">
+                <span class="reminder-client">${musteriAdi} —</span>
+                ${todo.title}
+              </span>
+            </div>
+          `;
+        }).join('');
+
+      } catch (err) {
+        console.warn('Hatırlatmalar yüklenemedi:', err);
+      }
+    }
+
+    // ─── Blok 4: Günlük Hedef ────────────────────────────────────────────────
+    async function yukleHedefler() {
+      try {
+        const [goals, todos] = await Promise.all([
+          getGoals(),
+          getTodos({ done: false }),
+        ]);
+
+        // Aktif hedef
+        const hedefBlok = document.querySelector('.dashboard-block:last-child');
+        if (!hedefBlok) return;
+
+        // Hedef ilerleme alanı
+        const hedefIcElem = hedefBlok.querySelector('div[style*="padding"]');
+
+        if (!goals?.hata && Array.isArray(goals)) {
+          const aktifHedef = goals.find(g => g.status === 'devam_ediyor');
+
+          if (aktifHedef && hedefIcElem) {
+            // Deadline'a göre ilerleme hesapla
+            let ilerleme = 0;
+            if (aktifHedef.deadline) {
+              const baslangic = aktifHedef.createdAt?.toDate
+                ? aktifHedef.createdAt.toDate()
+                : new Date(aktifHedef.createdAt?.seconds
+                    ? aktifHedef.createdAt.seconds * 1000
+                    : aktifHedef.createdAt || Date.now());
+              const bitis   = new Date(aktifHedef.deadline);
+              const simdi   = new Date();
+              const toplam  = bitis - baslangic;
+              const gecen   = simdi - baslangic;
+              ilerleme = toplam > 0
+                ? Math.min(100, Math.max(0, Math.round((gecen / toplam) * 100)))
+                : 50;
+            }
+
+            const barSinif = ilerleme >= 70 ? 'kpi-progress-bar--good'
+                           : ilerleme >= 40 ? 'kpi-progress-bar--warn'
+                           : 'kpi-progress-bar--bad';
+
+            hedefIcElem.innerHTML = `
+              <div style="font-size: var(--text-xs); color: var(--color-text-muted);
+                          text-transform: uppercase; letter-spacing: var(--tracking-widest);
+                          margin-bottom: var(--space-2);">Bu Ay</div>
+              <div style="font-size: var(--text-sm); font-weight: var(--font-weight-semibold);
+                          color: var(--color-text-primary); margin-bottom: var(--space-3);">
+                ${aktifHedef.title}
+              </div>
+              <div class="kpi-progress">
+                <div class="kpi-progress-bar ${barSinif}" style="width: ${ilerleme}%;"></div>
+              </div>
+              <div style="font-size: var(--text-xs); color: var(--color-text-muted);
+                          margin-top: var(--space-1);">%${ilerleme} tamamlandı</div>
+            `;
+          } else if (hedefIcElem) {
+            hedefIcElem.innerHTML = `
+              <div style="font-size: var(--text-sm); color: var(--color-text-muted);
+                          padding: var(--space-2) 0;">Henüz hedef eklenmedi</div>
+            `;
+          }
+        }
+
+        // Bugünkü kişisel todo'lar (clientId'siz, max 3)
+        const divider   = hedefBlok.querySelector('.divider');
+        const todoBolum = divider?.nextElementSibling;
+
+        if (todoBolum && !todos?.hata && Array.isArray(todos)) {
+          const kisiselTodolar = todos
+            .filter(t => !t.clientId)
+            .slice(0, 3);
+
+          if (!kisiselTodolar.length) {
+            todoBolum.innerHTML = `
+              <div style="font-size: var(--text-xs); color: var(--color-text-muted);
+                          text-transform: uppercase; letter-spacing: var(--tracking-widest);
+                          margin-bottom: var(--space-2);">Bugün</div>
+              <div style="font-size: var(--text-sm); color: var(--color-text-muted);">
+                Bekleyen kişisel görev yok
+              </div>
+            `;
+          } else {
+            todoBolum.innerHTML = `
+              <div style="font-size: var(--text-xs); color: var(--color-text-muted);
+                          text-transform: uppercase; letter-spacing: var(--tracking-widest);
+                          margin-bottom: var(--space-2);">Bugün</div>
+              ${kisiselTodolar.map(todo => `
+                <div class="goal-item" style="margin-bottom: var(--space-2);">
+                  <div class="goal-checkbox${todo.done ? ' is-done' : ''}"></div>
+                  <span class="goal-text${todo.done ? ' is-done' : ''}">${todo.title}</span>
+                </div>
+              `).join('')}
+            `;
+          }
+        }
+
+      } catch (err) {
+        console.warn('Hedefler yüklenemedi:', err);
+      }
+    }
+
+    // ─── Ana başlatma ────────────────────────────────────────────────────────
+    initApp(async (user) => {
+      // 1. Kullanıcı bilgisi
+      const nameEl   = document.getElementById('userName');
+      const avatarEl = document.getElementById('userAvatar');
+      if (nameEl)   nameEl.textContent   = user.displayName || user.email || 'Kullanıcı';
+      if (avatarEl) avatarEl.textContent = (user.displayName || user.email || 'U')[0].toUpperCase();
+
+      // 2. Selamlama ve tarih
+      const greetingEl = document.getElementById('greetingTitle');
+      const dateEl     = document.getElementById('currentDate');
+      if (greetingEl) greetingEl.textContent = selamlama();
+      if (dateEl) {
+        const bugun = new Date();
+        const gunler = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'];
+        const tarih  = formatDateFull(bugun);
+        dateEl.textContent = tarih + ', ' + gunler[bugun.getDay()];
+      }
+
+      // 3. Blok 1: RSS — sonuç Blok 2'ye de aktarılır
+      const haberler = await yukleGununOzeti();
+
+      // 4. Blok 2: Öne çıkan haber
+      yukleOneCikanHaber(haberler);
+
+      // 5. Blok 3 ve 4: Firestore verileri paralel çek
+      await Promise.allSettled([
+        yukleHatirlatmalar(),
+        yukleHedefler(),
+      ]);
+    });
+  </script>
+
+  <!-- ============================================================
+       FAZ 4: MOTION KATMANI — Spring Fizik & Mikro Etkileşimler
+       Firebase bağımsız, saf DOM olayları
+       ============================================================ -->
+  <script>
+    (() => {
+      'use strict';
+
+      /* ─────────────────────────────────────────────────
+         1. NAVBAR SCROLL DOCK
+         Sayfa 24px'den fazla kaydırılınca .is-scrolled eklenir
+         → CSS: background rgba artar, box-shadow yoğunlaşır
+         ───────────────────────────────────────────────── */
+      const navCapsule = document.querySelector('.navbar-capsule');
+
+      if (navCapsule) {
+        const updateNavScroll = () => {
+          navCapsule.classList.toggle('is-scrolled', window.scrollY > 24);
+        };
+        window.addEventListener('scroll', updateNavScroll, { passive: true });
+        updateNavScroll(); /* ilk render'da kontrol et */
+      }
+
+      /* ─────────────────────────────────────────────────
+         2. BENTO KART CURSOR SPOTLIGHT
+         Fare bento kutusunun içinde hareket ettikçe
+         radyal ışık hâlesi fareyi takip eder.
+         → CSS: .bento-card::before — --card-mouse-x/y değişkenleri
+         ───────────────────────────────────────────────── */
+      document.querySelectorAll('.bento-card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const r = card.getBoundingClientRect();
+          card.style.setProperty('--card-mouse-x', `${e.clientX - r.left}px`);
+          card.style.setProperty('--card-mouse-y', `${e.clientY - r.top}px`);
+        }, { passive: true });
+      });
+
+      /* ─────────────────────────────────────────────────
+         3. BENTO KART TIKLAMA GERİ BİLDİRİMİ
+         Tıklama anında kartı scale(0.98)'e iter,
+         sonra spring ile normale döner (CSS transition üstüne ek)
+         ───────────────────────────────────────────────── */
+      document.querySelectorAll('.bento-card').forEach(card => {
+        card.addEventListener('pointerdown', () => {
+          card.style.transition =
+            'transform 0.1s cubic-bezier(0.16,1,0.3,1), background-color 0.1s ease';
+        }, { passive: true });
+
+        card.addEventListener('pointerup', () => {
+          /* Spring geri dönüş için orijinal transition'ı geri ver */
+          card.style.transition = '';
+        }, { passive: true });
+
+        card.addEventListener('pointerleave', () => {
+          card.style.transition = '';
+        }, { passive: true });
+      });
+
+      // ── 4. Date pill skeleton ──────────────────────────────────────────
+      // Sayfa yüklenirken shimmer göster, JS hazır olunca gerçek içeriği aç
+      const datePill = document.getElementById('currentDate');
+      if (datePill) {
+        // MutationObserver: app.js tarihi güncelleyince skeleton'u kaldır
+        const dateObs = new MutationObserver(() => {
+          datePill.classList.remove('skeleton');
+          dateObs.disconnect();
+        });
+        dateObs.observe(datePill, { childList: true, subtree: true, characterData: true });
+        // Fallback: en fazla 1.5 saniye shimmer
+        setTimeout(() => datePill.classList.remove('skeleton'), 1500);
+      }
+
+      // ── 5. Greeting title skeleton ──────────────────────────────────────
+      // Firebase kullanıcı adını güncellediğinde skeleton temiz kalkar
+      const greetEl = document.getElementById('greetingTitle');
+      if (greetEl) {
+        const greetObs = new MutationObserver(() => {
+          greetEl.style.removeProperty('--skeleton-active');
+          greetObs.disconnect();
+        });
+        greetObs.observe(greetEl, { childList: true, subtree: true, characterData: true });
+      }
+
+    })();
+  </script>
 
 </body>
 </html>

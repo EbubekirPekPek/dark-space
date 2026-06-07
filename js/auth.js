@@ -18,6 +18,15 @@ import {
 
 import { auth } from './firebase-config.js';
 
+// ─── Base URL — auth.js'in kendi URL'inden güvenilir şekilde hesaplanır ──────
+// Örn: localhost:3000/js/auth.js → BASE = '/'
+// Örn: github.io/dark-space/js/auth.js → BASE = '/dark-space/'
+const _scriptParts = new URL(import.meta.url).pathname.split('/');
+const _jsIndex = _scriptParts.lastIndexOf('js');
+const BASE = _jsIndex > 0
+  ? _scriptParts.slice(0, _jsIndex).join('/') + '/'
+  : '/';
+
 // ─── Türkçe Hata Mesajları ─────────────────────────────────────────────────────
 const HATA_MESAJLARI = {
   'auth/invalid-email':           'Geçersiz e-posta adresi.',
@@ -125,7 +134,7 @@ function authGuard(onGiris) {
       // Giriş yok — login sayfasına yönlendir
       // Zaten login.html'deysek döngüye girme
       if (!window.location.pathname.includes('login.html')) {
-        window.location.href = '/login.html';
+        window.location.href = BASE + 'login.html';
       }
     } else {
       // Giriş var — callback'i çalıştır
@@ -152,7 +161,7 @@ function initLoginPage() {
   // Zaten giriş yapılmışsa dashboard'a yönlendir
   _onAuthStateChanged(auth, (user) => {
     if (user) {
-      window.location.href = '/index.html';
+      window.location.href = BASE + 'index.html';
     }
   });
 

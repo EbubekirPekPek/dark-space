@@ -13,9 +13,9 @@
   <meta name="theme-color" content="#08080d">
   <title>Bilgi Ağacı — Dark Space</title>
 
-  <link rel="stylesheet" href="../css/design-system.css">
-  <link rel="stylesheet" href="../css/components.css">
-  <link rel="stylesheet" href="../css/pages.css">
+  <link rel="stylesheet" href="../css/design-system.css?v=10">
+  <link rel="stylesheet" href="../css/components.css?v=10">
+  <link rel="stylesheet" href="../css/pages.css?v=10">
 
   <style>
     /* Bilgi Ağacı özel düzeni */
@@ -235,16 +235,22 @@
 </head>
 <body>
 
+  <!-- Mesh Gradient Ambient Arka Plan -->
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="ambient-orb ambient-orb--purple"></div>
+    <div class="ambient-orb ambient-orb--blue"></div>
+  </div>
+
   <header class="top-bar">
     <div class="top-bar-left">
-      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Menüyü aç" aria-expanded="false">
+      <button class="hamburger-btn" id="sidebar-toggle" aria-label="Menüyü aç" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
       <span class="top-bar-title">Bilgi Ağacı</span>
     </div>
   </header>
 
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
   <aside class="sidebar" id="sidebar" role="navigation" aria-label="Ana navigasyon">
     <div class="sidebar-logo">
@@ -255,7 +261,7 @@
       </div>
       <div class="sidebar-logo-text">
         <span class="sidebar-logo-name">Dark Space</span>
-        <span class="sidebar-logo-sub">v2.0</span>
+        <span class="sidebar-logo-sub">v2.5</span>
       </div>
     </div>
     <div class="sidebar-search">
@@ -275,47 +281,6 @@
             <rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/>
           </svg>
           <span class="nav-link-label">Dashboard</span>
-        </a>
-      </div>
-      <div class="sidebar-section">
-        <div class="sidebar-section-label">Haber Akışları</div>
-        <a href="../reklam.html" class="nav-link">
-          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M15 12h.01"/><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M2 10h20"/>
-          </svg>
-          <span class="nav-link-label">Reklam</span>
-        </a>
-        <a href="../pazarlama.html" class="nav-link">
-          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/>
-          </svg>
-          <span class="nav-link-label">Pazarlama</span>
-        </a>
-        <a href="../sosyal-medya.html" class="nav-link">
-          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
-            <line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/>
-          </svg>
-          <span class="nav-link-label">Sosyal Medya</span>
-        </a>
-        <a href="../yapay-zeka.html" class="nav-link">
-          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2a8 8 0 0 1 8 8v1a4 4 0 0 1-4 4h-1"/>
-            <path d="M9 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3"/><path d="M12 22v-4"/><path d="M8 22h8"/>
-          </svg>
-          <span class="nav-link-label">Yapay Zeka</span>
-        </a>
-        <a href="../turkce.html" class="nav-link">
-          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
-          </svg>
-          <span class="nav-link-label">Türkçe Kaynaklar</span>
-        </a>
-        <a href="../resmi.html" class="nav-link">
-          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-          </svg>
-          <span class="nav-link-label">Resmi Kaynaklar</span>
         </a>
       </div>
       <div class="sidebar-section">
@@ -340,6 +305,17 @@
           <span class="nav-link-label">Gelişim</span>
         </a>
       </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Haber Akışları</div>
+
+        <a href="../haberler.html" class="nav-link">
+          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2Z"/>
+            <path d="M9 12h6"/><path d="M9 16h4"/><path d="M9 8h1"/>
+          </svg>
+          <span class="nav-link-label">Haberler</span>
+        </a>
+      </div>
     </nav>
     <div class="sidebar-footer">
       <div class="sidebar-user">
@@ -348,7 +324,7 @@
           <div class="sidebar-user-name" id="userName">Ajans Kullanıcısı</div>
           <div class="sidebar-user-role">Dijital Pazarlama</div>
         </div>
-        <button class="btn btn-icon btn-ghost btn-icon-sm" id="logoutBtn" aria-label="Çıkış yap" title="Çıkış Yap">
+        <button class="btn btn-icon btn-ghost btn-icon-sm" id="logout-btn" aria-label="Çıkış yap" title="Çıkış Yap">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
             <polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/>
@@ -359,6 +335,31 @@
   </aside>
 
   <main class="main-content" id="mainContent">
+
+    <!-- Yüzen Kapsül Navbar -->
+    <header class="navbar-wrap anim-fade-up anim-d0">
+      <nav class="navbar-capsule" aria-label="Ana sayfa navigasyonu">
+        <a href="../index.html" class="navbar-logo">
+          <div class="navbar-logo-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+          </div>
+          <span class="navbar-logo-name">Dark Space</span>
+        </a>
+        <div class="navbar-links">
+          <a href="../index.html" class="navbar-link">Dashboard</a>
+          <a href="../haberler.html" class="navbar-link">Haberler</a>
+          <a href="index.html" class="navbar-link is-active">Bilgi Ağacı</a>
+        </div>
+        <div class="navbar-actions">
+          <button class="hamburger-btn navbar-hamburger" id="navbar-sidebar-toggle" aria-label="Menüyü aç" aria-expanded="false">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </nav>
+    </header>
+
     <div class="content-inner" style="padding:0;max-width:none;">
       <div class="knowledge-layout">
 
@@ -695,26 +696,6 @@
       }
     };
 
-    // Hamburger
-    const hamburgerBtn = document.getElementById('hamburgerBtn');
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebarOverlay');
-    hamburgerBtn.addEventListener('click', () => {
-      sidebar.classList.toggle('is-open');
-      overlay.classList.toggle('is-visible');
-      hamburgerBtn.setAttribute('aria-expanded', sidebar.classList.contains('is-open'));
-    });
-    overlay.addEventListener('click', () => {
-      sidebar.classList.remove('is-open');
-      overlay.classList.remove('is-visible');
-      hamburgerBtn.setAttribute('aria-expanded', 'false');
-    });
-
-    document.getElementById('logoutBtn').addEventListener('click', async () => {
-      const { getAuth, signOut } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
-      await signOut(getAuth());
-      window.location.href = '../login.html';
-    });
   </script>
 </body>
 </html>

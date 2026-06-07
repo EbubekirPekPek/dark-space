@@ -9,7 +9,11 @@
       "Bash(git config *)",
       "Bash(git init *)",
       "Bash(git add *)",
-      "Bash(git commit -m 'Dark Space v1.0 — ilk kurulum *)"
+      "Bash(git commit -m 'Dark Space v1.0 — ilk kurulum *)",
+      "PowerShell($env:Path = [System.Environment]::GetEnvironmentVariable\\(\"Path\",\"Machine\"\\) + \";\" + [System.Environment]::GetEnvironmentVariable\\(\"Path\",\"User\"\\); \\(Get-Command gh -ErrorAction SilentlyContinue\\).Source)",
+      "PowerShell($env:Path += \";C:\\\\Program Files\\\\GitHub CLI\"; cd \"C:\\\\Users\\\\Dell\\\\Desktop\\\\AJANS HTML\"; gh repo create dark-space --private --source=. --remote=origin --push 2>&1)",
+      "PowerShell(Invoke-WebRequest -Uri \"https://ebubekirpekpek.github.io/dark-space/login.html\" -UseBasicParsing 2>&1)",
+      "PowerShell($response = Invoke-WebRequest -Uri \"https://ebubekirpekpek.github.io/dark-space/\" -UseBasicParsing; $response.Content.Substring\\(0, 500\\))"
     ]
   }
 }

@@ -12,16 +12,16 @@
   <meta name="theme-color" content="#08080d">
   <title>Reklam Haberleri — Dark Space</title>
 
-  <link rel="stylesheet" href="css/design-system.css">
-  <link rel="stylesheet" href="css/components.css">
-  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/design-system.css?v=10">
+  <link rel="stylesheet" href="css/components.css?v=10">
+  <link rel="stylesheet" href="css/pages.css?v=10">
 </head>
 <body>
 
   <!-- MOBİL TOP BAR -->
   <header class="top-bar">
     <div class="top-bar-left">
-      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Menüyü aç" aria-expanded="false">
+      <button class="hamburger-btn" id="sidebar-toggle" aria-label="Menüyü aç" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
       <span class="top-bar-title">Reklam Haberleri</span>
@@ -36,7 +36,7 @@
   </header>
 
   <!-- SİDEBAR OVERLAY -->
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
   <!-- SOL SİDEBAR -->
   <aside class="sidebar" id="sidebar" role="navigation" aria-label="Ana navigasyon">
@@ -75,54 +75,6 @@
       </div>
 
       <div class="sidebar-section">
-        <div class="sidebar-section-label">Haber Akışları</div>
-
-        <a href="reklam.html" class="nav-link is-active" aria-current="page">
-          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M15 12h.01"/><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M2 10h20"/>
-          </svg>
-          <span class="nav-link-label">Reklam</span>
-        </a>
-
-        <a href="pazarlama.html" class="nav-link">
-          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/>
-          </svg>
-          <span class="nav-link-label">Pazarlama</span>
-        </a>
-
-        <a href="sosyal-medya.html" class="nav-link">
-          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
-            <line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/>
-          </svg>
-          <span class="nav-link-label">Sosyal Medya</span>
-        </a>
-
-        <a href="yapay-zeka.html" class="nav-link">
-          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2a8 8 0 0 1 8 8v1a4 4 0 0 1-4 4h-1"/>
-            <path d="M9 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3"/><path d="M12 22v-4"/><path d="M8 22h8"/>
-          </svg>
-          <span class="nav-link-label">Yapay Zeka</span>
-        </a>
-
-        <a href="turkce.html" class="nav-link">
-          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
-          </svg>
-          <span class="nav-link-label">Türkçe Kaynaklar</span>
-        </a>
-
-        <a href="resmi.html" class="nav-link">
-          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-          </svg>
-          <span class="nav-link-label">Resmi Kaynaklar</span>
-        </a>
-      </div>
-
-      <div class="sidebar-section">
         <div class="sidebar-section-label">Çalışma Alanı</div>
 
         <a href="bilgi/index.html" class="nav-link">
@@ -147,6 +99,18 @@
           <span class="nav-link-label">Gelişim</span>
         </a>
       </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Haber Akışları</div>
+
+        <a href="haberler.html" class="nav-link">
+          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2Z"/>
+            <path d="M9 12h6"/><path d="M9 16h4"/><path d="M9 8h1"/>
+          </svg>
+          <span class="nav-link-label">Haberler</span>
+        </a>
+      </div>
     </nav>
 
     <div class="sidebar-footer">
@@ -156,7 +120,7 @@
           <div class="sidebar-user-name" id="userName">Ajans Kullanıcısı</div>
           <div class="sidebar-user-role">Dijital Pazarlama</div>
         </div>
-        <button class="btn btn-icon btn-ghost btn-icon-sm" id="logoutBtn" aria-label="Çıkış yap" title="Çıkış Yap">
+        <button class="btn btn-icon btn-ghost btn-icon-sm" id="logout-btn" aria-label="Çıkış yap" title="Çıkış Yap">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
             <polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/>
@@ -272,6 +236,20 @@
       <div class="modal-body">
         <p class="modal-summary" id="modal-desc">Özet yükleniyor...</p>
       </div>
+      <div class="modal-notes-section" style="padding:var(--space-4) var(--space-5);border-top:1px solid var(--color-border);">
+        <div class="modal-notes-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-2);">
+          <span class="text-xs text-muted">Notlarım</span>
+          <button class="btn btn-ghost btn-sm" id="addNoteToggle" style="font-size:12px;padding:2px 8px;">+ Not Ekle</button>
+        </div>
+        <div id="modal-note-form" style="display:none;margin-bottom:var(--space-3);">
+          <textarea id="noteTextarea" class="input" rows="3" placeholder="Bu haber hakkında notun..." style="width:100%;resize:vertical;font-size:13px;"></textarea>
+          <div style="display:flex;gap:8px;margin-top:8px;">
+            <button class="btn btn-primary btn-sm" id="saveNoteBtn">Kaydet</button>
+            <button class="btn btn-ghost btn-sm" id="cancelNoteBtn">İptal</button>
+          </div>
+        </div>
+        <div id="modal-notes-list" class="notes-list" style="display:flex;flex-direction:column;gap:var(--space-2);"></div>
+      </div>
       <div class="modal-footer">
         <a href="#" target="_blank" rel="noopener noreferrer" id="modal-link" class="btn btn-secondary btn-sm">
           Kaynağa Git
@@ -286,60 +264,88 @@
   </div>
 
   <script type="module">
-    import { initApp, formatDate } from './js/app.js';
-    import { fetchAllFeeds } from './js/feeds.js';
+    import { initApp, formatDate, showToast } from './js/app.js';
+    import { fetchAllFeeds, translateWithCache, sortByDate } from './js/feeds.js';
+    import { saveNote, getNotes, deleteNote } from './js/firestore.js';
+
+    const FEEDS = [
+      { name: 'Adweek',         url: 'https://www.adweek.com/feed/' },
+      { name: 'Digiday',        url: 'https://digiday.com/feed/' },
+      { name: 'Marketing Week', url: 'https://www.marketingweek.com/feed/' }
+    ];
+    const TRANSLATE = true;
 
     let allItems = [];
 
     initApp((user) => {
       if (user) {
         const avatar = document.getElementById('userAvatar');
-        const name = document.getElementById('userName');
-        if (user.displayName) { name.textContent = user.displayName; avatar.textContent = user.displayName[0].toUpperCase(); }
-        else if (user.email) { name.textContent = user.email.split('@')[0]; avatar.textContent = user.email[0].toUpperCase(); }
+        const name   = document.getElementById('userName');
+        if (user.displayName) {
+          name.textContent   = user.displayName;
+          avatar.textContent = user.displayName[0].toUpperCase();
+        } else if (user.email) {
+          name.textContent   = user.email.split('@')[0];
+          avatar.textContent = user.email[0].toUpperCase();
+        }
       }
       loadFeeds();
     });
 
     async function loadFeeds() {
-      const feeds = [
-        { name: 'Adweek',         url: 'https://www.adweek.com/feed/' },
-        { name: 'Digiday',        url: 'https://digiday.com/feed/' },
-        { name: 'Marketing Week', url: 'https://www.marketingweek.com/feed/' }
-      ];
-
+      const grid = document.getElementById('feed-grid');
       document.getElementById('feedLoading').style.display = 'flex';
-      document.getElementById('feed-grid').style.display = 'none';
+      grid.style.display = 'none';
+      grid.innerHTML = '';
 
       try {
-        allItems = await fetchAllFeeds(feeds, true);
+        let items = await fetchAllFeeds(FEEDS);
+        items = sortByDate(items);
+
+        if (TRANSLATE) {
+          items = await translateItems(items);
+        }
+
+        allItems = items;
         renderCards(allItems);
       } catch (err) {
         console.error('Feed yükleme hatası:', err);
         document.getElementById('feedLoading').style.display = 'none';
-        document.getElementById('feedEmpty').style.display = 'block';
+        grid.style.display = 'block';
+        grid.innerHTML = '<div class="empty-state" style="padding:var(--space-8);text-align:center;color:var(--color-text-muted);">Kaynaklar geçici olarak erişilemez.</div>';
+        document.getElementById('feedCount').textContent = '0 haber';
       }
     }
 
+    async function translateItems(items) {
+      return Promise.all(items.map(async item => {
+        const [trTitle, trDesc] = await Promise.all([
+          translateWithCache(item.title, item.link + ':title:tr'),
+          translateWithCache(item.description, item.link + ':desc:tr')
+        ]);
+        return { ...item, title: trTitle, description: trDesc };
+      }));
+    }
+
     function renderCards(items) {
-      const grid = document.getElementById('feed-grid');
+      const grid  = document.getElementById('feed-grid');
       const loading = document.getElementById('feedLoading');
-      const empty = document.getElementById('feedEmpty');
-      const count = document.getElementById('feedCount');
+      const empty   = document.getElementById('feedEmpty');
+      const count   = document.getElementById('feedCount');
 
       loading.style.display = 'none';
 
       if (!items || items.length === 0) {
         empty.style.display = 'block';
-        grid.style.display = 'none';
-        count.textContent = '0 haber';
+        grid.style.display  = 'none';
+        count.textContent   = '0 haber';
         return;
       }
 
-      count.textContent = items.length + ' haber';
-      grid.style.display = 'grid';
-      empty.style.display = 'none';
-      grid.innerHTML = '';
+      count.textContent      = items.length + ' haber';
+      grid.style.display     = 'grid';
+      empty.style.display    = 'none';
+      grid.innerHTML         = '';
 
       items.forEach(item => {
         const card = document.createElement('div');
@@ -368,14 +374,96 @@
       });
     }
 
-    function openModal(item) {
-      document.getElementById('modal-title').textContent = item.title || '';
-      document.getElementById('modal-desc').textContent = item.description || 'Özet bulunamadı.';
-      document.getElementById('modal-link').href = item.link || '#';
+    async function openModal(item) {
+      document.getElementById('modal-title').textContent        = item.title || '';
+      document.getElementById('modal-desc').textContent         = item.description || 'Özet mevcut değil.';
+      document.getElementById('modal-link').href                = item.link || '#';
       document.getElementById('modal-source-badge').textContent = item._src || 'Kaynak';
-      document.getElementById('modal-date').textContent = formatDate(item.pubDate);
+      document.getElementById('modal-date').textContent         = formatDate(item.pubDate);
       document.getElementById('news-modal').classList.add('is-open');
       document.body.style.overflow = 'hidden';
+
+      const notesList   = document.getElementById('modal-notes-list');
+      const noteForm    = document.getElementById('modal-note-form');
+      const noteTextarea = document.getElementById('noteTextarea');
+
+      // Formu sıfırla
+      if (noteForm) noteForm.style.display = 'none';
+      if (noteTextarea) noteTextarea.value = '';
+
+      // Notları yükle
+      if (notesList) {
+        notesList.innerHTML = '<span class="text-xs text-muted">Notlar yükleniyor...</span>';
+        try {
+          const notlar = await getNotes(item.link);
+          renderNotes(notlar, notesList, item.link);
+        } catch(e) {
+          notesList.innerHTML = '';
+        }
+      }
+
+      // Toggle — her açılışta eski listener'ları temizlemek için clone
+      const addBtn = document.getElementById('addNoteToggle');
+      const addBtnClone = addBtn.cloneNode(true);
+      addBtn.parentNode.replaceChild(addBtnClone, addBtn);
+      addBtnClone.addEventListener('click', () => {
+        if (noteForm) noteForm.style.display = noteForm.style.display === 'none' ? 'block' : 'none';
+        noteTextarea?.focus();
+      });
+
+      const cancelBtn = document.getElementById('cancelNoteBtn');
+      const cancelBtnClone = cancelBtn.cloneNode(true);
+      cancelBtn.parentNode.replaceChild(cancelBtnClone, cancelBtn);
+      cancelBtnClone.addEventListener('click', () => {
+        if (noteForm) noteForm.style.display = 'none';
+        if (noteTextarea) noteTextarea.value = '';
+      });
+
+      const saveBtn = document.getElementById('saveNoteBtn');
+      const saveBtnClone = saveBtn.cloneNode(true);
+      saveBtn.parentNode.replaceChild(saveBtnClone, saveBtn);
+      saveBtnClone.addEventListener('click', async () => {
+        const text = noteTextarea?.value?.trim();
+        if (!text) return;
+        try {
+          await saveNote(item.link, 'haber', text);
+          if (noteTextarea) noteTextarea.value = '';
+          if (noteForm) noteForm.style.display = 'none';
+          const notlar = await getNotes(item.link);
+          renderNotes(notlar, notesList, item.link);
+          showToast('Not kaydedildi', 'success');
+        } catch(e) {
+          showToast('Not kaydedilemedi', 'error');
+        }
+      });
+    }
+
+    function renderNotes(notlar, container, contentId) {
+      if (!notlar || notlar.hata || !notlar.length) {
+        container.innerHTML = '<span class="text-xs text-muted">Henüz not alınmadı.</span>';
+        return;
+      }
+      container.innerHTML = notlar.map(n => `
+        <div class="micro-note" style="background:var(--color-surface-raised,rgba(255,255,255,0.04));border:1px solid var(--color-border);border-radius:var(--radius-md,6px);padding:var(--space-3);">
+          <p class="micro-note-text" style="margin:0 0 var(--space-2) 0;font-size:13px;line-height:1.5;color:var(--color-text-primary);">${(n.noteText || n.text || '').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</p>
+          <div class="micro-note-footer" style="display:flex;justify-content:space-between;align-items:center;">
+            <span class="text-xs text-muted">${n.createdAt ? new Date(n.createdAt.seconds * 1000).toLocaleDateString('tr-TR') : ''}</span>
+            <button class="micro-note-delete btn btn-ghost btn-sm" data-id="${n.id}" style="color:var(--color-danger,#f87171);font-size:11px;padding:2px 6px;">Sil</button>
+          </div>
+        </div>
+      `).join('');
+
+      container.querySelectorAll('.micro-note-delete').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          try {
+            await deleteNote(btn.dataset.id);
+            btn.closest('.micro-note').remove();
+            if (!container.querySelector('.micro-note')) {
+              container.innerHTML = '<span class="text-xs text-muted">Henüz not alınmadı.</span>';
+            }
+          } catch(e) { showToast('Silinemedi', 'error'); }
+        });
+      });
     }
 
     function closeModal() {
@@ -395,7 +483,7 @@
       btn.addEventListener('click', () => {
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('is-active'));
         btn.classList.add('is-active');
-        const source = btn.dataset.source;
+        const source   = btn.dataset.source;
         const filtered = source === 'all' ? allItems : allItems.filter(i => i._src === source);
         renderCards(filtered);
       });
@@ -403,7 +491,7 @@
 
     // Arama
     document.getElementById('feedSearch').addEventListener('input', e => {
-      const q = e.target.value.toLowerCase();
+      const q        = e.target.value.toLowerCase();
       const filtered = allItems.filter(i => (i.title || '').toLowerCase().includes(q));
       renderCards(filtered);
     });
@@ -411,28 +499,6 @@
     // Yenile
     document.getElementById('refreshBtn').addEventListener('click', loadFeeds);
 
-    // Hamburger
-    const hamburgerBtn = document.getElementById('hamburgerBtn');
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebarOverlay');
-    hamburgerBtn.addEventListener('click', () => {
-      sidebar.classList.toggle('is-open');
-      overlay.classList.toggle('is-visible');
-      hamburgerBtn.setAttribute('aria-expanded', sidebar.classList.contains('is-open'));
-    });
-    overlay.addEventListener('click', () => {
-      sidebar.classList.remove('is-open');
-      overlay.classList.remove('is-visible');
-      hamburgerBtn.setAttribute('aria-expanded', 'false');
-    });
-
-    // Çıkış
-    document.getElementById('logoutBtn').addEventListener('click', async () => {
-      const { getAuth, signOut } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
-      const auth = getAuth();
-      await signOut(auth);
-      window.location.href = 'login.html';
-    });
   </script>
 
 </body>

@@ -21,7 +21,6 @@ import {
   query,
   where,
   orderBy,
-  limit,
   serverTimestamp,
 } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
@@ -75,14 +74,15 @@ async function saveNote(contentId, contentType, noteText) {
 async function getNotes(contentId) {
   try {
     const userId = uid();
+    // orderBy kaldırıldı — composite index gerektirir; istemci tarafında sıralanır
     const q = query(
       collection(db, 'notes'),
       where('userId', '==', userId),
-      where('contentId', '==', contentId),
-      orderBy('createdAt', 'desc')
+      where('contentId', '==', contentId)
     );
     const snap = await getDocs(q);
-    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    const results = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    return results.sort((a, b) => (b.createdAt?.seconds ?? 0) - (a.createdAt?.seconds ?? 0));
   } catch (err) {
     return { hata: `Notlar getirilemedi: ${err.message}` };
   }
@@ -122,6 +122,8 @@ async function saveClient(clientData, clientId = null) {
       sector:         clientData.sector         || '',
       targetAudience: clientData.targetAudience || '',
       budget:         clientData.budget         || '',
+      status:         clientData.status         || 'aktif',
+      brief:          clientData.brief          || '',
       socialLinks:    clientData.socialLinks    || {},
       updatedAt:      serverTimestamp(),
     };
@@ -148,13 +150,15 @@ async function saveClient(clientData, clientId = null) {
 async function getClients() {
   try {
     const userId = uid();
+    // orderBy kaldırıldı — where+orderBy(farklı alan) Firestore composite index gerektirir.
+    // İstemci tarafında Türkçe sıralama yapılır.
     const q = query(
       collection(db, 'clients'),
-      where('userId', '==', userId),
-      orderBy('name', 'asc')
+      where('userId', '==', userId)
     );
     const snap = await getDocs(q);
-    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    const results = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    return results.sort((a, b) => (a.name || '').localeCompare(b.name || '', 'tr'));
   } catch (err) {
     return { hata: `Müşteriler getirilemedi: ${err.message}` };
   }
@@ -342,13 +346,14 @@ async function updateGoalStatus(goalId, status) {
 async function getGoals() {
   try {
     const userId = uid();
+    // orderBy kaldırıldı — composite index gerektirir; istemci tarafında sıralanır
     const q = query(
       collection(db, 'goals'),
-      where('userId', '==', userId),
-      orderBy('createdAt', 'desc')
+      where('userId', '==', userId)
     );
     const snap = await getDocs(q);
-    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    const results = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    return results.sort((a, b) => (b.createdAt?.seconds ?? 0) - (a.createdAt?.seconds ?? 0));
   } catch (err) {
     return { hata: `Hedefler getirilemedi: ${err.message}` };
   }
@@ -389,14 +394,16 @@ async function saveDailyLog(logText) {
 async function getDailyLogs(limitSayisi = 30) {
   try {
     const userId = uid();
+    // orderBy+limit kaldırıldı — composite index gerektirir; istemci tarafında sıralanır
     const q = query(
       collection(db, 'dailyLogs'),
-      where('userId', '==', userId),
-      orderBy('createdAt', 'desc'),
-      limit(limitSayisi)
+      where('userId', '==', userId)
     );
     const snap = await getDocs(q);
-    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    const results = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    return results
+      .sort((a, b) => (b.createdAt?.seconds ?? 0) - (a.createdAt?.seconds ?? 0))
+      .slice(0, limitSayisi);
   } catch (err) {
     return { hata: `Günlük loglar getirilemedi: ${err.message}` };
   }
@@ -445,13 +452,14 @@ async function saveSkillRating(skill, rating) {
 async function getSkillRatings() {
   try {
     const userId = uid();
+    // orderBy kaldırıldı — composite index gerektirir; istemci tarafında sıralanır
     const q = query(
       collection(db, 'skills'),
-      where('userId', '==', userId),
-      orderBy('skill', 'asc')
+      where('userId', '==', userId)
     );
     const snap = await getDocs(q);
-    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    const results = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    return results.sort((a, b) => (a.skill || '').localeCompare(b.skill || '', 'tr'));
   } catch (err) {
     return { hata: `Beceri puanları getirilemedi: ${err.message}` };
   }
@@ -512,15 +520,15 @@ async function updateTodoStatus(todoId, done) {
 async function getTodos(filters = {}) {
   try {
     const userId = uid();
-    let q = query(
+    // orderBy kaldırıldı — composite index gerektirir; istemci tarafında sıralanır
+    const q = query(
       collection(db, 'todos'),
-      where('userId', '==', userId),
-      orderBy('createdAt', 'desc')
+      where('userId', '==', userId)
     );
 
-    // İstemci tarafı filtreleme (Firestore compound query limitleri nedeniyle)
     const snap  = await getDocs(q);
     let results = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    results.sort((a, b) => (b.createdAt?.seconds ?? 0) - (a.createdAt?.seconds ?? 0));
 
     // Filtreleri uygula
     if (filters.clientId !== undefined) {
@@ -539,6 +547,80 @@ async function getTodos(filters = {}) {
   }
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+//  MÜŞTERİ GÜNLÜK GÖREVLER
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Müşteri için tekrar eden günlük görev ekler.
+ * @param {string} clientId
+ * @param {{ title: string, time?: string }} taskData - time: "HH:MM" opsiyonel
+ */
+async function saveDailyTask(clientId, taskData) {
+  try {
+    const userId = uid();
+    const ref = await addDoc(
+      collection(db, 'clients', clientId, 'dailyTasks'),
+      {
+        userId,
+        title:             taskData.title || '',
+        time:              taskData.time  || '',  // "09:30" hatırlatıcı saati
+        lastCompletedDate: null,                  // YYYY-MM-DD veya null
+        createdAt:         serverTimestamp(),
+      }
+    );
+    return { id: ref.id };
+  } catch (err) {
+    return { hata: `Günlük görev eklenemedi: ${err.message}` };
+  }
+}
+
+/**
+ * Müşterinin tüm günlük görevlerini getirir.
+ * @param {string} clientId
+ */
+async function getDailyTasks(clientId) {
+  try {
+    const q = query(
+      collection(db, 'clients', clientId, 'dailyTasks'),
+      orderBy('createdAt', 'asc')
+    );
+    const snap = await getDocs(q);
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  } catch (err) {
+    return { hata: `Günlük görevler getirilemedi: ${err.message}` };
+  }
+}
+
+/**
+ * Günlük görevin tamamlanma durumunu günceller.
+ * tamamlandi=true → lastCompletedDate = bugün (YYYY-MM-DD)
+ * tamamlandi=false → lastCompletedDate = null
+ */
+async function toggleDailyTask(clientId, taskId, tamamlandi) {
+  try {
+    const today = new Date().toISOString().split('T')[0];
+    await updateDoc(doc(db, 'clients', clientId, 'dailyTasks', taskId), {
+      lastCompletedDate: tamamlandi ? today : null,
+    });
+    return { basarili: true };
+  } catch (err) {
+    return { hata: `Günlük görev güncellenemedi: ${err.message}` };
+  }
+}
+
+/**
+ * Günlük görevi siler.
+ */
+async function deleteDailyTask(clientId, taskId) {
+  try {
+    await deleteDoc(doc(db, 'clients', clientId, 'dailyTasks', taskId));
+    return { basarili: true };
+  } catch (err) {
+    return { hata: `Günlük görev silinemedi: ${err.message}` };
+  }
+}
+
 export {
   // Notlar
   saveNote, getNotes, deleteNote,
@@ -554,4 +636,6 @@ export {
   saveSkillRating, getSkillRatings,
   // Yapılacaklar
   saveTodo, updateTodoStatus, getTodos,
+  // Günlük Görevler (müşteri bazlı)
+  saveDailyTask, getDailyTasks, toggleDailyTask, deleteDailyTask,
 };

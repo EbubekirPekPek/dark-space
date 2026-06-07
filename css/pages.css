@@ -13,7 +13,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-bg-base);
+  background: transparent;
   padding: var(--space-6);
   position: relative;
   overflow: hidden;
@@ -39,11 +39,13 @@
 .login-card {
   width: 100%;
   max-width: 420px;
-  background: var(--color-bg-elevated);
-  border: 1px solid var(--color-border-subtle);
-  border-radius: var(--radius-2xl);
+  background: rgba(8, 8, 8, 0.90);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-3xl);
   padding: var(--space-8);
-  box-shadow: var(--shadow-2xl);
+  box-shadow: var(--shadow-level-5); /* Vercel: login kart = en yüksek yükseklik */
   position: relative;
   z-index: var(--z-raised);
 }
@@ -137,86 +139,506 @@
 }
 
 /* ============================================================
-   DASHBOARD SAYFASI (index.html)
+   DASHBOARD SAYFASI (index.html) — FAZ 2 Hero + Navbar
    ============================================================ */
 .dashboard-page .content-inner {
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
+  padding-top: 0; /* Navbar-wrap taşıyor, hero kendi padding'ini yönetir */
 }
 
-/* Dashboard selamlama satırı */
-.dashboard-greeting {
+/* ---- DASHBOARD HERO SECTION ---- */
+.dashboard-hero {
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--space-4);
+  padding-top: 2.5rem;
+  padding-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .dashboard-hero {
+    padding-top: 4rem;
+    padding-bottom: 2rem;
+  }
+}
+
+/* Üst etiket — Vercel caption-mono: teknik eyebrow her zaman mono */
+.hero-eyebrow {
+  font-family: var(--font-family-mono); /* Vercel: section eyebrow = mono */
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-semibold);
+  color: rgba(139, 92, 246, 0.85);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  margin-bottom: 0.875rem;
+  line-height: 1;
+}
+
+/* Ana başlık — Vercel display-xl: 600 weight, -0.05em tracking */
+.hero-title {
+  font-size: clamp(2rem, 3vw + 1.5rem, 4.5rem);
+  font-weight: var(--font-weight-semibold); /* Vercel: 600 = display ceiling */
+  letter-spacing: var(--tracking-display-xl); /* Vercel: -0.05em — display-xl */
+  line-height: 1.05;
+  background: linear-gradient(180deg, #ffffff 0%, rgba(172, 172, 194, 0.80) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1rem;
+}
+
+/* Açıklama metni — soft gri, geniş satır boşluğu */
+.hero-sub {
+  font-size: var(--text-base);
+  color: rgba(156, 163, 175, 1);
+  max-width: 38rem;
+  line-height: 1.65;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+  .hero-sub {
+    font-size: var(--text-lg);
+  }
+}
+
+/* Buton satırı */
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   flex-wrap: wrap;
 }
 
-.dashboard-greeting-title {
-  font-size: var(--text-3xl);
-  font-weight: var(--font-weight-extrabold);
-  color: var(--color-text-primary);
-  letter-spacing: var(--tracking-tighter);
-  line-height: var(--leading-tight);
+/* Primary CTA — Tactile 3D beyaz pill */
+.hero-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-semibold);
+  color: #000000;
+  background: #ffffff;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.625rem 1.25rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity    0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              transform  0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  /* Vercel stacked Level 3 beyaz tonla — tactile fiziksel tuş hissi */
+  box-shadow:
+    0px 1px 1px rgba(0, 0, 0, 0.12),
+    0px 2px 4px rgba(0, 0, 0, 0.10),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.50),
+    inset 0 1px 0 rgba(255, 255, 255, 0.40);
 }
 
-.dashboard-greeting-sub {
-  font-size: var(--text-base);
-  color: var(--color-text-secondary);
-  margin-top: var(--space-1);
+@media (hover: hover) {
+  .hero-btn-primary:hover {
+    opacity: 0.92;
+    transform: translateY(-2px) scale(1.02);
+    box-shadow:
+      0px 2px 2px rgba(0, 0, 0, 0.18),
+      0px 8px 16px -4px rgba(0, 0, 0, 0.18),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.55),
+      inset 0 1px 0 rgba(255, 255, 255, 0.40);
+  }
 }
 
+.hero-btn-primary:active {
+  transform: scale(0.96);
+  opacity: 1;
+  /* Anlık sıkışma — spring değil, hızlı ease */
+  transition: transform 0.08s ease, opacity 0.08s ease;
+}
+
+/* Secondary CTA — Transparan çerçeveli pill */
+.hero-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 9999px;
+  padding: 0.625rem 1.25rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background    0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              transform     0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+              border-color  0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (hover: hover) {
+  .hero-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.09);
+    transform: translateY(-1px);
+    border-color: rgba(255, 255, 255, 0.20);
+  }
+}
+
+.hero-btn-secondary:active {
+  transform: scale(0.96);
+  transition: transform 0.08s ease;
+}
+
+/* Tarih pill — glassmorphism (hero-actions içinde kullanılır) */
 .dashboard-greeting-date {
   font-size: var(--text-sm);
   color: var(--color-text-muted);
-  background: var(--color-bg-surface);
-  border: 1px solid var(--color-border-subtle);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: var(--radius-full);
-  padding: var(--space-1) var(--space-4);
+  padding: var(--space-2) var(--space-5);
   white-space: nowrap;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
-/* Dashboard blok düzeni */
+/* ============================================================
+   BENTO GRID — FAZ 3: Asimetrik İçerik Izgarası
+   3 sütun, bazı kartlar 2 sütun kaplıyor — teknoloji arayüzü havası
+   ============================================================ */
+
+/* Grid container */
 .dashboard-blocks {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-4);
+  gap: 1.25rem;
+  padding-bottom: 6rem;
 }
 
 @media (min-width: 768px) {
   .dashboard-blocks {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
   }
 }
 
-@media (min-width: 1280px) {
-  .dashboard-blocks {
-    grid-template-columns: repeat(4, 1fr);
+/* ---- Bento hücresi — FAZ 4: Spring fizik + spotlight ---- */
+.bento-card {
+  background: #0c0c0c;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  padding: 1.75rem;
+  position: relative;
+  overflow: hidden;
+  /* Spring overshoot: transform için 0.34,1.56 (hafif bounce) */
+  transition: border-color    0.4s  cubic-bezier(0.16, 1, 0.3, 1),
+              transform       0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+              background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow      0.4s  cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: default;
+}
+
+@media (min-width: 768px) {
+  .bento-card {
+    padding: 2rem;
   }
 }
 
-/* Blok 1 — Günün Özeti: tam genişlik veya 2 kolon */
-.block-daily-summary {
-  grid-column: 1 / -1;
+/* Cursor spotlight — farenin gittiği yerde mikro ışık hâlesi */
+.bento-card::before {
+  content: '';
+  position: absolute;
+  top:  var(--card-mouse-y, 50%);
+  left: var(--card-mouse-x, 50%);
+  transform: translate(-50%, -50%);
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.038) 0%,
+    transparent 65%
+  );
+  pointer-events: none;
+  opacity: 0;
+  border-radius: 50%;
+  transition: opacity 0.4s ease;
+  z-index: 0;
 }
 
-@media (min-width: 1280px) {
-  .block-daily-summary {
-    grid-column: span 2;
+/* İçerik spotlight'ın üstünde kalmalı */
+.bento-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Hover efektleri SADECE gerçek işaretçili cihazlarda — dokunmatik ekranlarda yapışkan hover yok */
+@media (hover: hover) {
+  .bento-card:hover::before {
+    opacity: 1;
+  }
+
+  /* Lift + border + background parlaması — Vercel stacked Level 4 */
+  .bento-card:hover {
+    border-color: rgba(255, 255, 255, 0.13);
+    transform: translateY(-3px);
+    background-color: #121212;
+    box-shadow: var(--shadow-level-4);
   }
 }
 
-/* Blok 2 — Öne Çıkan */
-.block-featured {
+/* Squish — yaya basılmış gibi anlık sıkışma */
+.bento-card:active {
+  transform: scale(0.98) translateY(0px);
+  background-color: #0e0e0e;
+  transition: transform        0.1s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.1s ease;
+}
+
+/* 2 sütun genişlik — asimetri */
+.bento-span-2 {
   grid-column: 1 / -1;
 }
 
 @media (min-width: 768px) {
-  .block-featured {
+  .bento-span-2 {
     grid-column: span 2;
   }
+}
+
+/* ---- Bento iç tipografi — Vercel caption-mono ---- */
+.bento-label {
+  font-family: var(--font-family-mono); /* Vercel: bento section label = mono */
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: rgba(107, 114, 128, 1);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  line-height: 1;
+}
+
+.bento-title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  line-height: 1.35;
+  margin-bottom: 0.375rem;
+}
+
+/* ---- Büyük sayı — gradient ---- */
+.bento-stat-big {
+  font-size: clamp(2.75rem, 5vw, 4rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  background: linear-gradient(180deg, #ffffff 0%, rgba(172, 172, 200, 0.70) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.bento-stat-meta {
+  font-size: 0.75rem;
+  color: rgba(107, 114, 128, 1);
+  letter-spacing: 0.01em;
+}
+
+/* ---- Platform badge (minimal) ---- */
+.bento-badges-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.bento-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: rgba(156, 163, 175, 1);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 9999px;
+  padding: 0.28rem 0.65rem;
+}
+
+.bento-badge-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.bento-badge strong {
+  color: rgba(209, 213, 219, 1);
+  font-weight: 600;
+}
+
+/* ---- İnce ayırıcı ---- */
+.bento-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.055);
+  margin: 1.25rem 0;
+  border: none;
+}
+
+/* ---- Hatırlatma satırları ---- */
+.bento-reminder {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.bento-reminder:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.bento-reminder-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-top: 0.3rem;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.bento-reminder-dot--urgent { background: rgba(239, 68, 68, 0.80); }
+.bento-reminder-dot--ok     { background: rgba(34, 197, 94, 0.60); }
+
+.bento-reminder-text {
+  font-size: 0.8125rem;
+  color: rgba(156, 163, 175, 1);
+  line-height: 1.5;
+}
+
+.bento-reminder-client {
+  color: rgba(209, 213, 219, 1);
+  font-weight: 500;
+}
+
+/* ---- Öne Çıkan Haber — Vercel caption-mono ---- */
+.bento-news-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-family: var(--font-family-mono); /* Vercel: source label = mono */
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: rgba(107, 114, 128, 1);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  margin-bottom: 0.875rem;
+}
+
+.bento-news-source-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.bento-news-title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  line-height: 1.45;
+  margin-bottom: 0.75rem;
+}
+
+.bento-news-summary {
+  font-size: 0.8125rem;
+  color: rgba(107, 114, 128, 1);
+  line-height: 1.6;
+}
+
+.bento-news-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.25rem;
+}
+
+.bento-news-date {
+  font-size: 0.6875rem;
+  color: rgba(75, 85, 99, 1);
+}
+
+.bento-news-link {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: rgba(139, 92, 246, 0.80);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+@media (hover: hover) {
+  .bento-news-link:hover {
+    color: rgba(167, 139, 250, 1);
+  }
+}
+
+/* ---- Progress bar ---- */
+.bento-progress {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 9999px;
+  overflow: hidden;
+  margin: 0.5rem 0;
+}
+
+.bento-progress-fill {
+  height: 100%;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, rgba(139, 92, 246, 0.80), rgba(99, 102, 241, 0.50));
+}
+
+/* ---- Hedef öğeleri ---- */
+.bento-goal {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.45rem 0;
+}
+
+.bento-goal-check {
+  width: 15px;
+  height: 15px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+
+.bento-goal-check.is-done {
+  background: rgba(34, 197, 94, 0.12);
+  border-color: rgba(34, 197, 94, 0.28);
+}
+
+.bento-goal-check.is-done::after {
+  content: '';
+  width: 5px;
+  height: 5px;
+  background: rgba(34, 197, 94, 0.75);
+  border-radius: 1px;
+}
+
+.bento-goal-text {
+  font-size: 0.8125rem;
+  color: rgba(156, 163, 175, 1);
+  line-height: 1.4;
+}
+
+.bento-goal-text.is-done {
+  text-decoration: line-through;
+  color: rgba(107, 114, 128, 1);
 }
 
 /* Hatırlatma listesi */
@@ -238,8 +660,10 @@
   transition: border-color var(--transition-base);
 }
 
-.reminder-item:hover {
-  border-color: var(--color-border-default);
+@media (hover: hover) {
+  .reminder-item:hover {
+    border-color: var(--color-border-default);
+  }
 }
 
 .reminder-dot {
@@ -263,6 +687,108 @@
   flex: 1;
   color: var(--color-text-secondary);
   line-height: var(--leading-snug);
+}
+
+/* ============================================================
+   FOOTER — FAZ 5: Premium Minimalist Kapanış
+   Tam genişlik border-top, sol telif + sağ linkler
+   ============================================================ */
+.site-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 3rem var(--space-5) 2rem;
+}
+
+@media (min-width: 768px) {
+  .site-footer {
+    padding: 3rem var(--space-8) 2rem;
+  }
+}
+
+.footer-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .footer-inner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+/* Sol: Marka + Telif satırı */
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.footer-logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.5rem;
+}
+
+.footer-logo-mark {
+  width: 18px;
+  height: 18px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.85) 0%, rgba(99, 102, 241, 0.65) 100%);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.footer-logo-mark svg {
+  width: 9px;
+  height: 9px;
+  color: rgba(255, 255, 255, 0.80);
+}
+
+.footer-logo-name {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: rgba(75, 85, 99, 1);
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+}
+
+.footer-copy {
+  font-size: 0.6875rem;
+  color: rgba(55, 65, 81, 1);
+  line-height: 1.5;
+}
+
+.footer-tagline {
+  font-size: 0.625rem;
+  color: rgba(38, 46, 58, 1);
+  letter-spacing: 0.04em;
+}
+
+/* Sağ: Üç minimalist link */
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.footer-link {
+  font-size: 0.6875rem;
+  font-weight: 400;
+  color: rgba(75, 85, 99, 1);
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+@media (hover: hover) {
+  .footer-link:hover {
+    color: rgba(209, 213, 219, 0.70);
+  }
 }
 
 .reminder-client {
@@ -559,26 +1085,31 @@
 
 .client-card {
   background: var(--color-bg-surface);
-  border: 1px solid var(--color-border-subtle);
-  border-radius: var(--radius-xl);
-  padding: var(--space-5);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-6);
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
   cursor: pointer;
   transition:
-    background var(--transition-base),
+    background var(--transition-ease-out),
     border-color var(--transition-base),
-    box-shadow var(--transition-base),
-    transform var(--transition-bounce);
+    box-shadow var(--transition-ease-out),
+    transform var(--transition-ease-out);
   text-decoration: none;
 }
 
 .client-card:hover {
-  background: var(--color-bg-overlay);
-  border-color: var(--color-border-default);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
+  background: #0f0f12;
+  border-color: rgba(255, 255, 255, 0.10);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-3px);
+}
+
+.client-card:active {
+  transform: scale(0.98);
+  transition: transform 0.1s ease;
 }
 
 .client-card-header {
@@ -1038,17 +1569,27 @@
   gap: var(--space-3);
   padding: var(--space-4);
   background: var(--color-bg-surface);
-  border: 1px solid var(--color-border-default);
-  border-radius: var(--radius-xl);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-2xl);
   text-decoration: none;
   color: inherit;
-  transition: border-color var(--duration-fast), background var(--duration-fast), transform var(--duration-fast);
+  transition:
+    border-color var(--transition-base),
+    background var(--transition-ease-out),
+    transform var(--transition-ease-out),
+    box-shadow var(--transition-ease-out);
 }
 
 .platform-quick-card:hover {
-  border-color: var(--color-border-strong);
-  background: var(--color-bg-overlay);
-  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.10);
+  background: #0f0f12;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.platform-quick-card:active {
+  transform: scale(0.98);
+  transition: transform 0.1s ease;
 }
 
 .platform-quick-icon {

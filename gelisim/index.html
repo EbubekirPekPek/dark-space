@@ -12,9 +12,9 @@
   <meta name="theme-color" content="#08080d">
   <title>Gelişim — Dark Space</title>
 
-  <link rel="stylesheet" href="../css/design-system.css">
-  <link rel="stylesheet" href="../css/components.css">
-  <link rel="stylesheet" href="../css/pages.css">
+  <link rel="stylesheet" href="../css/design-system.css?v=10">
+  <link rel="stylesheet" href="../css/components.css?v=10">
+  <link rel="stylesheet" href="../css/pages.css?v=10">
 
   <style>
     /* Sekme Navigasyonu */
@@ -302,16 +302,22 @@
 </head>
 <body>
 
+  <!-- Mesh Gradient Ambient Arka Plan -->
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="ambient-orb ambient-orb--purple"></div>
+    <div class="ambient-orb ambient-orb--blue"></div>
+  </div>
+
   <header class="top-bar">
     <div class="top-bar-left">
-      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Menüyü aç" aria-expanded="false">
+      <button class="hamburger-btn" id="sidebar-toggle" aria-label="Menüyü aç" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
       <span class="top-bar-title">Gelişim</span>
     </div>
   </header>
 
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
   <aside class="sidebar" id="sidebar" role="navigation" aria-label="Ana navigasyon">
     <div class="sidebar-logo">
@@ -322,7 +328,7 @@
       </div>
       <div class="sidebar-logo-text">
         <span class="sidebar-logo-name">Dark Space</span>
-        <span class="sidebar-logo-sub">v2.0</span>
+        <span class="sidebar-logo-sub">v2.5</span>
       </div>
     </div>
     <div class="sidebar-search">
@@ -342,47 +348,6 @@
             <rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/>
           </svg>
           <span class="nav-link-label">Dashboard</span>
-        </a>
-      </div>
-      <div class="sidebar-section">
-        <div class="sidebar-section-label">Haber Akışları</div>
-        <a href="../reklam.html" class="nav-link">
-          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M15 12h.01"/><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M2 10h20"/>
-          </svg>
-          <span class="nav-link-label">Reklam</span>
-        </a>
-        <a href="../pazarlama.html" class="nav-link">
-          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/>
-          </svg>
-          <span class="nav-link-label">Pazarlama</span>
-        </a>
-        <a href="../sosyal-medya.html" class="nav-link">
-          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
-            <line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/>
-          </svg>
-          <span class="nav-link-label">Sosyal Medya</span>
-        </a>
-        <a href="../yapay-zeka.html" class="nav-link">
-          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2a8 8 0 0 1 8 8v1a4 4 0 0 1-4 4h-1"/>
-            <path d="M9 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3"/><path d="M12 22v-4"/><path d="M8 22h8"/>
-          </svg>
-          <span class="nav-link-label">Yapay Zeka</span>
-        </a>
-        <a href="../turkce.html" class="nav-link">
-          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
-          </svg>
-          <span class="nav-link-label">Türkçe Kaynaklar</span>
-        </a>
-        <a href="../resmi.html" class="nav-link">
-          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-          </svg>
-          <span class="nav-link-label">Resmi Kaynaklar</span>
         </a>
       </div>
       <div class="sidebar-section">
@@ -407,6 +372,17 @@
           <span class="nav-link-label">Gelişim</span>
         </a>
       </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Haber Akışları</div>
+
+        <a href="../haberler.html" class="nav-link">
+          <svg class="nav-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2Z"/>
+            <path d="M9 12h6"/><path d="M9 16h4"/><path d="M9 8h1"/>
+          </svg>
+          <span class="nav-link-label">Haberler</span>
+        </a>
+      </div>
     </nav>
     <div class="sidebar-footer">
       <div class="sidebar-user">
@@ -415,7 +391,7 @@
           <div class="sidebar-user-name" id="userName">Ajans Kullanıcısı</div>
           <div class="sidebar-user-role">Dijital Pazarlama</div>
         </div>
-        <button class="btn btn-icon btn-ghost btn-icon-sm" id="logoutBtn" aria-label="Çıkış yap" title="Çıkış Yap">
+        <button class="btn btn-icon btn-ghost btn-icon-sm" id="logout-btn" aria-label="Çıkış yap" title="Çıkış Yap">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
             <polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/>
@@ -426,6 +402,31 @@
   </aside>
 
   <main class="main-content" id="mainContent">
+
+    <!-- Yüzen Kapsül Navbar -->
+    <header class="navbar-wrap anim-fade-up anim-d0">
+      <nav class="navbar-capsule" aria-label="Ana sayfa navigasyonu">
+        <a href="../index.html" class="navbar-logo">
+          <div class="navbar-logo-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+          </div>
+          <span class="navbar-logo-name">Dark Space</span>
+        </a>
+        <div class="navbar-links">
+          <a href="../index.html" class="navbar-link">Dashboard</a>
+          <a href="../haberler.html" class="navbar-link">Haberler</a>
+          <a href="../bilgi/index.html" class="navbar-link">Bilgi Ağacı</a>
+        </div>
+        <div class="navbar-actions">
+          <button class="hamburger-btn navbar-hamburger" id="navbar-sidebar-toggle" aria-label="Menüyü aç" aria-expanded="false">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </nav>
+    </header>
+
     <div class="content-inner">
 
       <div class="page-header">
@@ -447,68 +448,8 @@
            ========================================================= -->
       <div class="dev-panel is-active" id="panel-hedefler">
 
-        <div class="goal-cards" id="goalList">
-
-          <!-- Örnek hedef 1 -->
-          <div class="goal-card">
-            <div class="goal-card-icon" style="background:var(--color-accent-subtle);">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;">
-                <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
-                <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"/>
-                <path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
-              </svg>
-            </div>
-            <div class="goal-card-body">
-              <div class="goal-card-title">Meta Blueprint Sertifikası Al</div>
-              <div class="goal-card-meta">
-                <span>Deadline: 30 Haziran 2026</span>
-                <span class="badge badge-warning">Devam Ediyor</span>
-              </div>
-              <div class="goal-card-progress">
-                <div class="kpi-progress" style="margin-top:var(--space-1);">
-                  <div class="kpi-progress-bar kpi-progress-bar--good" style="width:65%;"></div>
-                </div>
-                <div style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:4px;">%65 tamamlandı</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Örnek hedef 2 -->
-          <div class="goal-card">
-            <div class="goal-card-icon" style="background:var(--color-success-subtle);">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--color-success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                <polyline points="22 4 12 14.01 9 11.01"/>
-              </svg>
-            </div>
-            <div class="goal-card-body">
-              <div class="goal-card-title">Google Ads Sertifikası Yenile</div>
-              <div class="goal-card-meta">
-                <span>Deadline: 15 Mayıs 2026</span>
-                <span class="badge badge-success">Tamamlandı</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Örnek hedef 3 -->
-          <div class="goal-card">
-            <div class="goal-card-icon" style="background:var(--color-bg-inset);">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;">
-                <circle cx="12" cy="12" r="10"/>
-                <line x1="12" x2="12" y1="8" y2="12"/>
-                <line x1="12" x2="12.01" y1="16" y2="16"/>
-              </svg>
-            </div>
-            <div class="goal-card-body">
-              <div class="goal-card-title">TikTok Ads Temellerini Öğren</div>
-              <div class="goal-card-meta">
-                <span>Deadline: 31 Temmuz 2026</span>
-                <span class="badge badge-outline">Bekliyor</span>
-              </div>
-            </div>
-          </div>
-
-        </div>
+        <!-- JS tarafından doldurulur -->
+        <div class="goal-cards" id="goalList"></div>
 
         <!-- Yeni Hedef Ekle -->
         <div style="margin-bottom:var(--space-2);">
@@ -517,8 +458,8 @@
         <div class="goal-add-form">
           <div class="form-row">
             <div class="form-field">
-              <label>Hedef Başlığı</label>
-              <input type="text" id="goalTitle" placeholder="Örn: SEJ Newsletter'ı takip et">
+              <label>Hedef Başlığı *</label>
+              <input type="text" id="goalTitle" placeholder="Örn: Meta Blueprint Sertifikası Al">
             </div>
             <div class="form-field">
               <label>Deadline</label>
@@ -527,20 +468,30 @@
           </div>
           <div class="form-row">
             <div class="form-field">
-              <label>Durum</label>
-              <select id="goalStatus">
-                <option value="Bekliyor">Bekliyor</option>
-                <option value="Devam Ediyor" selected>Devam Ediyor</option>
-                <option value="Tamamlandı">Tamamlandı</option>
+              <label>Kategori</label>
+              <select id="goalCategory">
+                <option value="teknik">Meta / Google</option>
+                <option value="kreatif">Kreatif</option>
+                <option value="kariyer">Kariyer</option>
+                <option value="diger" selected>Genel</option>
               </select>
             </div>
             <div class="form-field">
-              <label>İlerleme (%)</label>
-              <input type="number" id="goalProgress" placeholder="0" min="0" max="100" value="0">
+              <label>Durum</label>
+              <select id="goalStatus">
+                <option value="bekliyor">Bekliyor</option>
+                <option value="devam_ediyor" selected>Devam Ediyor</option>
+                <option value="tamamlandi">Tamamlandı</option>
+              </select>
+            </div>
+          </div>
+          <div style="margin-bottom:var(--space-3);">
+            <div class="form-field">
+              <label>Açıklama</label>
+              <input type="text" id="goalDesc" placeholder="Opsiyonel detay...">
             </div>
           </div>
           <button class="btn btn-primary btn-sm" id="addGoalBtn">Hedef Ekle</button>
-          <span style="font-size:var(--text-xs);color:var(--color-text-muted);margin-left:var(--space-3);">Firebase entegrasyonu yakında</span>
         </div>
 
       </div>
@@ -555,30 +506,13 @@
           <textarea id="todayLog" placeholder="Bugün ne öğrendin? Ne denedin? Ne fark ettin?&#10;&#10;Küçük bir not bile ilerlemenin kanıtıdır."></textarea>
           <div style="display:flex;align-items:center;gap:var(--space-3);margin-top:var(--space-3);">
             <button class="btn btn-primary btn-sm" id="saveLogBtn">Kaydet</button>
-            <span style="font-size:var(--text-xs);color:var(--color-text-muted);">Firebase entegrasyonu yakında</span>
           </div>
         </div>
 
         <div>
           <div style="font-size:var(--text-xs);font-weight:var(--font-weight-semibold);color:var(--color-text-muted);text-transform:uppercase;letter-spacing:var(--tracking-widest);margin-bottom:var(--space-3);">Geçmiş Kayıtlar</div>
-          <div class="log-history">
-
-            <div class="log-entry">
-              <div class="log-entry-date">2 Haziran 2026, Salı</div>
-              <div class="log-entry-text">Meta Advantage+ Shopping ile ilk kampanyayı kurdum. AI destekli bütçe dağılımı ilginç — CPA hedefini %15 daha hızlı tutturdu. Yarın detaylı analiz yapacağım.</div>
-            </div>
-
-            <div class="log-entry">
-              <div class="log-entry-date">1 Haziran 2026, Pazartesi</div>
-              <div class="log-entry-text">Hook kalıpları üzerine çalıştım. Soru ile başlayan hook'lar video izlenme oranında %40+ artış sağlamış. Diş hekimi kreatifleri için "Neden diş implantını erteliyorsun?" hook'unu test edeceğim.</div>
-            </div>
-
-            <div class="log-entry">
-              <div class="log-entry-date">30 Mayıs 2026, Cumartesi</div>
-              <div class="log-entry-text">Bilgi Ağacı'nı doldurdum — Meta > Kreatif > Hook Türleri bölümü tamamlandı. Referans olarak kullanılabilir hale geldi.</div>
-            </div>
-
-          </div>
+          <!-- JS tarafından doldurulur -->
+          <div class="log-history"></div>
         </div>
 
       </div>
@@ -598,7 +532,6 @@
 
         <div style="margin-top:var(--space-4);">
           <button class="btn btn-primary btn-sm" id="saveSkillsBtn">Becerileri Kaydet</button>
-          <span style="font-size:var(--text-xs);color:var(--color-text-muted);margin-left:var(--space-3);">Firebase entegrasyonu yakında</span>
         </div>
 
       </div>
@@ -646,177 +579,368 @@
   </nav>
 
   <script type="module">
-    import { initApp } from '../js/app.js';
+    import { initApp, showToast } from '../js/app.js';
+    import {
+      saveGoal, updateGoalStatus, getGoals,
+      saveDailyLog, getDailyLogs,
+      saveSkillRating, getSkillRatings
+    } from '../js/firestore.js';
 
-    const SKILLS = [
-      { id: 'meta-ads',    label: 'Meta Ads',                  score: 7, updated: '1 Haziran 2026' },
-      { id: 'google-ads',  label: 'Google Ads',                 score: 6, updated: '28 Mayıs 2026' },
-      { id: 'tiktok-ads',  label: 'TikTok Ads',                 score: 4, updated: '20 Mayıs 2026' },
-      { id: 'kreatif',     label: 'Kreatif',                    score: 7, updated: '2 Haziran 2026' },
-      { id: 'copywriting', label: 'Copywriting',                score: 6, updated: '30 Mayıs 2026' },
-      { id: 'analytics',   label: 'Analytics',                  score: 5, updated: '25 Mayıs 2026' },
-      { id: 'seo',         label: 'SEO',                        score: 4, updated: '15 Mayıs 2026' },
-      { id: 'smm',         label: 'Sosyal Medya Yönetimi',      score: 6, updated: '1 Haziran 2026' },
+    // ─── Beceri tanımları ─────────────────────────────────────────────────────────
+    const SKILL_LISTESI = [
+      'Meta Ads',
+      'Google Ads',
+      'TikTok Ads',
+      'Kreatif',
+      'Copywriting',
+      'Analytics',
+      'SEO',
+      'Sosyal Medya',
     ];
 
-    initApp((user) => {
+    // Slider değerlerini bellekte tutar (kaydet butonuna kadar)
+    let sliderDegerleri = {};
+    SKILL_LISTESI.forEach(s => { sliderDegerleri[s] = 5; });
+
+    // ─── Başlatma ─────────────────────────────────────────────────────────────────
+    initApp(async (user) => {
       if (user) {
         const avatar = document.getElementById('userAvatar');
-        const name = document.getElementById('userName');
-        if (user.displayName) { name.textContent = user.displayName; avatar.textContent = user.displayName[0].toUpperCase(); }
-        else if (user.email) { name.textContent = user.email.split('@')[0]; avatar.textContent = user.email[0].toUpperCase(); }
+        const name   = document.getElementById('userName');
+        if (user.displayName) {
+          name.textContent   = user.displayName;
+          avatar.textContent = user.displayName[0].toUpperCase();
+        } else if (user.email) {
+          name.textContent   = user.email.split('@')[0];
+          avatar.textContent = user.email[0].toUpperCase();
+        }
       }
-      renderSkills();
       setTodayDate();
+      await hedefleriYukle();
+      // Log ve beceri sekmeleri açılınca yüklenir
     });
 
     function setTodayDate() {
-      const now = new Date();
+      const now  = new Date();
       const opts = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
-      const label = now.toLocaleDateString('tr-TR', opts);
-      const el = document.getElementById('todayLabel');
-      if (el) el.textContent = 'Bugün — ' + label;
+      const el   = document.getElementById('todayLabel');
+      if (el) el.textContent = 'Bugün — ' + now.toLocaleDateString('tr-TR', opts);
     }
 
-    function renderSkills() {
-      const grid = document.getElementById('skillGrid');
-      grid.innerHTML = '';
-      SKILLS.forEach(skill => {
-        const item = document.createElement('div');
-        item.className = 'skill-item';
-        item.innerHTML = `
-          <div class="skill-item-top">
-            <div class="skill-item-name">${skill.label}</div>
-            <div class="skill-item-score">
-              <div class="skill-score-number" id="score-${skill.id}">${skill.score}</div>
-              <div class="skill-score-max">/ 10</div>
-            </div>
-          </div>
-          <input type="range" class="skill-slider" data-skill="${skill.id}" min="1" max="10" value="${skill.score}" aria-label="${skill.label} puanı">
-          <div class="skill-item-footer">
-            <div class="skill-updated">Son güncelleme: ${skill.updated}</div>
-            <div style="font-size:var(--text-xs);color:var(--color-text-muted);">${getSkillLabel(skill.score)}</div>
-          </div>
-        `;
-        const slider = item.querySelector('.skill-slider');
-        slider.addEventListener('input', function() {
-          const val = parseInt(this.value);
-          document.getElementById('score-' + this.dataset.skill).textContent = val;
-          const footer = this.closest('.skill-item').querySelector('.skill-item-footer div:last-child');
-          footer.textContent = getSkillLabel(val);
-          // Renk güncelle
-          const pct = ((val - 1) / 9) * 100;
-          this.style.background = `linear-gradient(to right, var(--color-accent) ${pct}%, var(--color-bg-inset) ${pct}%)`;
-        });
-        // İlk renk
-        const pct = ((skill.score - 1) / 9) * 100;
-        slider.style.background = `linear-gradient(to right, var(--color-accent) ${pct}%, var(--color-bg-inset) ${pct}%)`;
-        grid.appendChild(item);
-      });
-    }
-
-    function getSkillLabel(score) {
-      if (score <= 2) return 'Başlangıç';
-      if (score <= 4) return 'Gelişiyor';
-      if (score <= 6) return 'Orta Seviye';
-      if (score <= 8) return 'İyi';
-      return 'Uzman';
-    }
-
-    // Sekmeler
+    // ─── Sekme Navigasyonu ───────────────────────────────────────────────────────
     document.querySelectorAll('.dev-tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        document.querySelectorAll('.dev-tab').forEach(t => t.classList.remove('is-active'));
+      tab.addEventListener('click', async () => {
+        document.querySelectorAll('.dev-tab').forEach(t  => t.classList.remove('is-active'));
         document.querySelectorAll('.dev-panel').forEach(p => p.classList.remove('is-active'));
         tab.classList.add('is-active');
         document.getElementById('panel-' + tab.dataset.tab)?.classList.add('is-active');
+        // Sekmeye özgü yükleme
+        if (tab.dataset.tab === 'log')    await logSecmeYukle();
+        if (tab.dataset.tab === 'beceri') await beceriSecmeYukle();
       });
     });
 
-    // Log kaydet
-    document.getElementById('saveLogBtn').addEventListener('click', () => {
-      const text = document.getElementById('todayLog').value.trim();
-      if (text) {
-        const btn = document.getElementById('saveLogBtn');
-        btn.textContent = 'Kaydedildi';
-        btn.disabled = true;
-        setTimeout(() => { btn.textContent = 'Kaydet'; btn.disabled = false; }, 2000);
+    // ═══════════════════════════════════════════════════════════════════════════
+    //  SEKME 1 — HEDEFLER
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    async function hedefleriYukle() {
+      const liste = document.getElementById('goalList');
+      liste.innerHTML = '<div style="color:var(--color-text-muted);font-size:var(--text-sm);padding:var(--space-2);">Yükleniyor...</div>';
+      try {
+        const hedefler = await getGoals();
+        if (hedefler.hata) throw new Error(hedefler.hata);
+        renderHedefler(hedefler);
+      } catch (err) {
+        showToast('Hedefler yüklenemedi: ' + err.message, 'error');
+        document.getElementById('goalList').innerHTML = '<div style="color:var(--color-error);font-size:var(--text-sm);">Hedefler yüklenemedi.</div>';
+      }
+    }
+
+    function renderHedefler(hedefler) {
+      const liste = document.getElementById('goalList');
+      liste.innerHTML = '';
+
+      if (!hedefler.length) {
+        liste.innerHTML = '<div style="color:var(--color-text-muted);font-size:var(--text-sm);padding:var(--space-2);">Henüz hedef eklenmedi.</div>';
+        return;
+      }
+
+      hedefler.forEach(h => {
+        const kart = document.createElement('div');
+        kart.className = 'goal-card';
+        const { renk, ikon, badgeClass, badgeLabel } = hedefGorunum(h);
+        const deadlineStr = h.deadline
+          ? new Date(h.deadline).toLocaleDateString('tr-TR', { year:'numeric', month:'long', day:'numeric' })
+          : 'Belirtilmedi';
+
+        kart.innerHTML = `
+          <div class="goal-card-icon" style="background:${renk}22;">
+            ${ikon}
+          </div>
+          <div class="goal-card-body">
+            <div class="goal-card-title">${escHtml(h.title)}</div>
+            <div class="goal-card-meta">
+              <span>Deadline: ${deadlineStr}</span>
+              <span class="badge ${badgeClass}">${badgeLabel}</span>
+              <span style="font-size:var(--text-xs);color:var(--color-text-muted);background:var(--color-bg-inset);padding:1px 6px;border-radius:3px;">${kategoriEtiket(h.category)}</span>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:var(--space-1);flex-shrink:0;">
+            ${h.status !== 'devam_ediyor'  ? `<button class="btn btn-ghost btn-sm" data-id="${h.id}" data-durum="devam_ediyor"  style="font-size:10px;padding:2px 8px;">Devam Et</button>` : ''}
+            ${h.status !== 'tamamlandi'    ? `<button class="btn btn-ghost btn-sm" data-id="${h.id}" data-durum="tamamlandi"    style="font-size:10px;padding:2px 8px;">Tamamla</button>` : ''}
+            ${h.status !== 'bekliyor'      ? `<button class="btn btn-ghost btn-sm" data-id="${h.id}" data-durum="bekliyor"      style="font-size:10px;padding:2px 8px;">Beklet</button>` : ''}
+          </div>
+        `;
+
+        // Durum toggle butonları
+        kart.querySelectorAll('[data-durum]').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            try {
+              const sonuc = await updateGoalStatus(btn.dataset.id, btn.dataset.durum);
+              if (sonuc.hata) throw new Error(sonuc.hata);
+              showToast('Durum güncellendi', 'success');
+              await hedefleriYukle();
+            } catch (err) {
+              showToast('Durum güncellenemedi: ' + err.message, 'error');
+            }
+          });
+        });
+
+        liste.appendChild(kart);
+      });
+    }
+
+    function hedefGorunum(h) {
+      if (h.status === 'tamamlandi') {
+        return {
+          renk: 'var(--color-success)',
+          ikon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--color-success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`,
+          badgeClass: 'badge-success',
+          badgeLabel: 'Tamamlandı',
+        };
+      }
+      if (h.status === 'devam_ediyor') {
+        return {
+          renk: 'var(--color-accent)',
+          ikon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"/><path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>`,
+          badgeClass: 'badge-warning',
+          badgeLabel: 'Devam Ediyor',
+        };
+      }
+      return {
+        renk: 'var(--color-text-muted)',
+        ikon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>`,
+        badgeClass: 'badge-outline',
+        badgeLabel: 'Bekliyor',
+      };
+    }
+
+    function kategoriEtiket(cat) {
+      const map = { teknik: 'Meta/Google', kreatif: 'Kreatif', kariyer: 'Kariyer', diger: 'Genel' };
+      return map[cat] || cat || 'Genel';
+    }
+
+    // Hedef ekleme
+    document.getElementById('addGoalBtn').addEventListener('click', async () => {
+      const baslik = document.getElementById('goalTitle').value.trim();
+      if (!baslik) { showToast('Hedef başlığı zorunludur', 'error'); return; }
+      const btn = document.getElementById('addGoalBtn');
+      btn.disabled = true;
+      try {
+        const sonuc = await saveGoal({
+          title:       baslik,
+          description: document.getElementById('goalDesc').value.trim(),
+          deadline:    document.getElementById('goalDeadline').value || null,
+          category:    document.getElementById('goalCategory').value,
+          status:      document.getElementById('goalStatus').value,
+        });
+        if (sonuc.hata) throw new Error(sonuc.hata);
+        showToast('Hedef eklendi', 'success');
+        // Formu temizle
+        document.getElementById('goalTitle').value    = '';
+        document.getElementById('goalDesc').value     = '';
+        document.getElementById('goalDeadline').value = '';
+        document.getElementById('goalCategory').value = 'diger';
+        document.getElementById('goalStatus').value   = 'devam_ediyor';
+        await hedefleriYukle();
+      } catch (err) {
+        showToast('Hedef kaydedilemedi: ' + err.message, 'error');
+      } finally {
+        btn.disabled = false;
       }
     });
 
-    // Beceri kaydet
-    document.getElementById('saveSkillsBtn').addEventListener('click', () => {
-      const btn = document.getElementById('saveSkillsBtn');
-      btn.textContent = 'Kaydedildi';
+    // ═══════════════════════════════════════════════════════════════════════════
+    //  SEKME 2 — GÜNLÜK LOG
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    async function logSecmeYukle() {
+      await logGecmisYukle();
+    }
+
+    async function logGecmisYukle() {
+      const gecmis = document.querySelector('.log-history');
+      if (!gecmis) return;
+      gecmis.innerHTML = '<div style="color:var(--color-text-muted);font-size:var(--text-sm);">Yükleniyor...</div>';
+      try {
+        const loglar = await getDailyLogs(20);
+        if (loglar.hata) throw new Error(loglar.hata);
+        if (!loglar.length) {
+          gecmis.innerHTML = '<div style="color:var(--color-text-muted);font-size:var(--text-sm);">Henüz log kaydedilmedi.</div>';
+          return;
+        }
+        gecmis.innerHTML = '';
+        loglar.forEach(log => {
+          const tarih = log.createdAt?.toDate
+            ? log.createdAt.toDate().toLocaleDateString('tr-TR', { year:'numeric', month:'long', day:'numeric', weekday:'long' })
+            : (log.date || '—');
+          const el = document.createElement('div');
+          el.className = 'log-entry';
+          el.innerHTML = `
+            <div class="log-entry-date">${tarih}</div>
+            <div class="log-entry-text">${escHtml(log.logText)}</div>
+          `;
+          gecmis.appendChild(el);
+        });
+      } catch (err) {
+        gecmis.innerHTML = '<div style="color:var(--color-error);font-size:var(--text-sm);">Loglar yüklenemedi.</div>';
+        showToast('Loglar yüklenemedi: ' + err.message, 'error');
+      }
+    }
+
+    document.getElementById('saveLogBtn').addEventListener('click', async () => {
+      const metin = document.getElementById('todayLog').value.trim();
+      if (!metin) { showToast('Log boş olamaz', 'error'); return; }
+      const btn = document.getElementById('saveLogBtn');
       btn.disabled = true;
-      setTimeout(() => { btn.textContent = 'Becerileri Kaydet'; btn.disabled = false; }, 2000);
+      try {
+        const sonuc = await saveDailyLog(metin);
+        if (sonuc.hata) throw new Error(sonuc.hata);
+        showToast('Log kaydedildi', 'success');
+        document.getElementById('todayLog').value = '';
+        await logGecmisYukle();
+      } catch (err) {
+        showToast('Log kaydedilemedi: ' + err.message, 'error');
+      } finally {
+        btn.disabled = false;
+      }
     });
 
-    // Hedef ekle
-    document.getElementById('addGoalBtn').addEventListener('click', () => {
-      const title = document.getElementById('goalTitle').value.trim();
-      const deadline = document.getElementById('goalDeadline').value;
-      const status = document.getElementById('goalStatus').value;
-      const progress = parseInt(document.getElementById('goalProgress').value) || 0;
+    // ═══════════════════════════════════════════════════════════════════════════
+    //  SEKME 3 — BECERİ HARİTASI
+    // ═══════════════════════════════════════════════════════════════════════════
 
-      if (!title) return;
+    async function beceriSecmeYukle() {
+      const grid = document.getElementById('skillGrid');
+      grid.innerHTML = '<div style="color:var(--color-text-muted);font-size:var(--text-sm);">Yükleniyor...</div>';
+      try {
+        const puanlar = await getSkillRatings();
+        if (puanlar.hata) throw new Error(puanlar.hata);
+        // Mevcut puanları mapa dönüştür
+        const pMap = {};
+        puanlar.forEach(p => { pMap[p.skill] = p; });
+        renderBeceriler(pMap);
+      } catch (err) {
+        showToast('Beceriler yüklenemedi: ' + err.message, 'error');
+        renderBeceriler({});
+      }
+    }
 
-      const statusClass = status === 'Tamamlandı' ? 'badge-success' : status === 'Devam Ediyor' ? 'badge-warning' : 'badge-outline';
-      const deadlineFormatted = deadline ? new Date(deadline).toLocaleDateString('tr-TR', { year:'numeric', month:'long', day:'numeric' }) : 'Belirtilmedi';
+    function renderBeceriler(pMap) {
+      const grid = document.getElementById('skillGrid');
+      grid.innerHTML = '';
+      // Slider değerlerini mevcut puanlarla başlat
+      SKILL_LISTESI.forEach(skill => {
+        const puan = pMap[skill]?.rating ?? 5;
+        sliderDegerleri[skill] = puan;
+      });
 
-      const card = document.createElement('div');
-      card.className = 'goal-card';
-      card.innerHTML = `
-        <div class="goal-card-icon" style="background:var(--color-accent-subtle);">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;">
-            <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
-            <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"/>
-            <path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
-          </svg>
-        </div>
-        <div class="goal-card-body">
-          <div class="goal-card-title">${title}</div>
-          <div class="goal-card-meta">
-            <span>Deadline: ${deadlineFormatted}</span>
-            <span class="badge ${statusClass}">${status}</span>
-          </div>
-          ${progress > 0 ? `<div class="goal-card-progress">
-            <div class="kpi-progress" style="margin-top:var(--space-1);">
-              <div class="kpi-progress-bar kpi-progress-bar--good" style="width:${progress}%;"></div>
+      SKILL_LISTESI.forEach(skill => {
+        const puan     = sliderDegerleri[skill];
+        const guncelleme = pMap[skill]?.updatedAt?.toDate
+          ? pMap[skill].updatedAt.toDate().toLocaleDateString('tr-TR', { year:'numeric', month:'long', day:'numeric' })
+          : 'Henüz kaydedilmedi';
+        const domId = 'skill-' + skill.replace(/\s+/g, '-').toLowerCase();
+        const pct   = ((puan - 1) / 9) * 100;
+
+        const el = document.createElement('div');
+        el.className = 'skill-item';
+        el.innerHTML = `
+          <div class="skill-item-top">
+            <div class="skill-item-name">${escHtml(skill)}</div>
+            <div class="skill-item-score">
+              <div class="skill-score-number" id="score-${domId}">${puan}</div>
+              <div class="skill-score-max">/ 10</div>
             </div>
-            <div style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:4px;">%${progress} tamamlandı</div>
-          </div>` : ''}
-        </div>
-      `;
+          </div>
+          <input
+            type="range"
+            class="skill-slider"
+            data-skill="${escHtml(skill)}"
+            data-dom-id="${domId}"
+            min="1" max="10"
+            value="${puan}"
+            aria-label="${escHtml(skill)} puanı"
+            style="background:linear-gradient(to right, var(--color-accent) ${pct}%, var(--color-bg-inset) ${pct}%);"
+          >
+          <div class="skill-item-footer">
+            <div class="skill-updated" id="updated-${domId}">Son güncelleme: ${guncelleme}</div>
+            <div id="label-${domId}" style="font-size:var(--text-xs);color:var(--color-text-muted);">${beceriEtiket(puan)}</div>
+          </div>
+        `;
 
-      document.getElementById('goalList').appendChild(card);
+        const slider = el.querySelector('.skill-slider');
+        slider.addEventListener('input', function() {
+          const val = parseInt(this.value);
+          sliderDegerleri[this.dataset.skill] = val;
+          document.getElementById('score-'   + this.dataset.domId).textContent = val;
+          document.getElementById('label-'   + this.dataset.domId).textContent = beceriEtiket(val);
+          const p = ((val - 1) / 9) * 100;
+          this.style.background = `linear-gradient(to right, var(--color-accent) ${p}%, var(--color-bg-inset) ${p}%)`;
+        });
 
-      // Formu temizle
-      document.getElementById('goalTitle').value = '';
-      document.getElementById('goalDeadline').value = '';
-      document.getElementById('goalProgress').value = '0';
+        grid.appendChild(el);
+      });
+    }
+
+    function beceriEtiket(puan) {
+      if (puan <= 2) return 'Başlangıç';
+      if (puan <= 4) return 'Gelişiyor';
+      if (puan <= 6) return 'Orta Seviye';
+      if (puan <= 8) return 'İyi';
+      return 'Uzman';
+    }
+
+    // Becerileri toplu kaydet
+    document.getElementById('saveSkillsBtn').addEventListener('click', async () => {
+      const btn = document.getElementById('saveSkillsBtn');
+      btn.disabled = true;
+      btn.textContent = 'Kaydediliyor...';
+      let hataSayisi = 0;
+      for (const skill of SKILL_LISTESI) {
+        try {
+          const sonuc = await saveSkillRating(skill, sliderDegerleri[skill]);
+          if (sonuc.hata) throw new Error(sonuc.hata);
+        } catch (err) {
+          hataSayisi++;
+        }
+      }
+      if (hataSayisi === 0) {
+        showToast('Tüm beceriler kaydedildi', 'success');
+        await beceriSecmeYukle(); // Güncelleme tarihlerini yenile
+      } else {
+        showToast(`${hataSayisi} beceri kaydedilemedi`, 'error');
+      }
+      btn.disabled    = false;
+      btn.textContent = 'Becerileri Kaydet';
     });
 
-    // Hamburger
-    const hamburgerBtn = document.getElementById('hamburgerBtn');
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebarOverlay');
-    hamburgerBtn.addEventListener('click', () => {
-      sidebar.classList.toggle('is-open');
-      overlay.classList.toggle('is-visible');
-      hamburgerBtn.setAttribute('aria-expanded', sidebar.classList.contains('is-open'));
-    });
-    overlay.addEventListener('click', () => {
-      sidebar.classList.remove('is-open');
-      overlay.classList.remove('is-visible');
-      hamburgerBtn.setAttribute('aria-expanded', 'false');
-    });
+    // ─── Yardımcılar ─────────────────────────────────────────────────────────────
+    function escHtml(str) {
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
 
-    document.getElementById('logoutBtn').addEventListener('click', async () => {
-      const { getAuth, signOut } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
-      await signOut(getAuth());
-      window.location.href = '../login.html';
-    });
   </script>
 </body>
 </html>

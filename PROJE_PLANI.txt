@@ -1,7 +1,9 @@
 ================================================================
-AJANS PANEL — PROJE PLANI
+DARK SPACE — PROJE PLANI
 Oluşturulma: 2026-06-03
-Durum: Planlama aşaması — aktif geliştirme henüz başlamadı
+Son güncelleme: 2026-06-03
+Durum: CANLI — aktif geliştirme devam ediyor
+Canlı URL: https://ebubekirpekpek.github.io/dark-space/
 ================================================================
 
 SİTE ADI: Dark Space
@@ -434,7 +436,175 @@ TASARIM SORULARI TAMAMLANDI
 ================================================================
 
 ================================================================
-SONRAKİ ADIM
+TAMAMLANAN İŞLER (2026-06-03)
 ================================================================
-Tasarım soruları devam ediyor — T2 bekleniyor.
+
+✅ 1. Proje vizyonu ve 4 katmanlı mimari planlandı
+✅ 2. Tasarım sistemi oluşturuldu (CSS tokenleri, Notion+Bloomberg hissi)
+✅ 3. Firebase projesi kuruldu (dark-space-ajans, Auth + Firestore)
+✅ 4. 11 HTML sayfası yazıldı (login, dashboard, 6 haber, bilgi, müşteri, gelişim)
+✅ 5. GitHub Pages canlıya alındı
+✅ 6. BASE URL fix (GitHub Pages subdirectory sorunu çözüldü)
+✅ 7. 6 haber sayfası gerçek RSS'e bağlandı + Türkçe çeviri + modal
+✅ 8. Müşteri alanı Firestore'a bağlandı (KPI, notlar, yapılacaklar)
+✅ 9. Gelişim alanı Firestore'a bağlandı (hedefler, log, beceri)
+✅ 10. Dashboard gerçek veriye bağlandı
+✅ 11. 6 haber sayfasına Firestore mikro not sistemi eklendi
+
+================================================================
+YOL HARİTASI — DETAYLI
+================================================================
+
+------------------------------------------------------------
+FAZ 1: TEMEL EKSİKLER (Sıradaki)
+------------------------------------------------------------
+
+1.1 ID UYUMSUZLUK DÜZELTMESİ (Öncelik: Yüksek)
+    app.js sidebar-toggle ve logout-btn arıyor.
+    Bazı sayfalarda hamburgerBtn ve logoutBtn var.
+    Etki: Sidebar açılmıyor, çıkış butonu çalışmıyor.
+    Çözüm: Tüm sayfalarda id'leri eşleştir.
+
+1.2 DASHBOARD SON HABERLER (Öncelik: Orta)
+    index.html'de "Son Haberler" bölümü placeholder.
+    Gerçek RSS'ten canlı haberler gelmeli.
+    Tüm kategorilerden en yeni 4-6 haber karışık gösterilmeli.
+
+1.3 BİLGİ AĞACI İÇERİĞİ (Öncelik: Çok Yüksek)
+    bilgi/index.html yapısı hazır ama tamamen boş.
+    Kullanıcıyla birlikte yapılacak — önce konular belirlenir.
+
+    Planlanan kategoriler:
+    META ADS
+    ├── Kampanya Türleri
+    │   ├── Trafik Kampanyası (geniş hedef, retargeting, lookalike)
+    │   ├── Dönüşüm Kampanyası
+    │   ├── Etkileşim Kampanyası
+    │   └── Form (Lead) Kampanyası
+    ├── Reklam Seti
+    │   ├── Hedefleme (Geniş, Detaylı, Özel Kitle)
+    │   ├── Bütçe & Teklif (Günlük vs Toplam, CBO vs ABO)
+    │   └── Yerleşim (Otomatik vs Manuel)
+    ├── Reklam (Kreatif)
+    │   ├── Hook Türleri (soru, şok, empati, merak)
+    │   ├── Psikolojik Baskılayıcılar (FOMO, sosyal kanıt, otorite)
+    │   ├── Görsel Prensipler
+    │   └── Copy Yazımı (başlık, birincil metin, CTA)
+    ├── Panel & Teknik
+    │   ├── Piksel & Events
+    │   ├── Katalog Kurulumu
+    │   └── A/B Testi
+    └── Reklam Türleri
+        ├── Form Reklamı (Lead Ads)
+        ├── Etkileşim Reklamı
+        └── Retargeting
+
+    GOOGLE ADS
+    ├── Arama Ağı (Anahtar kelime türleri, kalite puanı)
+    ├── Görüntülü Reklam (Kitle hedefleme, banner boyutları)
+    ├── Performance Max (Asset groups, sinyal)
+    └── YouTube Ads (TrueView, Bumper, Discovery)
+
+    TİKTOK ADS
+    ├── Spark Ads (organik içeriği boost etme)
+    ├── In-Feed Ads
+    └── TopView & Brand Takeover
+
+    KREATİF (Genel)
+    ├── Hook Anatomisi (ilk 3 saniye)
+    ├── Psikolojik Tetikleyiciler
+    ├── UGC (Kullanıcı İçerikli Reklam)
+    └── Video vs Statik Performans
+
+------------------------------------------------------------
+FAZ 2: DENEYİM GELİŞTİRME (Orta Vadeli)
+------------------------------------------------------------
+
+2.1 GELİŞİM ALANI — BİLGİ AĞACI BAĞLANTISI
+    Gelişim alanında not alırken konuya tıklayınca
+    bilgi ağacının o konusu açılır.
+    "Kreatif üzerinde çalışıyorum" → tıkla → Meta > Kreatif
+    Notion çift yönlü link mantığı, ajans odaklı.
+
+2.2 BİLGİ AĞACI — KULLANICI NOTLARI
+    Her bilgi kartının altına kullanıcının kendi notlarını
+    ekleyebileceği alan. "Benim pratiğim: ..."
+    Firestore'a kaydedilir, cihazlar arası senkron.
+
+2.3 DASHBOARD — KİŞİSELLEŞTİRME
+    Hangi haber kategorilerinin gösterileceğini kullanıcı seçer.
+    "Meta haberleri her zaman üstte" gibi tercihler.
+
+2.4 ARAMA GELİŞTİRME
+    Şu an basit filtre var.
+    İleride: tüm sayfada arama (haberler + bilgi ağacı + notlar).
+
+------------------------------------------------------------
+FAZ 3: OTOMATİK VERI (Uzun Vadeli)
+------------------------------------------------------------
+
+3.1 GITHUB ACTIONS — FEED ÇEKIMI
+    Şu an rss2json.com proxy kullanılıyor (sınırlı kaynaklar).
+    GitHub Actions ile sunucu tarafında fetch yapılır:
+    - Shopify Blog, TikTok, Google Ads Blog, Campaign
+    - Her 2 saatte bir çalışır
+    - data/*.json dosyalarına yazar
+    - Site bu JSON'ları okur — CORS sorunu yok
+
+3.2 AI ÖZETLERİ
+    GitHub Actions içinde DeepSeek veya Gemini API ile
+    her haber için Türkçe AI özeti üretilir.
+    Şu an RSS description kullanılıyor.
+    AI özeti çok daha değerli ve özlü olacak.
+
+3.3 TREND ALGILAMA
+    Birden fazla kaynakta aynı konu geçiyorsa
+    "Trend" etiketi ile öne çıkar.
+    Dashboard'da "Bu hafta trend" bloğu.
+
+3.4 KPI UYARILARI (Otomatik)
+    Müşteri KPI'ları hedeften sapınca
+    dashboard'da otomatik uyarı çıkar.
+    "Diş Hekimi — CPA hedefin %30 üstünde"
+
+------------------------------------------------------------
+FAZ 4: PLATFORM GENİŞLEMESİ (İleride)
+------------------------------------------------------------
+
+4.1 SHOPIFY / İKAS ENTEGRASYONU
+    Shopify ve İkas blogları GitHub Actions ile çekilir.
+    E-ticaret odaklı haber akışı.
+
+4.2 MÜŞTERİ RAPOR ŞABLONLARI
+    Müşteri alanından tek tıkla haftalık/aylık rapor.
+    KPI'lar + notlar + yapılacaklar formatlanmış çıktı.
+
+4.3 TAKVİM ENTEGRASYONU
+    Müşteri yapılacakları + hedef deadline'ları
+    takvim görünümünde.
+
+================================================================
+TEKNİK BORÇ (Düzeltilmesi Gereken)
+================================================================
+
+- [ ] Hamburger ID uyumsuzluğu (hamburgerBtn vs sidebar-toggle)
+- [ ] Logout ID uyumsuzluğu (logoutBtn vs logout-btn)
+- [ ] Bilgi ağacı içeriği tamamen boş
+- [ ] Dashboard "Son Haberler" bölümü placeholder
+- [ ] resmi.html platform kartlarına gerçek RSS bağlanmadı
+- [ ] bilgi/meta.html sayfası yok (sadece bilgi/index.html var)
+
+================================================================
+TEKNİK KISITLAR (Değişmez)
+================================================================
+- Site: GitHub Pages (statik)
+- Kullanıcı verisi: Firebase Firestore
+- Auth: Firebase Authentication (e-posta/şifre VE Google)
+- Firebase Projesi: dark-space-ajans (ayrı proje, maliyet/kar-zarar'dan bağımsız)
+- Feed çekimi: rss2json.com proxy (şimdilik), GitHub Actions (ileride)
+- AI özeti: DeepSeek veya Gemini API (ileride, GitHub Actions içinde)
+- Navigasyon: Sidebar (web) + Alt bar (mobil)
+- Her şey Türkçe
+- Ham veri önceliği — gereksiz süs yok
+- BASE URL: import.meta.url ile hesaplanıyor — dokunma!
 ================================================================
